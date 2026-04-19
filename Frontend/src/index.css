@@ -1,0 +1,333 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ─────────────────────────────────────────────── */
+:root {
+  --color-primary: #6366f1;
+  --color-accent: #06b6d4;
+  --color-bg: #080810;
+  --color-surface: #14141f;
+  --color-border: #2a2a4a;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #475569;
+  --radius-card: 1rem;
+  --transition-base: all 0.2s ease;
+}
+
+/* ─── Base Styles ───────────────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-dark-950 text-slate-100 font-sans antialiased;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6, 182, 212, 0.05), transparent);
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Scrollbar Styling ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0c0c1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a4a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: white;
+}
+
+/* ─── Component Classes ─────────────────────────────────────────────────── */
+@layer components {
+  /* Glass card */
+  .glass-card {
+    @apply bg-surface-card border border-surface-border rounded-2xl;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: var(--transition-base);
+  }
+
+  .glass-card:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 20px rgba(99,102,241,0.08), inset 0 1px 0 rgba(255,255,255,0.07);
+    @apply border-primary-500/20;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #818cf8 0%, #6366f1 40%, #22d3ee 100%);
+  }
+
+  .gradient-text-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+    background: linear-gradient(135deg, #818cf8, #6366f1);
+  }
+
+  .btn-primary:active {
+    @apply translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold;
+    @apply bg-surface-card border border-surface-border text-slate-200;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    @apply border-primary-500/40 text-white -translate-y-0.5;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.1);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-slate-400;
+    transition: all 0.2s ease;
+  }
+
+  .btn-ghost:hover {
+    @apply text-white bg-white/5;
+  }
+
+  /* Input */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-surface-card border border-surface-border;
+    @apply text-slate-100 placeholder-slate-500 outline-none;
+    transition: all 0.2s ease;
+  }
+
+  .input-field:focus {
+    @apply border-primary-500/60;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+  }
+
+  /* Section badge */
+  .section-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+    @apply bg-primary-500/10 text-primary-400 border border-primary-500/20;
+  }
+
+  /* Score circle */
+  .score-ring {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Keyword chip */
+  .keyword-chip {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-primary-500/10 text-primary-300 border border-primary-500/20;
+    transition: all 0.15s ease;
+  }
+
+  .keyword-chip:hover {
+    @apply bg-primary-500/20;
+  }
+
+  .keyword-chip-missing {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-rose-500/10 text-rose-300 border border-rose-500/20;
+  }
+
+  .keyword-chip-matched {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-emerald-500/10 text-emerald-300 border border-emerald-500/20;
+  }
+
+  /* Page container */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Stat card */
+  .stat-card {
+    @apply glass-card p-6 flex flex-col gap-2;
+  }
+  
+  /* Glow orb background decorations */
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.15;
+  }
+}
+
+/* ─── Utility Extras ────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Shimmer loading effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03) 0%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(255,255,255,0.03) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  /* Gradient border */
+  .gradient-border {
+    position: relative;
+    border-radius: 1rem;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(6,182,212,0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Line clamp */
+  .line-clamp-8 {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ─── Select dropdown styling ─────────────────────────────────────────── */
+select.input-field {
+  background-image: none;
+}
+
+select.input-field option {
+  background-color: #14141f;
+  color: #f1f5f9;
+  padding: 8px;
+}
+
+/* ─── Focus-visible for keyboard nav ──────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.5);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Print Styles ──────────────────────────────────────────────────────── */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .glass-card {
+    background: transparent !important;
+    border: 1px solid #eee !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .gradient-border::before {
+    display: none !important;
+  }
+
+  .btn-primary, .btn-secondary, .btn-ghost, .btn-ghost-dark, 
+  nav, footer, .no-print, button, a[href^="/"] {
+    display: none !important;
+  }
+
+  h1, h2, h3, p, span, div {
+    color: black !important;
+    text-shadow: none !important;
+  }
+
+  .gradient-text {
+    background: none !important;
+    -webkit-text-fill-color: black !important;
+    color: black !important;
+  }
+
+  .section-badge {
+    border: 1px solid #ccc !important;
+    background: #f9f9f9 !important;
+    color: #333 !important;
+  }
+
+  .keyword-chip-matched {
+    background: #e6fffa !important;
+    border: 1px solid #38b2ac !important;
+    color: #234e52 !important;
+  }
+
+  .keyword-chip-missing {
+    background: #fff5f5 !important;
+    border: 1px solid #e53e3e !important;
+    color: #742a2a !important;
+  }
+
+  .page-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+
