@@ -3,6 +3,35 @@ import { motion } from 'framer-motion';
 import { Upload, ClipboardList, BarChart3, Brain, Code, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const TiltCard = ({ children, className }) => {
+  const ref = React.useRef(null);
+  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setRotate({ x: y * -20, y: x * 20 });
+  };
+
+  const handleMouseLeave = () => setRotate({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{ transformStyle: 'preserve-3d' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 export default function HowItWorksPage() {
   const steps = [
     { step: '01', icon: Upload, title: 'Upload Your Resume', desc: 'Drop your existing PDF, DOCX, or TXT file. We extract the text instantly and securely on your device without storing it on our servers.' },
@@ -13,7 +42,7 @@ export default function HowItWorksPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050510] relative overflow-hidden pt-32 pb-24">
+    <div className="min-h-screen bg-transparent relative overflow-hidden pt-32 pb-24">
       {/* Background Orbs */}
       <div className="absolute top-[20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(0,200,150,0.05)_0%,transparent_70%)] blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(108,99,255,0.05)_0%,transparent_70%)] blur-[100px] pointer-events-none" />
@@ -23,11 +52,11 @@ export default function HowItWorksPage() {
         {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-20 px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-[#00C896]/10 text-[#00C896] border border-[#00C896]/20 mb-6">The Process</span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white mb-6 leading-tight">
-              From Upload to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00C896] to-[#00D4FF]">Interview-Ready</span>
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 mb-6">The Process</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-text-primary mb-6 leading-tight">
+              From Upload to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-primary-500">Interview-Ready</span>
             </h1>
-            <p className="text-lg sm:text-xl text-[#AAB2D5] leading-relaxed">
+            <p className="text-lg sm:text-xl text-text-muted leading-relaxed">
               No guesswork. No hidden fees. Just a clean, transparent, five-step pipeline to optimize your resume for applicant tracking systems.
             </p>
           </motion.div>
@@ -46,25 +75,32 @@ export default function HowItWorksPage() {
                   className={`flex flex-col md:flex-row items-center gap-8 md:gap-0 ${isEven ? '' : 'md:flex-row-reverse'}`}
                 >
                   {/* Content Side */}
-                  <div className={`w-full md:w-1/2 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'} text-center`}>
-                    <div className="text-4xl sm:text-6xl font-display font-black text-[rgba(255,255,255,0.03)] mb-2 md:mb-0 absolute md:relative left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -z-10 select-none">
-                      {step}
+                  <TiltCard className={`w-full md:w-1/2 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'} text-center group`}>
+                    <div className="relative p-6 sm:p-8 rounded-3xl bg-surface-card/50 border border-surface-border hover:border-primary-500/30 transition-all duration-500">
+                      <div className="text-4xl sm:text-7xl font-display font-black text-text-primary/5 mb-2 md:mb-0 absolute md:relative left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -z-10 select-none group-hover:text-primary-500/10 transition-colors">
+                        {step}
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-display font-black text-text-primary mb-4 relative z-10" style={{ transform: 'translateZ(20px)' }}>{title}</h3>
+                      <p className="text-text-muted text-base sm:text-lg leading-relaxed relative z-10" style={{ transform: 'translateZ(10px)' }}>{desc}</p>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-display font-black text-white mb-4 relative z-10">{title}</h3>
-                    <p className="text-[#AAB2D5] text-base sm:text-lg leading-relaxed relative z-10">{desc}</p>
-                  </div>
+                  </TiltCard>
 
                   {/* Center Node */}
-                  <div className="hidden md:flex relative items-center justify-center w-16 h-16 shrink-0 z-10">
-                    <div className="absolute inset-0 bg-[#050510] rounded-full" />
-                    <div className="w-12 h-12 rounded-xl bg-[#6C63FF]/10 border border-[#6C63FF]/30 flex items-center justify-center shadow-[0_0_20px_rgba(108,99,255,0.2)]">
-                      <Icon size={20} className="text-[#6C63FF]" />
+                  <div className="hidden md:flex relative items-center justify-center w-24 h-24 shrink-0 z-10">
+                    <div className="absolute inset-0 bg-transparent rounded-full" />
+                    <motion.div 
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 border border-dashed border-primary-500/20 rounded-full" 
+                    />
+                    <div className="w-14 h-14 rounded-2xl bg-primary-500/10 border border-primary-500/30 flex items-center justify-center shadow-glow-sm relative z-10">
+                      <Icon size={24} className="text-primary-500" />
                     </div>
                   </div>
 
                   {/* Mobile Only Icon */}
-                  <div className="md:hidden w-16 h-16 rounded-xl bg-[#6C63FF]/10 border border-[#6C63FF]/30 flex items-center justify-center mb-2 mx-auto">
-                    <Icon size={28} className="text-[#6C63FF]" />
+                  <div className="md:hidden w-16 h-16 rounded-xl bg-primary-500/10 border border-primary-500/30 flex items-center justify-center mb-2 mx-auto">
+                    <Icon size={28} className="text-primary-500" />
                   </div>
 
                   {/* Empty Spacer Side */}

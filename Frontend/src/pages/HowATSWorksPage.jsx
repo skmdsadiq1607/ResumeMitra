@@ -6,6 +6,35 @@ import {
   Target, Award, Eye, Sparkles
 } from 'lucide-react'
 
+const TiltCard = ({ children, className }) => {
+  const ref = React.useRef(null);
+  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setRotate({ x: y * -15, y: x * 15 });
+  };
+
+  const handleMouseLeave = () => setRotate({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{ transformStyle: 'preserve-3d' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.4 } })
@@ -46,11 +75,11 @@ const HowATSWorksPage = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.span className="section-badge" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>Transparency</motion.span>
           <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
-            className="mt-4 text-4xl sm:text-5xl font-display font-extrabold text-white leading-tight">
+            className="mt-4 text-4xl sm:text-5xl font-display font-extrabold text-text-primary leading-tight">
             How Our <span className="gradient-text">ATS Score</span> Works
           </motion.h1>
           <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
-            className="mt-4 text-lg text-slate-400 leading-relaxed">
+            className="mt-4 text-lg text-text-muted leading-relaxed">
             Every point in your ATS score is traceable and explainable. No random numbers, no black boxes.
             Here's exactly how we calculate your score out of 100.
           </motion.p>
@@ -60,24 +89,26 @@ const HowATSWorksPage = () => {
         <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}
           className="glass-card gradient-border p-8 text-center mb-12">
           <div className="text-6xl font-display font-black gradient-text mb-2">100</div>
-          <p className="text-slate-300 font-medium">Total Points Across 7 Scoring Dimensions</p>
+          <p className="text-text-primary font-medium">Total Points Across 7 Scoring Dimensions</p>
           <p className="text-sm text-slate-500 mt-2">Final Score = A + B + C + D + E + F + G</p>
         </motion.div>
 
         {/* Dimensions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {dimensions.map(({ icon: Icon, title, points, desc, color }, i) => (
-            <motion.div key={title} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.5}
-              className="glass-card p-6 group">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                  <Icon size={20} className="text-white" />
+            <TiltCard key={title}>
+              <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.5}
+                className="glass-card p-6 group h-full">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <Icon size={20} className="text-white" />
+                  </div>
+                  <span className="text-sm font-bold text-primary-400 bg-primary-500/10 px-3 py-1 rounded-full">{points}</span>
                 </div>
-                <span className="text-sm font-bold text-primary-400 bg-primary-500/10 px-3 py-1 rounded-full">{points}</span>
-              </div>
-              <h3 className="font-semibold text-white mb-2">{title}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
-            </motion.div>
+                <h3 className="font-semibold text-text-primary mb-2" style={{ transform: 'translateZ(20px)' }}>{title}</h3>
+                <p className="text-sm text-text-muted leading-relaxed" style={{ transform: 'translateZ(10px)' }}>{desc}</p>
+              </motion.div>
+            </TiltCard>
           ))}
         </div>
 
@@ -101,8 +132,8 @@ const HowATSWorksPage = () => {
             {faqs.map(({ q, a }, i) => (
               <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.3}
                 className="glass-card p-5">
-                <h3 className="text-sm font-semibold text-white mb-2">{q}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{a}</p>
+                <h3 className="text-sm font-semibold text-text-primary mb-2">{q}</h3>
+                <p className="text-sm text-text-muted leading-relaxed">{a}</p>
               </motion.div>
             ))}
           </div>

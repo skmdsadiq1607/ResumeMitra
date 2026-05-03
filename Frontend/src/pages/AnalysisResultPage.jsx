@@ -7,7 +7,7 @@ import {
   Code, Briefcase, GraduationCap, FolderGit2, Star, Layout,
   Search, Eye, FileText, AlertTriangle, Target, TrendingUp,
   Zap, BookOpen, Shield, ArrowRight, ChevronDown, Wrench,
-  Flame, Award, Brain, MessageSquare, Rocket, Printer
+  Flame, Award, Brain, MessageSquare, Rocket, Download
 } from 'lucide-react'
 import { resumeService } from '../services/resumeService'
 import { ResultSkeleton } from '../components/ui/Skeleton'
@@ -34,7 +34,37 @@ const scoreIcons = {
   readability: Eye,
 }
 
-// ─── Card wrapper ───
+// ─── Tilt Card component ───
+const TiltCard = ({ children, className = '', delay = 0, gradient = false }) => {
+  const ref = React.useRef(null);
+  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setRotate({ x: y * -5, y: x * 5 });
+  };
+
+  const handleMouseLeave = () => setRotate({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      {...fadeUp(delay)}
+      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{ transformStyle: 'preserve-3d' }}
+      className={`glass-card p-6 ${gradient ? 'gradient-border' : ''} ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const Card = ({ children, className = '', delay = 0, gradient = false }) => (
   <motion.div {...fadeUp(delay)} className={`glass-card p-6 ${gradient ? 'gradient-border' : ''} ${className}`}>
     {children}
@@ -56,10 +86,16 @@ const AnalysisResultPage = () => {
 
   const { data: report, isLoading, error } = useQuery({
     queryKey: ['report', id],
-    queryFn: () => {
-      if (id === 'demo') return Promise.resolve(demoReport)
-      return resumeService.getReport(id).then((r) => r.data.data.report)
+    queryFn: async () => {
+      if (id === 'demo') {
+        // Return demo data immediately
+        return demoReport;
+      }
+      if (!id) return null;
+      const res = await resumeService.getReport(id);
+      return res.data.data.report;
     },
+    enabled: !!id,
   })
 
   const handleDelete = async () => {
@@ -137,7 +173,7 @@ const AnalysisResultPage = () => {
       </div>
 
       {/* ═══ Hero Score Card ═══ */}
-      <Card delay={0.05} gradient>
+      <TiltCard delay={0.05} gradient>
         <div className="flex flex-col lg:flex-row items-center gap-8">
           <div className="flex-shrink-0">
             <ScoreCircle score={report.overallScore} size={190} strokeWidth={12} />
@@ -157,9 +193,9 @@ const AnalysisResultPage = () => {
                 { v: report.strengths?.length || 0, l: 'Strengths', c: 'text-primary-400' },
                 { v: report.quickFixes?.length || 0, l: 'Quick Fixes', c: 'text-amber-400' },
               ].map(({ v, l, c }) => (
-                <div key={l} className="bg-dark-700/80 rounded-xl p-3 text-center">
+                <div key={l} className="bg-surface-card border border-surface-border rounded-xl p-3 text-center transition-colors hover:border-primary-500/30">
                   <div className={`text-xl font-bold font-display ${c}`}>{v}</div>
-                  <div className="text-[10px] text-slate-500 mt-0.5 font-medium uppercase tracking-wider">{l}</div>
+                  <div className="text-[10px] text-text-muted mt-0.5 font-medium uppercase tracking-wider">{l}</div>
                 </div>
               ))}
             </div>

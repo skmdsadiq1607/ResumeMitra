@@ -1,7 +1,35 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { FileCode2, Copy, Download, Loader2, ArrowLeft, Check, Terminal, ExternalLink, Lightbulb } from 'lucide-react'
+
+const TiltCard = ({ children, className }) => {
+  const ref = React.useRef(null);
+  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setRotate({ x: y * -10, y: x * 10 });
+  };
+
+  const handleMouseLeave = () => setRotate({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{ transformStyle: 'preserve-3d' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 import { resumeService } from '../services/resumeService'
 import toast from 'react-hot-toast'
 
@@ -124,10 +152,10 @@ const OverleafBuilderPage = () => {
       <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <Link to={`/analysis/${id}`} className="btn-ghost text-sm mb-2 -ml-2"><ArrowLeft size={14} /> Back to Analysis</Link>
-          <h1 className="text-3xl font-display font-extrabold text-white flex items-center gap-3">
+          <h1 className="text-3xl font-display font-extrabold text-text-primary flex items-center gap-3">
             <FileCode2 size={28} className="text-primary-400" /> Overleaf Resume Builder
           </h1>
-          <p className="text-slate-400 mt-2 font-medium">Auto-generated, ATS-optimized LaTeX resume based on your AI analysis.</p>
+          <p className="text-text-muted mt-2 font-medium">Auto-generated, ATS-optimized LaTeX resume based on your AI analysis.</p>
         </div>
       </motion.div>
 
@@ -135,18 +163,18 @@ const OverleafBuilderPage = () => {
         <div className="glass-card p-24 text-center border-dashed border-2 border-primary-500/30 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-500/10 to-transparent w-[200%] animate-shimmer" />
           <Loader2 size={48} className="text-primary-400 animate-spin mx-auto mb-6" />
-          <h3 className="text-xl font-bold text-white mb-2">Generating ATS-Friendly LaTeX</h3>
-          <p className="text-slate-400">Our AI is rewriting your bullet points and formatting them perfectly for Overleaf...</p>
+          <h3 className="text-xl font-bold text-text-primary mb-2">Generating ATS-Friendly LaTeX</h3>
+          <p className="text-text-muted">Our AI is rewriting your bullet points and formatting them perfectly for Overleaf...</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Editor */}
           <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={1} className="lg:col-span-2 space-y-6">
             <div className="glass-card overflow-hidden flex flex-col h-[700px]">
-              <div className="bg-dark-800 border-b border-surface-border px-4 py-3 flex items-center justify-between">
+              <div className="bg-surface-card border-b border-surface-border px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Terminal size={16} className="text-slate-400" />
-                  <span className="text-sm font-mono font-bold text-slate-300">main.tex</span>
+                  <Terminal size={16} className="text-text-muted" />
+                  <span className="text-sm font-mono font-bold text-text-primary">main.tex</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={handleCopy} className="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
@@ -161,7 +189,7 @@ const OverleafBuilderPage = () => {
               <textarea 
                 value={latexCode}
                 onChange={(e) => setLatexCode(e.target.value)}
-                className="flex-1 w-full bg-dark-900 text-emerald-300 font-mono text-sm p-6 resize-none focus:outline-none focus:ring-0 selection:bg-primary-500/30"
+                className="flex-1 w-full bg-dark-950 text-emerald-300 font-mono text-sm p-6 resize-none focus:outline-none focus:ring-0 selection:bg-primary-500/30"
                 spellCheck="false"
               />
             </div>
@@ -171,44 +199,46 @@ const OverleafBuilderPage = () => {
           <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={2} className="space-y-6">
             
             {/* Overleaf Instructions */}
-            <div className="glass-card p-6 gradient-border relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
-              <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-                <ExternalLink size={18} className="text-emerald-400" /> How to use in Overleaf
-              </h3>
-              <div className="space-y-3 relative z-10">
-                {[
-                  'Review the generated LaTeX code.',
-                  'Click "Open in Overleaf" below.',
-                  'A new project will automatically be created.',
-                  'Review and tweak any TODO items in the code.',
-                  'Click "Recompile" in Overleaf to generate your PDF.',
-                  'Download your professional PDF resume directly from the Overleaf interface.'
-                ].map((step, i) => (
-                  <div key={i} className="flex gap-3 text-sm text-slate-300">
-                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">{i+1}</span>
-                    <p className="leading-relaxed">{step}</p>
-                  </div>
-                ))}
+            <TiltCard>
+              <div className="glass-card p-6 gradient-border relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+                <h3 className="text-base font-bold text-text-primary mb-4 flex items-center gap-2">
+                  <ExternalLink size={18} className="text-emerald-400" /> How to use in Overleaf
+                </h3>
+                <div className="space-y-3 relative z-10">
+                  {[
+                    'Review the generated LaTeX code.',
+                    'Click "Open in Overleaf" below.',
+                    'A new project will automatically be created.',
+                    'Review and tweak any TODO items in the code.',
+                    'Click "Recompile" in Overleaf to generate your PDF.',
+                    'Download your professional PDF resume directly from the Overleaf interface.'
+                  ].map((step, i) => (
+                    <div key={i} className="flex gap-3 text-sm text-text-muted">
+                      <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">{i+1}</span>
+                      <p className="leading-relaxed">{step}</p>
+                    </div>
+                  ))}
+                </div>
+                <form action="https://www.overleaf.com/docs" method="post" target="_blank" className="mt-5">
+                  <input type="hidden" name="snip" value={latexCode} />
+                  <button type="submit" className="btn-secondary w-full justify-center py-2 text-xs border-emerald-500/20 hover:border-emerald-500/50 hover:bg-emerald-500/10 flex items-center gap-2">
+                    Open in Overleaf <ExternalLink size={12} />
+                  </button>
+                </form>
               </div>
-              <form action="https://www.overleaf.com/docs" method="post" target="_blank" className="mt-5">
-                <input type="hidden" name="snip" value={latexCode} />
-                <button type="submit" className="btn-secondary w-full justify-center py-2 text-xs border-emerald-500/20 hover:border-emerald-500/50 hover:bg-emerald-500/10 flex items-center gap-2">
-                  Open in Overleaf <ExternalLink size={12} />
-                </button>
-              </form>
-            </div>
+            </TiltCard>
 
             {/* AI Insights */}
             <div className="glass-card p-6">
-              <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-base font-bold text-text-primary mb-4 flex items-center gap-2">
                 <Lightbulb size={18} className="text-primary-400" /> AI Generator Insights
               </h3>
               
               {insights.improvements?.length > 0 && (
                 <div className="mb-4">
                   <p className="text-xs font-bold text-primary-300 uppercase tracking-wider mb-2">Improvements Made</p>
-                  <ul className="space-y-1.5 list-disc list-inside text-sm text-slate-400">
+                  <ul className="space-y-1.5 list-disc list-inside text-sm text-text-muted">
                     {insights.improvements.map((imp, i) => <li key={i} className="leading-relaxed">{imp}</li>)}
                   </ul>
                 </div>
@@ -217,10 +247,10 @@ const OverleafBuilderPage = () => {
               {insights.missing?.length > 0 && (
                 <div className="mb-4">
                   <p className="text-xs font-bold text-rose-300 uppercase tracking-wider mb-2">Missing Data</p>
-                  <ul className="space-y-1.5 list-disc list-inside text-sm text-slate-400">
+                  <ul className="space-y-1.5 list-disc list-inside text-sm text-text-muted">
                     {insights.missing.map((imp, i) => <li key={i} className="leading-relaxed">{imp}</li>)}
                   </ul>
-                  <p className="text-[10px] text-slate-500 mt-2 italic">Look for % TODO comments in the LaTeX code to fill these in.</p>
+                  <p className="text-[10px] text-text-muted/50 mt-2 italic">Look for % TODO comments in the LaTeX code to fill these in.</p>
                 </div>
               )}
             </div>

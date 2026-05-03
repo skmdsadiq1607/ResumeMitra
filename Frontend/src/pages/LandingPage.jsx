@@ -64,7 +64,7 @@ const TiltCard = ({ children, className, id }) => {
       className={`relative perspective-1000 ${className || ''}`}
       id={id}
     >
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100 rounded-3xl" style={{ transform: 'translateZ(-10px)' }} />
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-500/10 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100 rounded-3xl" style={{ transform: 'translateZ(-10px)' }} />
       {children}
     </motion.div>
   );
@@ -165,8 +165,8 @@ const IsometricMockup = ({ mousePosition }) => {
         className="relative w-[320px] h-[420px] sm:w-[450px] sm:h-[600px] lg:w-[600px] lg:h-[800px]"
       >
         {/* Layer 1: Base Dashboard */}
-        <div className="absolute inset-0 bg-dark-950/80 backdrop-blur-2xl border border-surface-border rounded-3xl shadow-[0_50px_100px_-20px_rgba(99,102,241,0.3)] overflow-hidden" style={{ transform: 'translateZ(0px)' }}>
-          <div className="h-12 border-b border-surface-border/5 flex items-center px-6 gap-2 bg-dark-900/50">
+        <div className="absolute inset-0 bg-surface-card/80 backdrop-blur-2xl border border-surface-border rounded-3xl shadow-[0_50px_100px_-20px_rgba(99,102,241,0.3)] overflow-hidden" style={{ transform: 'translateZ(0px)' }}>
+          <div className="h-12 border-b border-surface-border/5 flex items-center px-6 gap-2 bg-surface-hover/50">
             <div className="flex gap-1.5"><div className="w-3 h-3 rounded-full bg-rose-500/80"/><div className="w-3 h-3 rounded-full bg-amber-500/80"/><div className="w-3 h-3 rounded-full bg-emerald-500/80"/></div>
           </div>
           <div className="p-8 grid grid-cols-2 gap-6 h-full bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]">
@@ -183,11 +183,11 @@ const IsometricMockup = ({ mousePosition }) => {
         {/* Layer 2: Floating ATS Score Ring */}
         <motion.div 
           animate={{ z: 80, y: mouseY * -20, x: mouseX * -20 }}
-          className="absolute top-20 left-2 sm:left-10 w-28 sm:w-40 lg:w-48 h-28 sm:h-40 lg:h-48 bg-dark-900/90 backdrop-blur-xl border border-primary-500/30 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] p-3 sm:p-6 flex flex-col items-center justify-center group"
+          className="absolute top-20 left-2 sm:left-10 w-28 sm:w-40 lg:w-48 h-28 sm:h-40 lg:h-48 bg-surface-card/90 backdrop-blur-xl border border-primary-500/30 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] p-3 sm:p-6 flex flex-col items-center justify-center group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
           <svg className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 transform -rotate-90">
-            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-dark-700" />
+            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-surface-border" />
             <motion.circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" strokeDasharray="251.2"
               initial={{ strokeDashoffset: 251.2 }}
               animate={{ strokeDashoffset: 251.2 - (251.2 * 0.92) }}
@@ -203,7 +203,7 @@ const IsometricMockup = ({ mousePosition }) => {
         {/* Layer 3: Floating AI Rewrite Card */}
         <motion.div 
           animate={{ z: 120, y: mouseY * -40, x: mouseX * -40 }}
-          className="absolute top-28 sm:top-40 right-[-10px] sm:right-[-40px] w-48 sm:w-60 lg:w-72 bg-dark-800/95 backdrop-blur-2xl border border-violet-500/30 rounded-2xl shadow-[0_40px_80px_-20px_rgba(139,92,246,0.3)] overflow-hidden"
+          className="absolute top-28 sm:top-40 right-[-10px] sm:right-[-40px] w-48 sm:w-60 lg:w-72 bg-surface-card/95 backdrop-blur-2xl border border-violet-500/30 rounded-2xl shadow-[0_40px_80px_-20px_rgba(139,92,246,0.3)] overflow-hidden"
         >
           <div className="h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500" />
           <div className="p-5">
@@ -285,7 +285,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 opacity-40 dark:opacity-30 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1), transparent 80%)` }} />
         
         {/* Dark Mode ONLY Depth Gradient */}
-        <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_50%_50%,rgba(17,24,39,0)_0%,rgba(3,0,20,1)_100%)] pointer-events-none" />
+        <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_50%_50%,rgba(17,24,39,0)_0%,rgba(3,0,20,0.5)_100%)] pointer-events-none" />
         
         <div className="absolute inset-0 bg-transparent" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZUZpbHRlcikiIG9wYWNpdHk9IjAuMTIiLz48L3N2Zz4=')] opacity-30 mix-blend-overlay" />
@@ -332,7 +332,7 @@ export default function LandingPage() {
             
             {/* 3D Button */}
             <TiltCard>
-              <Link to="/upload" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-white text-base sm:text-lg overflow-hidden bg-dark-900 border border-white/10 transition-all duration-300">
+              <Link to="/upload" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-white text-base sm:text-lg overflow-hidden bg-primary-600 border border-white/10 transition-all duration-300 shadow-glow">
                 {/* Button Glow */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-violet-600 opacity-80 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZUZpbHRlcikiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')] opacity-20 mix-blend-overlay" />

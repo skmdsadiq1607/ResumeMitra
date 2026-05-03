@@ -1,52 +1,30 @@
 # ResumeMitra By Sxdiq ⚡
 
-> **Precision Resume Intelligence** – A production-grade AI platform that optimizes resumes for modern Applicant Tracking Systems (ATS) using Google Gemini AI.
+**ResumeMitra** is a high-performance AI intelligence platform designed to decode the ATS matrix. Using Google Gemini AI, it analyzes, scores, and refactors resumes to ensure absolute dominance in modern applicant tracking systems.
 
 ---
 
-## 💎 Core Intelligence
+### ✨ Key Features
+- **Deterministic ATS Scoring** – 0-100 grading across 7 critical dimensions.
+- **AI Keyword Matching** – Semantic matching of skills and qualifications.
+- **Bullet Refactoring** – Metric-driven rewriting of experience points.
+- **Overleaf Export** – Instant ATS-optimized LaTeX code generation.
+- **Premium Adaptive UI** – Seamless dark/light modes with fluid motion.
 
-- **AI-Powered ATS Grading** – Advanced analysis of resume structure vs job descriptions with a deterministic 0-100 scoring engine.
-- **Deep Keyword Insights** – Intelligent matching and identification of missing technical/soft skills based on real-time JD analysis.
-- **Actionable AI Refactoring** – Context-aware bullet point rewriting and actionable improvement tips to boost interview conversion.
-- **Overleaf Integration** – Automated generation of ATS-optimized LaTeX code ready for direct use in Overleaf.
-- **Premium User Experience** – A sleek, high-performance UI featuring glassmorphism, adaptive themes, and fluid animations.
-
----
-
-## 🎨 Tech Stack
-
-- **Intelligence**: Google Gemini Pro AI
-- **Frontend**: React 18, Vite, Tailwind CSS, Framer Motion
-- **State & Data**: Zustand (Persisted), TanStack Query
+### 🛠️ Technology
+- **AI**: Google Gemini Pro
+- **Frontend**: React, Vite, Tailwind CSS, Framer Motion
 - **Backend**: Node.js, Express, MongoDB
-- **Security**: JWT Authentication, Bcrypt, Helmet
-- **File Handling**: Multer, PDF-Parse
+- **Security**: JWT, Bcrypt, Helmet
 
 ---
 
-## 🚀 Quick Setup
-
-```bash
-# 1. Clone & Install
-git clone https://github.com/skmdsadiq1607/ResumeMitra.git
-cd ResumeMitra && cd Backend && npm install
-cd ../Frontend && npm install
-
-# 2. Configure Environment
-# Copy .env.example to .env in /Backend and add your:
-# - MONGODB_URI
-# - JWT_SECRET
-# - GEMINI_API_KEY
-
-# 3. Launch
-# In /Backend:
-npm run dev
-# In /Frontend:
-npm run dev
-```
+### 🚀 Quick Start
+1. Clone the repository.
+2. Install dependencies in both `Frontend` and `Backend`.
+3. Configure your `.env` in the `Backend` directory.
+4. Run `npm run dev` in both folders.
 
 ---
 
-## 📄 License
-MIT – Crafted for precision by **Sxdiq**. 🚀
+Crafted for precision by **Sxdiq**. 🚀

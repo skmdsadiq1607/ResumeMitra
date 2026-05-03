@@ -16,6 +16,35 @@ import toast from 'react-hot-toast'
 import ScoreCircle from '../components/ui/ScoreCircle'
 import SectionScoreBar from '../components/ui/SectionScoreBar'
 
+const TiltCard = ({ children, className }) => {
+  const ref = React.useRef(null);
+  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setRotate({ x: y * -10, y: x * 10 });
+  };
+
+  const handleMouseLeave = () => setRotate({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{ transformStyle: 'preserve-3d' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }) }
 
 const ACCEPTED_TYPES = {
@@ -96,12 +125,12 @@ const UploadPage = () => {
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
       {/* Header */}
-      <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="text-center mb-10">
-        <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight mb-3">
+      <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="text-center mb-10 px-4">
+        <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-text-primary tracking-tight mb-3">
           Analyze Your Resume
         </h1>
-        <p className="text-slate-400 font-medium mb-4">Get an instant, actionable ATS score to beat the bots.</p>
-        <Link to="/analysis/demo" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-surface-border hover:border-primary-500/50 hover:bg-primary-500/10 text-xs font-bold text-slate-300 hover:text-primary-300 transition-all duration-300">
+        <p className="text-text-muted font-medium mb-4">Get an instant, actionable ATS score to beat the bots.</p>
+        <Link to="/analysis/demo" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-card border border-surface-border hover:border-primary-500/50 hover:bg-primary-500/10 text-xs font-bold text-text-muted hover:text-primary-500 transition-all duration-300">
           <Eye size={14} /> View Demo Preview
         </Link>
       </motion.div>
@@ -109,44 +138,47 @@ const UploadPage = () => {
       {/* Stepper */}
       <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={1} className="flex items-center justify-center mb-10">
         <div className="flex items-center gap-3">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${step >= 1 ? 'bg-primary-500 text-white shadow-glow' : 'bg-dark-700 text-slate-500'}`}>1</div>
-          <div className={`w-12 h-1 rounded-full transition-colors ${step >= 2 ? 'bg-primary-500' : 'bg-dark-700'}`} />
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${step >= 2 ? 'bg-primary-500 text-white shadow-glow' : 'bg-dark-700 text-slate-500'}`}>2</div>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${step >= 1 ? 'bg-primary-500 text-white shadow-glow' : 'bg-surface-card text-text-muted border border-surface-border'}`}>1</div>
+          <div className={`w-12 h-1 rounded-full transition-colors ${step >= 2 ? 'bg-primary-500' : 'bg-surface-card border border-surface-border'}`} />
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${step >= 2 ? 'bg-primary-500 text-white shadow-glow' : 'bg-surface-card text-text-muted border border-surface-border'}`}>2</div>
         </div>
       </motion.div>
 
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div key="s1" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-            className="glass-card p-2 group hover:border-primary-500/30 transition-all duration-500">
-            <div {...getRootProps()} className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-16 text-center cursor-pointer transition-all duration-500 ${isDragActive ? 'border-primary-500 bg-primary-500/10' : 'border-surface-border hover:border-primary-500/40 hover:bg-white/[0.02]'}`}>
-              <input {...getInputProps()} />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-dark-900/50 pointer-events-none" />
-              
-              <div className="relative z-10">
-                <motion.div animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                  className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center bg-dark-800 border border-surface-border shadow-2xl group-hover:bg-dark-700 transition-colors">
-                  <Upload size={36} className={isDragActive ? 'text-primary-400' : 'text-slate-400 group-hover:text-primary-400 transition-colors'} />
-                </motion.div>
-                <h3 className="text-2xl font-display font-bold text-white mb-2">
-                  {isDragActive ? 'Drop it like it\'s hot' : 'Select or drop your resume'}
-                </h3>
-                <p className="text-sm text-slate-400 mb-8">PDF, DOCX, or TXT up to 5MB</p>
-                <button className="btn-primary px-8 py-3.5 text-sm shadow-glow pointer-events-none">
-                  Browse Files
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4">
-              {[{i: Target, t: 'Paste full job description'}, {i: Brain, t: '15+ ATS dimensions checked'}, {i: Shield, t: '100% private & secure'}].map(({i: Icon, t}, j) => (
-                <div key={j} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-dark-800/50 border border-surface-border/50">
-                  <Icon size={16} className="text-primary-400" />
-                  <span className="text-xs font-medium text-slate-300">{t}</span>
+            className="px-4">
+            <TiltCard className="glass-card p-2 group hover:border-primary-500/30 transition-all duration-500">
+              <div {...getRootProps()} className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-12 sm:p-20 text-center cursor-pointer transition-all duration-500 ${isDragActive ? 'border-primary-500 bg-primary-500/10' : 'border-surface-border hover:border-primary-500/40 hover:bg-white/[0.02]'}`}>
+                <input {...getInputProps()} />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-surface-card/50 pointer-events-none" />
+                
+                <div className="relative z-10">
+                  <motion.div animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-6 flex items-center justify-center bg-surface-card border border-surface-border shadow-2xl group-hover:bg-white/5 transition-colors">
+                    <Upload size={32} className={isDragActive ? 'text-primary-400' : 'text-text-muted group-hover:text-primary-400 transition-colors'} />
+                  </motion.div>
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-text-primary mb-2">
+                    {isDragActive ? 'Drop it like it\'s hot' : 'Select or drop your resume'}
+                  </h3>
+                  <p className="text-sm text-text-muted mb-8">PDF, DOCX, or TXT up to 5MB</p>
+                  <button className="btn-primary px-8 py-3.5 text-sm shadow-glow pointer-events-none">
+                    Browse Files
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4">
+                {[{i: Target, t: 'Paste full job description'}, {i: Brain, t: '15+ ATS dimensions checked'}, {i: Shield, t: '100% private & secure'}].map(({i: Icon, t}, j) => (
+                  <div key={j} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-card/50 border border-surface-border/50">
+                    <Icon size={16} className="text-primary-400" />
+                    <span className="text-xs font-medium text-text-primary">{t}</span>
+                  </div>
+                ))}
+              </div>
+            </TiltCard>
           </motion.div>
+        )}
         )}
 
         {step === 2 && !localResult && (
@@ -170,24 +202,28 @@ const UploadPage = () => {
 
               <div className="glass-card p-6 space-y-6">
                 <div>
-                  <label className="text-sm font-bold text-white mb-3 block flex items-center gap-2">
+                  <label className="text-sm font-bold text-text-primary mb-3 block flex items-center gap-2">
                     <Zap size={16} className="text-primary-400" /> Choose Analysis Mode
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <button type="button" onClick={() => setAnalysisMode('local')} className={`p-4 rounded-xl border text-left transition-all ${analysisMode === 'local' ? 'bg-primary-500/10 border-primary-500 shadow-glow' : 'bg-dark-800 border-surface-border hover:border-slate-600'}`}>
-                      <div className="flex items-center gap-2 mb-1"><Zap size={16} className={analysisMode === 'local' ? 'text-primary-400' : 'text-slate-400'} /><span className={`font-bold ${analysisMode === 'local' ? 'text-white' : 'text-slate-300'}`}>Instant (Local)</span></div>
-                      <p className="text-xs text-slate-500 font-medium">Fast. Private. 7 dimensions.</p>
-                    </button>
-                    <button type="button" onClick={() => setAnalysisMode('ai')} className={`p-4 rounded-xl border text-left transition-all ${analysisMode === 'ai' ? 'bg-violet-500/10 border-violet-500 shadow-glow' : 'bg-dark-800 border-surface-border hover:border-slate-600'}`}>
-                      <div className="flex items-center gap-2 mb-1"><Brain size={16} className={analysisMode === 'ai' ? 'text-violet-400' : 'text-slate-400'} /><span className={`font-bold ${analysisMode === 'ai' ? 'text-white' : 'text-slate-300'}`}>AI Deep Analysis</span></div>
-                      <p className="text-xs text-slate-500 font-medium">Gemini AI. 15+ dimensions.</p>
-                    </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <TiltCard className="w-full">
+                      <button type="button" onClick={() => setAnalysisMode('local')} className={`w-full p-4 rounded-xl border text-left transition-all h-full ${analysisMode === 'local' ? 'bg-primary-500/10 border-primary-500 shadow-glow' : 'bg-surface-card border-surface-border hover:border-primary-500/30'}`}>
+                        <div className="flex items-center gap-2 mb-1"><Zap size={16} className={analysisMode === 'local' ? 'text-primary-400' : 'text-text-muted'} /><span className={`font-bold ${analysisMode === 'local' ? 'text-text-primary' : 'text-text-muted'}`}>Instant (Local)</span></div>
+                        <p className="text-xs text-text-muted font-medium">Fast. Private. 7 dimensions.</p>
+                      </button>
+                    </TiltCard>
+                    <TiltCard className="w-full">
+                      <button type="button" onClick={() => setAnalysisMode('ai')} className={`w-full p-4 rounded-xl border text-left transition-all h-full ${analysisMode === 'ai' ? 'bg-violet-500/10 border-violet-500 shadow-glow' : 'bg-surface-card border-surface-border hover:border-violet-500/30'}`}>
+                        <div className="flex items-center gap-2 mb-1"><Brain size={16} className={analysisMode === 'ai' ? 'text-violet-400' : 'text-text-muted'} /><span className={`font-bold ${analysisMode === 'ai' ? 'text-text-primary' : 'text-text-muted'}`}>AI Deep Analysis</span></div>
+                        <p className="text-xs text-text-muted font-medium">Gemini AI. 15+ dimensions.</p>
+                      </button>
+                    </TiltCard>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-300 mb-2 block uppercase tracking-wider">Experience Level</label>
+                    <label className="text-xs font-bold text-text-muted mb-2 block uppercase tracking-wider">Experience Level</label>
                     <select value={experienceLevel} onChange={(e) => setExperienceLevel(e.target.value)} className="input-field text-sm font-medium">
                       <option value="auto">Auto-detect</option>
                       <option value="fresher">Student / Fresher</option>
@@ -195,7 +231,7 @@ const UploadPage = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-300 mb-2 block uppercase tracking-wider">Target Role (Optional)</label>
+                    <label className="text-xs font-bold text-text-muted mb-2 block uppercase tracking-wider">Target Role (Optional)</label>
                     <select value={targetRole} onChange={(e) => setTargetRole(e.target.value)} className="input-field text-sm font-medium">
                       {TARGET_ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
                     </select>
@@ -204,7 +240,7 @@ const UploadPage = () => {
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-bold text-white flex items-center gap-2">
+                    <label className="text-sm font-bold text-text-primary flex items-center gap-2">
                       <Briefcase size={16} className="text-accent-400" /> Job Description
                     </label>
                     <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${jobDescription.length < 50 ? 'bg-rose-500/10 text-rose-400' : 'bg-emerald-500/10 text-emerald-400'}`}>

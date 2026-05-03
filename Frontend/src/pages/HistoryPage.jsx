@@ -36,8 +36,8 @@ const HistoryPage = () => {
     <div className="space-y-6 animate-fade-in relative">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-display font-bold text-white">Analysis History</h1>
-          <p className="text-slate-400 mt-1 text-sm">
+          <h1 className="text-2xl font-display font-bold text-text-primary">Analysis History</h1>
+          <p className="text-text-muted mt-1 text-sm">
             {pagination.total ? `${pagination.total} total analyses` : 'All your past resume analyses'}
             {selected.length > 0 && <span className="text-primary-400 font-bold ml-2">· {selected.length} selected</span>}
           </p>
@@ -64,10 +64,10 @@ const HistoryPage = () => {
           {[...Array(5)].map((_, i) => <ReportCardSkeleton key={i} />)}
         </div>
       ) : reports.length === 0 ? (
-        <div className="glass-card gradient-border p-16 text-center">
-          <Brain size={48} className="text-slate-600 mx-auto mb-4" />
-          <h3 className="text-lg font-display font-semibold text-white mb-2">No analyses yet</h3>
-          <p className="text-sm text-slate-500 mb-6 max-w-md mx-auto">
+        <div className="glass-card border border-surface-border p-16 text-center">
+          <Brain size={48} className="text-text-muted/30 mx-auto mb-4" />
+          <h3 className="text-lg font-display font-semibold text-text-primary mb-2">No analyses yet</h3>
+          <p className="text-sm text-text-muted mb-6 max-w-md mx-auto">
             Upload your resume and paste a job description to get a comprehensive AI-powered ATS analysis.
           </p>
           <Link to="/upload" className="btn-primary text-sm py-3 px-6">
@@ -115,7 +115,7 @@ const HistoryPage = () => {
                     className={`w-8 h-8 rounded-lg text-xs font-semibold transition-all ${
                       page === i + 1
                         ? 'bg-primary-500 text-white shadow-glow-sm'
-                        : 'text-slate-500 hover:text-white hover:bg-white/5'
+                        : 'text-text-muted hover:text-text-primary hover:bg-white/5'
                     }`}
                   >
                     {i + 1}
