@@ -65,7 +65,7 @@ const HistoryPage = () => {
         </div>
       ) : reports.length === 0 ? (
         <div className="glass-card border border-surface-border p-16 text-center">
-          <Brain size={48} className="text-text-muted/30 mx-auto mb-4" />
+          <Brain size={48} className="text-text-muted opacity-30 mx-auto mb-4" />
           <h3 className="text-lg font-display font-semibold text-text-primary mb-2">No analyses yet</h3>
           <p className="text-sm text-text-muted mb-6 max-w-md mx-auto">
             Upload your resume and paste a job description to get a comprehensive AI-powered ATS analysis.

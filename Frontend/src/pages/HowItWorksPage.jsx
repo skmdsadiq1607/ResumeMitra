@@ -77,7 +77,7 @@ export default function HowItWorksPage() {
                   {/* Content Side */}
                   <TiltCard className={`w-full md:w-1/2 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'} text-center group`}>
                     <div className="relative p-6 sm:p-8 rounded-3xl bg-surface-card/50 border border-surface-border hover:border-primary-500/30 transition-all duration-500">
-                      <div className="text-4xl sm:text-7xl font-display font-black text-text-primary/5 mb-2 md:mb-0 absolute md:relative left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -z-10 select-none group-hover:text-primary-500/10 transition-colors">
+                      <div className="text-4xl sm:text-7xl font-display font-black text-text-primary opacity-5 mb-2 md:mb-0 absolute md:relative left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -z-10 select-none group-hover:opacity-10 transition-colors">
                         {step}
                       </div>
                       <h3 className="text-2xl sm:text-3xl font-display font-black text-text-primary mb-4 relative z-10" style={{ transform: 'translateZ(20px)' }}>{title}</h3>

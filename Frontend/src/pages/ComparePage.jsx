@@ -101,16 +101,16 @@ const ComparePage = () => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                   <div className="space-y-1">
-                    <div className="flex justify-between text-[10px] text-text-muted/60">
+                    <div className="flex justify-between text-[10px] text-text-muted opacity-60">
                       <span>Version A</span>
                       <span>{scoreA}%</span>
                     </div>
                     <div className="h-1.5 bg-surface-card border border-surface-border rounded-full overflow-hidden">
-                       <div className="h-full bg-text-muted/20 rounded-full" style={{ width: `${scoreA}%` }} />
+                        <div className="h-full bg-surface-hover rounded-full" style={{ width: `${scoreA}%` }} />
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <div className="flex justify-between text-[10px] text-primary-500/60 font-bold">
+                    <div className="flex justify-between text-[10px] text-primary-500 opacity-60 font-bold">
                       <span>Version B</span>
                       <span>{scoreB}%</span>
                     </div>

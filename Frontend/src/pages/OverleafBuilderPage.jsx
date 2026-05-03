@@ -250,7 +250,7 @@ const OverleafBuilderPage = () => {
                   <ul className="space-y-1.5 list-disc list-inside text-sm text-text-muted">
                     {insights.missing.map((imp, i) => <li key={i} className="leading-relaxed">{imp}</li>)}
                   </ul>
-                  <p className="text-[10px] text-text-muted/50 mt-2 italic">Look for % TODO comments in the LaTeX code to fill these in.</p>
+                  <p className="text-[10px] text-text-muted opacity-50 mt-2 italic">Look for % TODO comments in the LaTeX code to fill these in.</p>
                 </div>
               )}
             </div>

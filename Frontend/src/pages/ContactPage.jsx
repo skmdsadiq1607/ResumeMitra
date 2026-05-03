@@ -103,15 +103,15 @@ export default function ContactPage() {
               <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
               <div>
                 <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Your Name</label>
-                <input type="text" placeholder="John Doe" className="w-full px-4 py-3.5 rounded-xl bg-surface-card border border-surface-border text-text-primary placeholder-text-muted/50 outline-none focus:border-primary-500/50 focus:bg-surface-hover transition-all text-sm" />
+                <input type="text" placeholder="John Doe" className="w-full px-4 py-3.5 rounded-xl bg-surface-card border border-surface-border text-text-primary placeholder-text-muted outline-none focus:border-primary-500/50 focus:bg-surface-hover transition-all text-sm" />
               </div>
               <div>
                 <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Email Address</label>
-                <input type="email" placeholder="john@example.com" className="w-full px-4 py-3.5 rounded-xl bg-surface-card border border-surface-border text-text-primary placeholder-text-muted/50 outline-none focus:border-primary-500/50 focus:bg-surface-hover transition-all text-sm" />
+                <input type="email" placeholder="john@example.com" className="w-full px-4 py-3.5 rounded-xl bg-surface-card border border-surface-border text-text-primary placeholder-text-muted outline-none focus:border-primary-500/50 focus:bg-surface-hover transition-all text-sm" />
               </div>
               <div>
                 <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Message</label>
-                <textarea rows="5" placeholder="How can we help?" className="w-full px-4 py-3.5 rounded-xl bg-surface-card border border-surface-border text-text-primary placeholder-text-muted/50 outline-none focus:border-primary-500/50 focus:bg-surface-hover transition-all resize-none text-sm" />
+                <textarea rows="5" placeholder="How can we help?" className="w-full px-4 py-3.5 rounded-xl bg-surface-card border border-surface-border text-text-primary placeholder-text-muted outline-none focus:border-primary-500/50 focus:bg-surface-hover transition-all resize-none text-sm" />
               </div>
               <button type="submit" className="group relative w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white text-base overflow-hidden transition-all duration-300 hover:shadow-glow-sm mt-4">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500" />

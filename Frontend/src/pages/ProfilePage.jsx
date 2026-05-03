@@ -118,9 +118,9 @@ const ProfilePage = () => {
               <label className="text-xs font-bold text-text-muted mb-2 block uppercase tracking-wider">Email Address</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
-                <input type="email" value={user?.email || ''} disabled className="input-field pl-11 py-3 text-sm font-medium bg-transparent border-surface-border text-text-muted/50 cursor-not-allowed" />
+                <input type="email" value={user?.email || ''} disabled className="input-field pl-11 py-3 text-sm font-medium bg-transparent border-surface-border text-text-muted opacity-50 cursor-not-allowed" />
               </div>
-              <p className="text-xs text-text-muted/60 mt-2 flex items-center gap-1"><Shield size={12} /> Email is tied to your account security and cannot be changed.</p>
+              <p className="text-xs text-text-muted opacity-60 mt-2 flex items-center gap-1"><Shield size={12} /> Email is tied to your account security and cannot be changed.</p>
             </div>
             <div className="pt-4 border-t border-surface-border mt-6">
               <button type="submit" disabled={loading} className="btn-primary py-3.5 px-8 shadow-glow group">
