@@ -201,16 +201,17 @@ const getBestModel = async (genAI) => {
     for (const priority of priorities) {
       const found = modelList.find(m => m.name.includes(priority) && m.supportedGenerationMethods.includes('generateContent'));
       if (found) {
-        console.log(`🤖 Auto-selected model: ${found.name}`);
-        return genAI.getGenerativeModel({ model: found.name });
+        const modelName = found.name.startsWith('models/') ? found.name : `models/${found.name}`;
+        console.log(`🤖 SUCCESS: Auto-selected model: ${modelName}`);
+        return genAI.getGenerativeModel({ model: modelName });
       }
     }
 
-    // Fallback to the most basic one
+    console.warn('⚠️ No 1.5/2.0 models found. Falling back to gemini-pro.');
     return genAI.getGenerativeModel({ model: 'gemini-pro' });
   } catch (error) {
-    console.warn('⚠️ Could not list models, falling back to default:', error.message);
-    return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    console.error('❌ Could not list models:', error.message);
+    return genAI.getGenerativeModel({ model: 'gemini-pro' });
   }
 };
 
