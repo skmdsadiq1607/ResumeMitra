@@ -11,12 +11,14 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
     throw new Error('Gemini API key is not configured.');
   }
 
-  // Priority list of models
+  // Priority list of models (using the names discovered in your logs!)
   const models = [
     (process.env.GEMINI_MODEL || '').trim(),
+    'gemini-2.0-flash',
+    'gemini-2.5-flash',
+    'gemini-2.0-flash-lite',
     'gemini-1.5-flash',
-    'gemini-pro',
-    'gemini-1.0-pro'
+    'gemini-pro'
   ].filter(Boolean);
 
   const prompt = `
