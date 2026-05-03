@@ -136,173 +136,163 @@ const ParticleFieldResponsive = () => {
   return <ParticleField />;
 };
 
-const IsometricMockup = ({ mousePosition }) => {
-  const { x, y } = mousePosition;
-  
-  // Create subtle parallax based on mouse
-  const winWidth = typeof window !== 'undefined' ? window.innerWidth : 1000;
-  const winHeight = typeof window !== 'undefined' ? window.innerHeight : 1000;
-  
-  const mouseX = x / winWidth - 0.5; // -0.5 to 0.5
-  const mouseY = y / winHeight - 0.5;
-
+const AnalysisPreview = () => {
   return (
-    <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[600px] flex items-center justify-center perspective-[2000px] mt-10 sm:mt-20 overflow-hidden">
-      
-      {/* 3D Container */}
-      <motion.div 
-        animate={{ 
-          rotateX: 60 + mouseY * 10, 
-          rotateZ: -35 + mouseX * 15,
-          y: [0, -10, 0] // Pure floating animation
-        }}
-        transition={{ 
-          rotateX: { type: "spring", stiffness: 50, damping: 20 },
-          rotateZ: { type: "spring", stiffness: 50, damping: 20 },
-          y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-        }}
-        style={{ transformStyle: "preserve-3d" }}
-        className="relative w-[320px] h-[420px] sm:w-[450px] sm:h-[600px] lg:w-[600px] lg:h-[800px]"
-      >
-        {/* Layer 1: Base Dashboard */}
-        <div className="absolute inset-0 bg-surface-card/80 backdrop-blur-2xl border border-surface-border rounded-3xl shadow-[0_50px_100px_-20px_rgba(99,102,241,0.3)] overflow-hidden" style={{ transform: 'translateZ(0px)' }}>
-          <div className="h-12 border-b border-surface-border/5 flex items-center px-6 gap-2 bg-surface-hover/50">
-            <div className="flex gap-1.5"><div className="w-3 h-3 rounded-full bg-rose-500/80"/><div className="w-3 h-3 rounded-full bg-amber-500/80"/><div className="w-3 h-3 rounded-full bg-emerald-500/80"/></div>
-          </div>
-          <div className="p-8 grid grid-cols-2 gap-6 h-full bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]">
-             <div className="space-y-4">
-               <div className="w-full h-32 bg-surface-card rounded-2xl border border-surface-border" />
-               <div className="w-full h-48 bg-surface-card rounded-2xl border border-surface-border" />
-             </div>
-             <div className="space-y-4">
-               <div className="w-full h-64 bg-surface-card rounded-2xl border border-surface-border" />
-             </div>
-          </div>
-        </div>
-
-        {/* Layer 2: Floating ATS Score Ring */}
-        <motion.div 
-          animate={{ z: 80, y: mouseY * -20, x: mouseX * -20 }}
-          className="absolute top-20 left-2 sm:left-10 w-28 sm:w-40 lg:w-48 h-28 sm:h-40 lg:h-48 bg-surface-card/90 backdrop-blur-xl border border-primary-500/30 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] p-3 sm:p-6 flex flex-col items-center justify-center group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <svg className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 transform -rotate-90">
-            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-surface-border" />
-            <motion.circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="6" fill="transparent" strokeDasharray="251.2"
-              initial={{ strokeDashoffset: 251.2 }}
-              animate={{ strokeDashoffset: 251.2 - (251.2 * 0.92) }}
-              transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
-              className="text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-          </svg>
-          <div className="absolute flex flex-col items-center">
-            <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white">92</span>
-            <span className="text-[6px] sm:text-[8px] uppercase tracking-widest text-emerald-400 font-bold mt-1">ATS Score</span>
-          </div>
-        </motion.div>
-
-        {/* Layer 3: Floating AI Rewrite Card */}
-        <motion.div 
-          animate={{ z: 120, y: mouseY * -40, x: mouseX * -40 }}
-          className="absolute top-28 sm:top-40 right-[-10px] sm:right-[-40px] w-48 sm:w-60 lg:w-72 bg-surface-card/95 backdrop-blur-2xl border border-violet-500/30 rounded-2xl shadow-[0_40px_80px_-20px_rgba(139,92,246,0.3)] overflow-hidden"
-        >
-          <div className="h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500" />
-          <div className="p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Brain size={14} className="text-violet-400" />
-              <span className="text-xs font-bold text-violet-300 uppercase tracking-wider">AI Rewrite Suggestion</span>
-            </div>
-            <p className="text-xs text-rose-300/70 line-through mb-2">"Responsible for UI components."</p>
-            <p className="text-sm text-emerald-300 font-mono leading-relaxed bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
-              ▸ Engineered 15+ reusable React components, reducing rendering time by 40%.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Layer 4: Floating LaTeX Export Code */}
-        <motion.div 
-          animate={{ z: 160, y: mouseY * -60 + 200, x: mouseX * -60 - 50 }}
-          className="absolute top-56 sm:top-80 left-[-20px] sm:left-[-60px] w-52 sm:w-64 lg:w-80 bg-[#0d1117]/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl shadow-[0_50px_100px_-20px_rgba(6,182,212,0.2)] p-3 sm:p-4 font-mono text-[8px] sm:text-[10px] hidden sm:block"
-        >
-          <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
-            <span className="text-cyan-400 font-bold flex items-center gap-2"><Terminal size={12}/> main.tex</span>
-            <span className="bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded text-[8px] uppercase">Overleaf Ready</span>
-          </div>
-          <div className="text-text-muted space-y-1 opacity-80">
-            <p><span className="text-pink-400">\documentclass</span>[a4paper]&#123;article&#125;</p>
-            <p><span className="text-pink-400">\usepackage</span>&#123;geometry&#125;</p>
-            <br/>
-            <p><span className="text-pink-400">\begin</span>&#123;document&#125;</p>
-            <p className="pl-4"><span className="text-pink-400">\section*</span>&#123;Experience&#125;</p>
-            <p className="pl-4"><span className="text-pink-400">\textbf</span>&#123;Senior Developer&#125;</p>
-            <p><span className="text-pink-400">\end</span>&#123;document&#125;</p>
-          </div>
-        </motion.div>
+    <div className="relative w-full max-w-6xl mx-auto mt-20 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         
-        {/* Layer 5: Glowing Data Lines / Network */}
-        <motion.div className="absolute inset-0 z-[-1] opacity-50" style={{ transform: 'translateZ(-50px)' }}>
-          <svg className="w-full h-full">
-            <motion.path 
-              d="M 100 800 Q 300 400 500 0" 
-              stroke="url(#grad)" 
-              strokeWidth="2" 
-              fill="none" 
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
-            <defs>
-              <linearGradient id="grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#6366f1" stopOpacity="0" />
-                <stop offset="50%" stopColor="#8b5cf6" stopOpacity="1" />
-                <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
+        {/* Main Resume View */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="md:col-span-7 lg:col-span-8 glass-card p-6 md:p-8 min-h-[400px] relative overflow-hidden"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary-500/10 flex items-center justify-center border border-primary-500/20">
+                <FileText size={20} className="text-primary-400" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-text-primary">Resume_Senior_Dev.pdf</h3>
+                <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">Uploaded 2m ago</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">ATS PASSED</span>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="h-4 w-1/3 bg-surface-hover rounded-md shimmer" />
+              <div className="h-3 w-full bg-surface-hover/50 rounded-md" />
+              <div className="h-3 w-5/6 bg-surface-hover/50 rounded-md" />
+            </div>
+            
+            <div className="p-4 rounded-xl bg-primary-500/5 border border-primary-500/10 relative group">
+              <motion.div 
+                animate={{ top: ['0%', '100%', '0%'] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500 to-transparent z-10 opacity-50"
+              />
+              <div className="flex items-start gap-3">
+                <Brain size={18} className="text-primary-400 shrink-0 mt-1" />
+                <div className="space-y-2">
+                  <p className="text-xs font-bold text-primary-300 uppercase tracking-wider">AI Enhancement</p>
+                  <p className="text-sm text-text-secondary leading-relaxed">
+                    Quantified impact: Changed "Led a team of developers" to 
+                    <span className="text-emerald-400 font-medium ml-1">"Directed 12+ engineers to deliver 3 core products, increasing revenue by 22%."</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="h-4 w-1/4 bg-surface-hover rounded-md" />
+              <div className="h-3 w-full bg-surface-hover/50 rounded-md" />
+              <div className="h-3 w-4/6 bg-surface-hover/50 rounded-md" />
+            </div>
+          </div>
+
+          {/* Decorative bits */}
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-primary-500/5 blur-[100px] pointer-events-none" />
         </motion.div>
 
-      </motion.div>
+        {/* Stats Column */}
+        <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6">
+          
+          {/* Score Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="glass-card p-8 flex flex-col items-center justify-center text-center relative group"
+          >
+            <div className="relative w-32 h-32 mb-4">
+              <svg className="w-full h-full transform -rotate-90">
+                <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-surface-border" />
+                <motion.circle 
+                  cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" 
+                  strokeDasharray="364.4"
+                  initial={{ strokeDashoffset: 364.4 }}
+                  whileInView={{ strokeDashoffset: 364.4 - (364.4 * 0.88) }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className="text-primary-500" 
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-4xl font-black text-text-primary">88</span>
+                <span className="text-[10px] font-bold text-text-muted">SCORE</span>
+              </div>
+            </div>
+            <h4 className="text-lg font-bold text-text-primary mb-1">Excellent Alignment</h4>
+            <p className="text-xs text-text-muted">Top 5% of candidates for this role</p>
+          </motion.div>
+
+          {/* Keywords Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="glass-card p-6"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <Target size={16} className="text-accent-400" />
+              <span className="text-xs font-bold uppercase tracking-wider">Critical Keywords</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {['React', 'Node.js', 'System Design', 'CI/CD', 'AWS'].map(tag => (
+                <span key={tag} className="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                  {tag}
+                </span>
+              ))}
+              {['Kubernetes', 'Python'].map(tag => (
+                <span key={tag} className="px-3 py-1 rounded-lg bg-rose-500/10 text-rose-400 text-[10px] font-bold border border-rose-500/20">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Quick Check Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="glass-card p-6 bg-gradient-to-br from-primary-500/10 to-transparent"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <CheckCircle2 size={16} className="text-primary-400" />
+              <span className="text-xs font-bold uppercase tracking-wider">ATS Compliance</span>
+            </div>
+            <ul className="space-y-3">
+              {[
+                'Standard Headings Found',
+                'No Image Overlays',
+                'Font Compatibility OK',
+                'Contact Info Extracted'
+              ].map(check => (
+                <li key={check} className="flex items-center gap-2 text-[11px] font-medium text-text-secondary">
+                  <div className="w-1 h-1 rounded-full bg-primary-500" /> {check}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+        </div>
+      </div>
     </div>
   );
 };
 
-
-const IsometricMockupResponsive = ({ mousePosition }) => {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
-  if (isMobile) {
-    return (
-      <div className="relative w-full px-4 mt-10 flex justify-center">
-        <div className="w-full max-w-sm aspect-[3/4] bg-surface-card/80 backdrop-blur-xl border border-surface-border rounded-3xl shadow-glow p-6 overflow-hidden">
-           <div className="flex items-center gap-2 mb-6">
-              <div className="w-3 h-3 rounded-full bg-rose-500/80"/><div className="w-3 h-3 rounded-full bg-amber-500/80"/><div className="w-3 h-3 rounded-full bg-emerald-500/80"/>
-           </div>
-           <div className="space-y-4">
-              <div className="h-24 bg-surface-card rounded-2xl border border-surface-border p-4 flex flex-col justify-center items-center">
-                <span className="text-3xl font-black text-emerald-400">92%</span>
-                <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">ATS Score</span>
-              </div>
-              <div className="h-32 bg-surface-card rounded-2xl border border-surface-border p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Brain size={14} className="text-violet-400" />
-                  <span className="text-[10px] font-bold text-violet-300 uppercase tracking-wider">AI Rewrite</span>
-                </div>
-                <div className="h-2 w-full bg-surface-border rounded mb-2" />
-                <div className="h-12 w-full bg-emerald-500/5 border border-emerald-500/20 rounded" />
-              </div>
-           </div>
-        </div>
-      </div>
-    );
-  }
-
-  return <IsometricMockup mousePosition={mousePosition} />;
-};
+// ==========================================
+// MAIN PAGE COMPONENT
+// ==========================================
 
 // ==========================================
 // MAIN PAGE COMPONENT
@@ -389,9 +379,9 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
-        {/* ─── ISOMETRIC 3D MOCKUP ─── */}
-        <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1] }} className="w-full relative z-10">
-          <IsometricMockupResponsive mousePosition={mousePosition} />
+        {/* ─── ANALYSIS PREVIEW ─── */}
+        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2 }} className="w-full relative z-10">
+          <AnalysisPreview />
         </motion.div>
       </section>
       {/* ─── TRUST SECTION ─── */}
