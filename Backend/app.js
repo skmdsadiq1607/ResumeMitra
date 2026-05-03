@@ -25,7 +25,17 @@ app.use(helmet());
 
 // ─── CORS ──────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : ['http://localhost:5173', 'http://localhost:5174'],
+  origin: process.env.CLIENT_URL 
+    ? process.env.CLIENT_URL.split(',') 
+    : [
+        'http://localhost:5173', 
+        'http://localhost:5174',
+        'http://127.0.0.1:5173',
+        // Allow any local network IP for mobile testing
+        /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
+        /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
+        /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:\d+$/
+      ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
