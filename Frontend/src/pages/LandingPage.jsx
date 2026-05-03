@@ -247,10 +247,10 @@ const AnalysisPreview = () => {
                  </div>
                  <div className="space-y-2">
                     <div className="h-1.5 w-full bg-surface-border rounded-full overflow-hidden">
-                      <motion.div initial={{ width: 0 }} animate={{ width: isTyping ? '100%' : '0%' }} transition={{ duration: 3 }} className="h-full bg-primary-500/50" />
+                      <motion.div initial={{ width: 0 }} animate={{ width: !isWaiting ? '100%' : '0%' }} transition={{ duration: 3 }} className="h-full bg-primary-500/50" />
                     </div>
                     <div className="h-1.5 w-2/3 bg-surface-border rounded-full overflow-hidden">
-                      <motion.div initial={{ width: 0 }} animate={{ width: isTyping ? '80%' : '0%' }} transition={{ duration: 4 }} className="h-full bg-violet-500/50" />
+                      <motion.div initial={{ width: 0 }} animate={{ width: !isWaiting ? '80%' : '0%' }} transition={{ duration: 4 }} className="h-full bg-violet-500/50" />
                     </div>
                  </div>
                </div>
