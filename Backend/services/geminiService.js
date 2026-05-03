@@ -181,25 +181,52 @@ Reply with ONLY the JSON object. Nothing else.
 /* ─────────────────────── Analysis Function ──────────────────────────────── */
 
 /**
- * Analyze a resume against a job description using Gemini AI
- * @param {string} resumeText - Extracted text from the resume PDF
- * @param {string} jobDescription - Job description text
- * @param {string} targetRole - Optional target role label
- * @returns {Promise<Object>} - Parsed, validated analysis result
+ * Dynamically find the best available model for the current API key
  */
+const getBestModel = async (genAI) => {
+  try {
+    // If user explicitly set a model that they know works, use it
+    if (process.env.GEMINI_MODEL && process.env.GEMINI_MODEL !== 'gemini-pro' && process.env.GEMINI_MODEL !== 'gemini-1.5-flash') {
+      return genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL.trim() });
+    }
+
+    // Otherwise, try to find the best one from the list of available models
+    // This prevents 404 errors if gemini-1.5-flash isn't available under that exact name
+    const models = await genAI.listModels();
+    const modelList = models.models || [];
+    
+    // Priority order for models
+    const priorities = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro'];
+    
+    for (const priority of priorities) {
+      const found = modelList.find(m => m.name.includes(priority) && m.supportedGenerationMethods.includes('generateContent'));
+      if (found) {
+        console.log(`🤖 Auto-selected model: ${found.name}`);
+        return genAI.getGenerativeModel({ model: found.name });
+      }
+    }
+
+    // Fallback to the most basic one
+    return genAI.getGenerativeModel({ model: 'gemini-pro' });
+  } catch (error) {
+    console.warn('⚠️ Could not list models, falling back to default:', error.message);
+    return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  }
+};
+
 const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = '') => {
   if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_gemini_api_key_here') {
     throw new Error('Gemini API key is not configured. Please set GEMINI_API_KEY in your .env file.');
   }
 
-  const model = genAI.getGenerativeModel({
-    model: (process.env.GEMINI_MODEL || 'gemini-pro').trim(),
-    generationConfig: {
-      temperature: 0.25,   // Low for consistency + structured output
-      topP: 0.85,
-      maxOutputTokens: 8192, // Increased for rich output
-    },
-  });
+  const model = await getBestModel(genAI);
+  
+  // Set configuration on the model instance
+  model.generationConfig = {
+    temperature: 0.25,
+    topP: 0.85,
+    maxOutputTokens: 8192,
+  };
 
   const prompt = buildAnalysisPrompt(resumeText, jobDescription, targetRole);
 
@@ -291,14 +318,13 @@ const generateLatexResume = async (resumeText, jobDescription, reportData) => {
     throw new Error('Gemini API key is not configured.');
   }
 
-  const model = genAI.getGenerativeModel({
-    model: (process.env.GEMINI_MODEL || 'gemini-pro').trim(),
-    generationConfig: {
-      temperature: 0.2,
-      topP: 0.85,
-      maxOutputTokens: 8192,
-    },
-  });
+  const model = await getBestModel(genAI);
+  
+  model.generationConfig = {
+    temperature: 0.2,
+    topP: 0.85,
+    maxOutputTokens: 8192,
+  };
 
   const prompt = `
 You are an expert ATS resume writer and LaTeX resume formatter.
