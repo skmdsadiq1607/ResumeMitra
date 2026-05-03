@@ -144,127 +144,238 @@ const ParticleFieldResponsive = () => {
   return <ParticleField />;
 };
 
-const TypewriterText = () => {
-  const [index, setIndex] = useState(0);
+const AnalysisPreview = () => {
+  const [step, setStep] = useState(0);
   const [displayText, setDisplayText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(50);
-
-  const lines = [
-    { label: "Quantified Impact", before: "Led a team of developers", after: "Directed 12+ engineers to deliver 3 core products, increasing revenue by 22%." },
-    { label: "Action Verbs", before: "Responsible for coding", after: "Architected scalable microservices using Node.js and AWS, reducing latency by 40%." },
-    { label: "Skill Integration", before: "Used React for UI", after: "Engineered responsive frontend architectures with React and Tailwind, improving SEO scores by 35%." }
+  const [isTyping, setIsTyping] = useState(true);
+  
+  const scenarios = [
+    {
+      title: "Senior Software Engineer Analysis",
+      file: "Resume_Senior_Dev.pdf",
+      score: 88,
+      keywords: ["React", "Node.js", "System Design", "AWS", "Docker"],
+      missing: ["GraphQL", "Redis"],
+      paragraph: "Analysis complete. Your resume demonstrates strong technical leadership and architectural depth. However, your impact metrics in the 'Cloud Infrastructure' section are slightly vague. I recommend quantifying your cost-reduction achievements. I've rewritten 4 bullet points to emphasize your $200k/year infrastructure savings using automated scaling policies.",
+      compliance: ["Standard Headings OK", "No Table Overlays", "Contact Info Found", "Date Format Match"]
+    },
+    {
+      title: "Product Manager Analysis",
+      file: "PM_Strategy_Lead.pdf",
+      score: 74,
+      keywords: ["Agile", "Roadmapping", "SQL", "Stakeholder Mgmt", "Jira"],
+      missing: ["A/B Testing", "Mixpanel"],
+      paragraph: "Your strategic vision is clear, but the 'Technical Skills' section lacks specific data-driven toolsets. The Applicant Tracking System (ATS) may flag the absence of product analytics frameworks. I've generated a tailored skills matrix for you and suggested a stronger opening summary that highlights your 15% user retention growth at your previous role.",
+      compliance: ["Header Optimization Needed", "Font Size Warning", "Skills Parsing OK", "Links Validated"]
+    }
   ];
+
+  const current = scenarios[step % scenarios.length];
 
   useEffect(() => {
     let timeout;
-    const currentLine = lines[index];
-    const fullText = currentLine.after;
-
-    if (!isDeleting) {
-      if (displayText.length < fullText.length) {
+    if (isTyping) {
+      if (displayText.length < current.paragraph.length) {
         timeout = setTimeout(() => {
-          setDisplayText(fullText.slice(0, displayText.length + 1));
-          setTypingSpeed(30 + Math.random() * 40);
-        }, typingSpeed);
+          setDisplayText(current.paragraph.slice(0, displayText.length + 1));
+        }, 15);
       } else {
+        setIsTyping(false);
         timeout = setTimeout(() => {
-          setIsDeleting(true);
-          setTypingSpeed(20);
-        }, 3000); // Wait 3 seconds after writing
-      }
-    } else {
-      if (displayText.length > 0) {
-        timeout = setTimeout(() => {
-          setDisplayText(fullText.slice(0, displayText.length - 1));
-        }, 10);
-      } else {
-        setIsDeleting(false);
-        setIndex((prev) => (prev + 1) % lines.length);
+          setIsTyping(true);
+          setDisplayText('');
+          setStep(s => s + 1);
+        }, 4000); // Wait 4 seconds before switching scenarios
       }
     }
-
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, index]);
+  }, [displayText, isTyping, current]);
 
-  return (
-    <div className="space-y-1 md:space-y-2">
-      <div className="flex items-center justify-between">
-        <p className="text-[10px] font-bold text-primary-300 uppercase tracking-wider">{lines[index].label}</p>
-        <div className="flex gap-1">
-          <div className="w-1 h-1 rounded-full bg-primary-500 animate-pulse" />
-          <div className="w-1 h-1 rounded-full bg-primary-500 animate-pulse delay-75" />
-          <div className="w-1 h-1 rounded-full bg-primary-500 animate-pulse delay-150" />
-        </div>
-      </div>
-      <p className="text-[12px] md:text-sm text-text-secondary leading-relaxed min-h-[40px]">
-        Changed <span className="opacity-50 line-through">"{lines[index].before}"</span> to 
-        <br className="sm:hidden" />
-        <span className="text-emerald-400 font-medium ml-1">
-          "{displayText}"
-          <span className="inline-block w-1 h-4 bg-emerald-400 ml-0.5 animate-pulse" />
-        </span>
-      </p>
-    </div>
-  );
-};
-
-const AnalysisPreview = () => {
   return (
     <div className="relative w-full max-w-6xl mx-auto mt-20 px-4">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         
-        {/* Main Resume View */}
+        {/* Main Analysis Log */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="md:col-span-7 lg:col-span-8 glass-card p-5 sm:p-8 min-h-[300px] md:min-h-[400px] relative overflow-hidden"
+          className="md:col-span-7 lg:col-span-8 glass-card p-6 sm:p-10 min-h-[450px] relative overflow-hidden flex flex-col"
         >
-          <div className="flex items-center justify-between mb-6 md:mb-8">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary-500/10 flex items-center justify-center border border-primary-500/20">
-                <FileText size={18} className="text-primary-400" />
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary-500/10 flex items-center justify-center border border-primary-500/20 shadow-inner">
+                <FileText size={22} className="text-primary-400" />
               </div>
               <div>
-                <h3 className="text-[13px] md:text-sm font-bold text-text-primary truncate max-w-[150px] sm:max-w-none">Resume_Senior_Dev.pdf</h3>
-                <p className="text-[9px] text-text-muted uppercase tracking-widest font-bold">Uploaded 2m ago</p>
+                <h3 className="text-sm md:text-base font-bold text-text-primary flex items-center gap-2">
+                  {current.file}
+                  <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                </h3>
+                <p className="text-[10px] text-text-muted uppercase tracking-[0.2em] font-black opacity-60">Live AI Decoding...</p>
               </div>
             </div>
             <div className="hidden sm:flex gap-2">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">ATS PASSED</span>
+              <span className="px-4 py-1.5 rounded-xl bg-primary-500/10 text-primary-400 text-[10px] font-black border border-primary-500/20 tracking-wider">AI ENGINE v2.0</span>
             </div>
           </div>
 
-          <div className="space-y-5 md:space-y-6">
-            <div className="space-y-2">
-              <div className="h-3 md:h-4 w-1/3 bg-surface-hover rounded-md shimmer" />
-              <div className="h-2 md:h-3 w-full bg-surface-hover/50 rounded-md" />
-              <div className="h-2 md:h-3 w-5/6 bg-surface-hover/50 rounded-md" />
-            </div>
-            
-            <div className="p-3 md:p-4 rounded-xl bg-primary-500/5 border border-primary-500/10 relative group">
-              <motion.div 
-                animate={{ top: ['0%', '100%', '0%'] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500 to-transparent z-10 opacity-50"
-              />
-              <div className="flex items-start gap-3">
-                <Brain size={16} className="text-primary-400 shrink-0 mt-1" />
-                <TypewriterText />
+          <div className="flex-1 space-y-8">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Terminal size={14} className="text-primary-400" />
+                <span className="text-[11px] font-bold text-primary-400 uppercase tracking-widest">Recruiter Verdict</span>
+              </div>
+              <div className="p-5 rounded-2xl bg-surface-hover/30 border border-surface-border relative group min-h-[140px]">
+                <div className="absolute top-0 left-0 w-1 h-full bg-primary-500/40 rounded-full" />
+                <p className="text-xs md:text-sm text-text-secondary leading-relaxed font-mono">
+                  {displayText}
+                  <span className="inline-block w-1.5 h-4 bg-primary-500 ml-1 animate-pulse" />
+                </p>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <div className="h-3 md:h-4 w-1/4 bg-surface-hover rounded-md" />
-              <div className="h-2 md:h-3 w-full bg-surface-hover/50 rounded-md" />
-              <div className="h-2 md:h-3 w-4/6 bg-surface-hover/50 rounded-md" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+               <div className="space-y-4">
+                 <div className="flex items-center gap-2">
+                   <Brain size={14} className="text-violet-400" />
+                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Logic Extraction</span>
+                 </div>
+                 <div className="space-y-2">
+                    <div className="h-1.5 w-full bg-surface-border rounded-full overflow-hidden">
+                      <motion.div initial={{ width: 0 }} animate={{ width: isTyping ? '100%' : '0%' }} transition={{ duration: 3 }} className="h-full bg-primary-500/50" />
+                    </div>
+                    <div className="h-1.5 w-2/3 bg-surface-border rounded-full overflow-hidden">
+                      <motion.div initial={{ width: 0 }} animate={{ width: isTyping ? '80%' : '0%' }} transition={{ duration: 4 }} className="h-full bg-violet-500/50" />
+                    </div>
+                 </div>
+               </div>
+               <div className="space-y-4">
+                 <div className="flex items-center gap-2">
+                   <Network size={14} className="text-emerald-400" />
+                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Semantic Mapping</span>
+                 </div>
+                 <div className="flex gap-1.5">
+                    {[...Array(6)].map((_, i) => (
+                      <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1, delay: i * 0.2, repeat: Infinity }} className="h-1 flex-1 bg-emerald-500/40 rounded-full" />
+                    ))}
+                 </div>
+               </div>
             </div>
           </div>
 
-          {/* Decorative bits */}
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-primary-500/5 blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary-500/5 blur-[120px] pointer-events-none" />
         </motion.div>
+
+        {/* Stats Column */}
+        <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6">
+          
+          {/* Real-time Score */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="glass-card p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative w-32 h-32 mb-5">
+              <svg className="w-full h-full transform -rotate-90">
+                <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-surface-border" />
+                <motion.circle 
+                  cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" 
+                  strokeDasharray="364.4"
+                  animate={{ strokeDashoffset: 364.4 - (364.4 * (current.score / 100)) }}
+                  transition={{ duration: 1.5, ease: "circOut" }}
+                  className="text-primary-500" 
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <motion.span className="text-4xl font-black text-text-primary">
+                   {current.score}
+                </motion.span>
+                <span className="text-[10px] font-black text-text-muted tracking-widest opacity-60">ATS MATCH</span>
+              </div>
+            </div>
+            <h4 className="text-lg font-bold text-text-primary mb-1">{current.score > 80 ? 'Elite Alignment' : 'Strong Match'}</h4>
+            <div className="flex items-center gap-1.5">
+               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+               <p className="text-xs text-text-muted font-medium">Confidence: 98.4%</p>
+            </div>
+          </motion.div>
+
+          {/* Keywords Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-6"
+          >
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <Target size={16} className="text-accent-400" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Entity Detection</span>
+              </div>
+              <span className="text-[10px] font-bold text-emerald-400">+{current.keywords.length} found</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <AnimatePresence mode="popLayout">
+                {current.keywords.map((tag, i) => (
+                  <motion.span 
+                    key={tag}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20 shadow-sm"
+                  >
+                    {tag}
+                  </motion.span>
+                ))}
+              </AnimatePresence>
+              {current.missing.map((tag, i) => (
+                <motion.span 
+                  key={tag}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.4 }}
+                  className="px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-400 text-[10px] font-bold border border-rose-500/20 line-through"
+                >
+                  {tag}
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Compliance Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-6 bg-gradient-to-br from-primary-500/10 to-transparent"
+          >
+            <div className="flex items-center gap-2 mb-5">
+              <Shield size={16} className="text-primary-400" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Parsing Integrity</span>
+            </div>
+            <div className="space-y-3">
+              {current.compliance.map((check, i) => (
+                <motion.div 
+                  key={check} 
+                  initial={{ x: -10, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 + (i * 0.1) }}
+                  className="flex items-center gap-3 text-[11px] font-medium text-text-secondary"
+                >
+                  <CheckCircle2 size={12} className="text-primary-400" />
+                  {check}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
 
         {/* Stats Column */}
         <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6">
