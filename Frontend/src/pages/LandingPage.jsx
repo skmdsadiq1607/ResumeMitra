@@ -147,7 +147,6 @@ const ParticleFieldResponsive = () => {
 const AnalysisPreview = () => {
   const [step, setStep] = useState(0);
   const [displayText, setDisplayText] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
   
   const scenarios = [
     {
@@ -172,24 +171,29 @@ const AnalysisPreview = () => {
 
   const current = scenarios[step % scenarios.length];
 
+  const [isWaiting, setIsWaiting] = useState(false);
+
   useEffect(() => {
     let timeout;
-    if (isTyping) {
+    
+    if (isWaiting) {
+      timeout = setTimeout(() => {
+        setIsWaiting(false);
+        setDisplayText('');
+        setStep(s => s + 1);
+      }, 4000);
+    } else {
       if (displayText.length < current.paragraph.length) {
         timeout = setTimeout(() => {
           setDisplayText(current.paragraph.slice(0, displayText.length + 1));
         }, 15);
       } else {
-        setIsTyping(false);
-        timeout = setTimeout(() => {
-          setIsTyping(true);
-          setDisplayText('');
-          setStep(s => s + 1);
-        }, 4000); // Wait 4 seconds before switching scenarios
+        setIsWaiting(true);
       }
     }
+
     return () => clearTimeout(timeout);
-  }, [displayText, isTyping, current]);
+  }, [displayText, isWaiting, current]);
 
   return (
     <div className="relative w-full max-w-6xl mx-auto mt-20 px-4">
