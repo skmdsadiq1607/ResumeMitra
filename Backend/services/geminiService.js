@@ -60,15 +60,19 @@ JSON SCHEMA:
       const response = await axios.post(url, {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.2,
-          maxOutputTokens: 2048
+          temperature: 0.1, // Even lower for better JSON
+          maxOutputTokens: 8192 // Increased to prevent truncated responses
         }
       });
 
       const result = response.data;
       if (result.candidates && result.candidates[0].content) {
-        const rawText = result.candidates[0].content.parts[0].text;
-        const cleaned = rawText.replace(/```json\n?/gi, '').replace(/```\n?/gi, '').trim();
+        let rawText = result.candidates[0].content.parts[0].text;
+        
+        // Aggressive JSON Cleaning
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        const cleaned = jsonMatch ? jsonMatch[0] : rawText.replace(/```json\n?/gi, '').replace(/```\n?/gi, '').trim();
+        
         const parsed = JSON.parse(cleaned);
         
         // Map to expected structure for compatibility
@@ -88,6 +92,8 @@ JSON SCHEMA:
       lastError = error.response?.data?.error?.message || error.message;
       console.warn(`⚠️ Model ${model} failed: ${lastError}`);
       if (lastError.includes('API_KEY_INVALID')) break;
+      // Wait 2 seconds before trying the next model to avoid rate limits
+      await new Promise(r => setTimeout(r, 2000));
     }
   }
 
