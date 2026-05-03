@@ -203,7 +203,9 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
     (process.env.GEMINI_MODEL || '').trim(),
     'gemini-1.5-flash',
     'gemini-1.5-pro',
-    'gemini-pro'
+    'gemini-pro',
+    'gemini-1.0-pro',
+    'gemini-1.0-pro-001'
   ].filter(Boolean);
 
   let model;
@@ -335,7 +337,9 @@ const generateLatexResume = async (resumeText, jobDescription, reportData) => {
     (process.env.GEMINI_MODEL || '').trim(),
     'gemini-1.5-flash',
     'gemini-1.5-pro',
-    'gemini-pro'
+    'gemini-pro',
+    'gemini-1.0-pro',
+    'gemini-1.0-pro-001'
   ].filter(Boolean);
 
   let model;
