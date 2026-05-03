@@ -266,6 +266,44 @@ const IsometricMockup = ({ mousePosition }) => {
 };
 
 
+const IsometricMockupResponsive = ({ mousePosition }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="relative w-full px-4 mt-10 flex justify-center">
+        <div className="w-full max-w-sm aspect-[3/4] bg-surface-card/80 backdrop-blur-xl border border-surface-border rounded-3xl shadow-glow p-6 overflow-hidden">
+           <div className="flex items-center gap-2 mb-6">
+              <div className="w-3 h-3 rounded-full bg-rose-500/80"/><div className="w-3 h-3 rounded-full bg-amber-500/80"/><div className="w-3 h-3 rounded-full bg-emerald-500/80"/>
+           </div>
+           <div className="space-y-4">
+              <div className="h-24 bg-surface-card rounded-2xl border border-surface-border p-4 flex flex-col justify-center items-center">
+                <span className="text-3xl font-black text-emerald-400">92%</span>
+                <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">ATS Score</span>
+              </div>
+              <div className="h-32 bg-surface-card rounded-2xl border border-surface-border p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Brain size={14} className="text-violet-400" />
+                  <span className="text-[10px] font-bold text-violet-300 uppercase tracking-wider">AI Rewrite</span>
+                </div>
+                <div className="h-2 w-full bg-surface-border rounded mb-2" />
+                <div className="h-12 w-full bg-emerald-500/5 border border-emerald-500/20 rounded" />
+              </div>
+           </div>
+        </div>
+      </div>
+    );
+  }
+
+  return <IsometricMockup mousePosition={mousePosition} />;
+};
+
 // ==========================================
 // MAIN PAGE COMPONENT
 // ==========================================
@@ -353,7 +391,7 @@ export default function LandingPage() {
 
         {/* ─── ISOMETRIC 3D MOCKUP ─── */}
         <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1] }} className="w-full relative z-10">
-          <IsometricMockup mousePosition={mousePosition} />
+          <IsometricMockupResponsive mousePosition={mousePosition} />
         </motion.div>
       </section>
       {/* ─── TRUST SECTION ─── */}
