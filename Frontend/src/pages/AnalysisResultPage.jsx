@@ -91,7 +91,19 @@ const AnalysisResultPage = () => {
       {/* ═══ Header ═══ */}
       <div className="flex items-center justify-between flex-wrap gap-4 no-print">
         <div>
-          <button onClick={() => navigate(-1)} className="btn-ghost text-sm mb-2 -ml-2"><ArrowLeft size={14} /> Back</button>
+          <button 
+            onClick={() => {
+              if (window.history.length > 2) {
+                navigate(-1);
+              } else {
+                navigate('/dashboard');
+              }
+            }} 
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-text-muted hover:text-text-primary hover:bg-white/5 transition-all mb-4 -ml-2"
+          >
+            <ArrowLeft size={16} /> 
+            <span>Back to Dashboard</span>
+          </button>
           <h1 className="text-xl font-display font-bold text-white truncate">{report.originalFileName}</h1>
           <div className="flex items-center gap-3 mt-1 flex-wrap">
             <span className="text-xs text-slate-500">{formatDate(report.createdAt)}</span>
