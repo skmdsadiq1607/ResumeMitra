@@ -66,7 +66,7 @@ const ComparePage = () => {
           <span className="section-badge mb-3 bg-primary-500/20 text-primary-500 border-primary-500/30">Version B (Newer)</span>
           <h2 className="text-lg font-bold text-text-primary truncate mb-1">{newer.originalFileName}</h2>
           <p className="text-xs text-text-muted mb-4">{new Date(newer.createdAt).toLocaleDateString()}</p>
-          <div className="flex items-center gap-4 bg-white/5 border border-primary-500/10 p-4 rounded-xl">
+          <div className="flex items-center gap-4 bg-surface-card border border-primary-500/10 p-4 rounded-xl">
             <div className={`text-4xl font-bold font-display ${getScoreColor(newer.overallScore)}`}>{newer.overallScore}</div>
             <div className="flex-1">
               <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">Overall Score</p>

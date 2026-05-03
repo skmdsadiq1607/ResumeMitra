@@ -10,7 +10,7 @@ const DashboardNavbar = () => {
   const navigate = useNavigate()
 
   return (
-    <header className="h-16 border-b border-surface-border bg-dark-950/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 border-b border-surface-border bg-surface-card/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-30">
       <div className="flex items-center gap-4">
         {isAuthenticated ? (
           <h2 className="text-sm font-semibold text-text-muted hidden sm:block">
@@ -18,7 +18,7 @@ const DashboardNavbar = () => {
           </h2>
         ) : (
           <Link to="/" className="flex items-center gap-2 text-text-muted hover:text-text-primary transition-all group">
-            <div className="p-1.5 rounded-lg bg-white/5 border border-white/10 group-hover:border-primary-500/50">
+            <div className="p-1.5 rounded-lg bg-surface-card border border-surface-border group-hover:border-primary-500/50">
               <Menu size={16} />
             </div>
             <span className="text-sm font-bold">ResumeMitra</span>
@@ -37,7 +37,7 @@ const DashboardNavbar = () => {
             </button>
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl bg-white/[0.06] border border-white/[0.08] text-text-muted hover:text-text-primary transition-all hover:border-primary-500/40 hover:bg-white/[0.08]"
+              className="p-2 rounded-xl bg-surface-card border border-surface-border text-text-muted hover:text-text-primary transition-all hover:border-primary-500/40 hover:bg-surface-hover"
               aria-label="Toggle theme"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -50,7 +50,7 @@ const DashboardNavbar = () => {
           <>
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl bg-white/[0.06] border border-white/[0.08] text-text-muted hover:text-text-primary transition-all hover:border-primary-500/40 hover:bg-white/[0.08]"
+              className="p-2 rounded-xl bg-surface-card border border-surface-border text-text-muted hover:text-text-primary transition-all hover:border-primary-500/40 hover:bg-surface-hover"
               aria-label="Toggle theme"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}

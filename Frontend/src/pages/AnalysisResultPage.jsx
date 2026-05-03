@@ -74,7 +74,7 @@ const Card = ({ children, className = '', delay = 0, gradient = false }) => (
 const CardHeader = ({ icon: Icon, title, badge, iconColor = 'text-primary-400', badgeClass = 'section-badge' }) => (
   <div className="flex items-center gap-2.5 mb-5">
     {Icon && <Icon size={17} className={iconColor} />}
-    <h2 className="text-base font-semibold text-white flex-1">{title}</h2>
+    <h2 className="text-base font-semibold text-text-primary flex-1">{title}</h2>
     {badge && <span className={badgeClass}>{badge}</span>}
   </div>
 )
@@ -112,7 +112,7 @@ const AnalysisResultPage = () => {
     return (
       <div className="glass-card p-12 text-center">
         <XCircle size={40} className="text-rose-400 mx-auto mb-3" />
-        <p className="text-slate-300 font-medium">Report not found</p>
+        <p className="text-text-muted font-medium">Report not found</p>
         <Link to="/history" className="btn-primary mt-4 text-sm py-2 px-5 inline-flex">← Back to History</Link>
       </div>
     )
@@ -140,9 +140,9 @@ const AnalysisResultPage = () => {
             <ArrowLeft size={16} /> 
             <span>Back to Dashboard</span>
           </button>
-          <h1 className="text-xl font-display font-bold text-white truncate">{report.originalFileName}</h1>
+          <h1 className="text-xl font-display font-bold text-text-primary truncate">{report.originalFileName}</h1>
           <div className="flex items-center gap-3 mt-1 flex-wrap">
-            <span className="text-xs text-slate-500">{formatDate(report.createdAt)}</span>
+            <span className="text-xs text-text-muted opacity-60">{formatDate(report.createdAt)}</span>
             {report.targetRole && <span className="section-badge text-[10px]">{report.targetRole}</span>}
             {id === 'demo' && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border text-amber-400 border-amber-400 bg-amber-500/10">
@@ -182,9 +182,9 @@ const AnalysisResultPage = () => {
             <div>
               <div className="flex items-center gap-2 justify-center lg:justify-start mb-2">
                 <span className="text-2xl">{getScoreEmoji(report.overallScore)}</span>
-                <h2 className="text-xl font-display font-bold text-white">Analysis Summary</h2>
+                <h2 className="text-xl font-display font-bold text-text-primary">Analysis Summary</h2>
               </div>
-              <p className="text-slate-400 text-sm leading-relaxed">{report.summary || 'Analysis complete.'}</p>
+              <p className="text-text-muted text-sm leading-relaxed">{report.summary || 'Analysis complete.'}</p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
@@ -208,7 +208,7 @@ const AnalysisResultPage = () => {
         <Card delay={0.1}>
           <CardHeader icon={MessageSquare} title="Recruiter Verdict" iconColor="text-violet-400" />
           <div className="p-4 rounded-xl bg-violet-500/5 border border-violet-500/15">
-            <p className="text-sm text-slate-300 leading-relaxed italic">"{report.recruiterVerdict}"</p>
+            <p className="text-sm text-text-secondary leading-relaxed italic">"{report.recruiterVerdict}"</p>
           </div>
         </Card>
       )}
@@ -242,7 +242,7 @@ const AnalysisResultPage = () => {
               {(explanation.positiveFactors || []).map((f, i) => (
                 <div key={i} className="flex items-start gap-2.5 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
                   <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-slate-300 leading-relaxed">{f}</p>
+                  <p className="text-sm text-text-secondary leading-relaxed">{f}</p>
                 </div>
               ))}
             </div>
@@ -254,7 +254,7 @@ const AnalysisResultPage = () => {
               {(explanation.negativeFactors || []).map((f, i) => (
                 <div key={i} className="flex items-start gap-2.5 p-3 rounded-lg bg-rose-500/5 border border-rose-500/10">
                   <XCircle size={14} className="text-rose-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-slate-300 leading-relaxed">{f}</p>
+                  <p className="text-sm text-text-secondary leading-relaxed">{f}</p>
                 </div>
               ))}
             </div>
@@ -269,7 +269,7 @@ const AnalysisResultPage = () => {
             <CardHeader icon={Award} title="Resume Strengths" iconColor="text-emerald-400" badge={`${report.strengths.length}`} />
             <div className="space-y-2">
               {report.strengths.map((s, i) => (
-                <div key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
+                <div key={i} className="flex items-start gap-2.5 text-sm text-text-secondary">
                   <Flame size={13} className="text-emerald-400 flex-shrink-0 mt-1" />
                   <span className="leading-relaxed">{s}</span>
                 </div>
@@ -282,7 +282,7 @@ const AnalysisResultPage = () => {
             <CardHeader icon={AlertTriangle} title="Areas Hurting Your Chances" iconColor="text-rose-400" badge={`${report.weaknesses.length}`} />
             <div className="space-y-2">
               {report.weaknesses.map((w, i) => (
-                <div key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
+                <div key={i} className="flex items-start gap-2.5 text-sm text-text-secondary">
                   <XCircle size={13} className="text-rose-400 flex-shrink-0 mt-1" />
                   <span className="leading-relaxed">{w}</span>
                 </div>
@@ -297,7 +297,7 @@ const AnalysisResultPage = () => {
         <Card delay={0.3}>
           <CardHeader icon={CheckCircle2} title="Matched Keywords" iconColor="text-emerald-400" badge={`${report.matchedKeywords?.length || 0}`} />
           <div className="flex flex-wrap gap-2">
-            {(report.matchedKeywords || []).length === 0 ? <p className="text-sm text-slate-500">None found.</p> : report.matchedKeywords.map((kw, i) => (
+            {(report.matchedKeywords || []).length === 0 ? <p className="text-sm text-text-muted">None found.</p> : report.matchedKeywords.map((kw, i) => (
               <span key={i} className="keyword-chip-matched">{kw}</span>
             ))}
           </div>
@@ -327,11 +327,11 @@ const AnalysisResultPage = () => {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded bg-amber-500/20 flex items-center justify-center text-[10px] font-bold text-amber-400">{i + 1}</div>
-                  <p className="text-sm font-semibold text-white">{fix.issue}</p>
+                  <p className="text-sm font-semibold text-text-primary">{fix.issue}</p>
                   {fix.impact && <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getImpactColor(fix.impact)}`}>{fix.impact}</span>}
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">{fix.description}</p>
-                <p className="text-xs text-emerald-400 leading-relaxed">→ {fix.fix}</p>
+                <p className="text-xs text-text-muted leading-relaxed">{fix.description}</p>
+                <p className="text-xs text-emerald-500 leading-relaxed font-bold">→ {fix.fix}</p>
               </motion.div>
             ))}
           </div>
@@ -353,11 +353,11 @@ const AnalysisResultPage = () => {
               >
                 <div className="flex items-center gap-2">
                   <span className="section-badge text-[10px]">{imp.area}</span>
-                  <p className="text-sm font-semibold text-white">{imp.issue}</p>
+                  <p className="text-sm font-semibold text-text-primary">{imp.issue}</p>
                 </div>
-                {imp.why && <p className="text-xs text-slate-400"><strong className="text-slate-300">Why it matters:</strong> {imp.why}</p>}
-                {imp.howToFix && <p className="text-xs text-primary-300"><strong className="text-primary-400">How to fix:</strong> {imp.howToFix}</p>}
-                {imp.example && <p className="text-xs text-emerald-400 font-mono bg-dark-700/50 p-2 rounded-lg">{imp.example}</p>}
+                {imp.why && <p className="text-xs text-text-muted"><strong className="text-text-secondary">Why it matters:</strong> {imp.why}</p>}
+                {imp.howToFix && <p className="text-xs text-primary-500 font-medium"><strong className="text-primary-500">How to fix:</strong> {imp.howToFix}</p>}
+                {imp.example && <p className="text-xs text-emerald-500 font-mono bg-surface-hover p-2 rounded-lg">{imp.example}</p>}
               </motion.div>
             ))}
           </div>
@@ -370,13 +370,13 @@ const AnalysisResultPage = () => {
           <CardHeader icon={Wrench} title="Weak Phrases Detected" iconColor="text-orange-400" badge={`${report.weakPhrases.length} found`} />
           <div className="space-y-3">
             {report.weakPhrases.map((wp, i) => (
-              <div key={i} className="p-4 rounded-xl bg-dark-700/50 border border-surface-border space-y-2">
+              <div key={i} className="p-4 rounded-xl bg-surface-card border border-surface-border space-y-2">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                  <span className="text-sm text-rose-300 line-through flex-1 font-mono">"{wp.original}"</span>
-                  <ArrowRight size={14} className="text-slate-500 hidden sm:block" />
-                  <span className="text-sm text-emerald-300 flex-1 font-mono">"{wp.replacement}"</span>
+                  <span className="text-sm text-rose-400 line-through flex-1 font-mono">"{wp.original}"</span>
+                  <ArrowRight size={14} className="text-text-muted hidden sm:block" />
+                  <span className="text-sm text-emerald-500 flex-1 font-mono">"{wp.replacement}"</span>
                 </div>
-                <p className="text-xs text-slate-500">{wp.problem}</p>
+                <p className="text-xs text-text-muted">{wp.problem}</p>
               </div>
             ))}
           </div>
@@ -394,13 +394,13 @@ const AnalysisResultPage = () => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.55 + i * 0.04 }}
-                className="p-4 rounded-xl bg-dark-700/50 border border-surface-border space-y-2"
+                className="p-4 rounded-xl bg-surface-card border border-surface-border space-y-2"
               >
                 {bp.original && bp.original !== 'NEW' && (
-                  <p className="text-xs text-rose-300/70 line-through">{bp.original}</p>
+                  <p className="text-xs text-rose-400/70 line-through">{bp.original}</p>
                 )}
-                <p className="text-sm text-emerald-300 font-mono leading-relaxed">▸ {bp.improved}</p>
-                {bp.reason && <p className="text-[11px] text-slate-500 mt-1">{bp.reason}</p>}
+                <p className="text-sm text-emerald-500 font-mono leading-relaxed">▸ {bp.improved}</p>
+                {bp.reason && <p className="text-[11px] text-text-muted mt-1">{bp.reason}</p>}
               </motion.div>
             ))}
           </div>
@@ -424,14 +424,14 @@ const AnalysisResultPage = () => {
               return (
                 <div key={key}>
                   <div className="flex items-center gap-2 mb-3">
-                    <Icon size={13} className={`text-${color}-400`} />
-                    <span className={`text-xs font-semibold text-${color}-300 uppercase tracking-wider`}>{label}</span>
-                    <span className="text-[10px] text-slate-600">{items.length}</span>
+                    <Icon size={13} className={`text-${color}-500`} />
+                    <span className={`text-xs font-semibold text-${color}-500 uppercase tracking-wider`}>{label}</span>
+                    <span className="text-[10px] text-text-muted">{items.length}</span>
                   </div>
                   <div className="space-y-2 ml-5">
                     {items.map((s, i) => (
-                      <div key={i} className={`flex items-start gap-2 text-sm text-slate-300 p-2.5 rounded-lg bg-${color}-500/5 border border-${color}-500/10`}>
-                        <div className={`w-1.5 h-1.5 rounded-full bg-${color}-400 flex-shrink-0 mt-1.5`} />
+                      <div key={i} className={`flex items-start gap-2 text-sm text-text-secondary p-2.5 rounded-lg bg-${color}-500/5 border border-${color}-500/10`}>
+                        <div className={`w-1.5 h-1.5 rounded-full bg-${color}-500 flex-shrink-0 mt-1.5`} />
                         <span className="leading-relaxed">{s}</span>
                       </div>
                     ))}
@@ -461,8 +461,8 @@ const AnalysisResultPage = () => {
             <div className="space-y-2">
               {report.learningRoadmap.map((item, i) => (
                 <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-accent-500/5 border border-accent-500/10">
-                  <div className="w-6 h-6 rounded-full bg-accent-500/20 flex items-center justify-center text-[10px] font-bold text-accent-300">{i + 1}</div>
-                  <span className="text-sm text-slate-300">{item}</span>
+                  <div className="w-6 h-6 rounded-full bg-accent-500/20 flex items-center justify-center text-[10px] font-bold text-accent-500">{i + 1}</div>
+                  <span className="text-sm text-text-secondary">{item}</span>
                 </div>
               ))}
             </div>
@@ -486,8 +486,8 @@ const AnalysisResultPage = () => {
           </div>
           <div className="space-y-2">
             {(report.interviewReadiness.clues || []).map((c, i) => (
-              <div key={i} className="flex items-start gap-2 text-sm text-slate-300">
-                <Eye size={13} className="text-violet-400 flex-shrink-0 mt-1" />
+              <div key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                <Eye size={13} className="text-violet-500 flex-shrink-0 mt-1" />
                 <span className="leading-relaxed">{c}</span>
               </div>
             ))}
@@ -502,8 +502,8 @@ const AnalysisResultPage = () => {
           <div className="space-y-2">
             {report.nextSteps.map((step, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-[10px] font-bold text-emerald-400">{i + 1}</div>
-                <p className="text-sm text-slate-300 leading-relaxed">{step}</p>
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-[10px] font-bold text-emerald-500">{i + 1}</div>
+                <p className="text-sm text-text-secondary leading-relaxed">{step}</p>
               </div>
             ))}
           </div>
@@ -519,9 +519,9 @@ const AnalysisResultPage = () => {
               if (!val) return null
               const labels = { skills: 'Skills', experience: 'Experience', projects: 'Projects', education: 'Education', summary: 'Summary/Objective' }
               return (
-                <div key={key} className="p-3 rounded-xl bg-dark-700/50 border border-surface-border">
-                  <p className="text-xs font-semibold text-primary-300 mb-1 uppercase tracking-wider">{labels[key] || key}</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">{val}</p>
+                <div key={key} className="p-3 rounded-xl bg-surface-card border border-surface-border">
+                  <p className="text-xs font-semibold text-primary-500 mb-1 uppercase tracking-wider">{labels[key] || key}</p>
+                  <p className="text-xs text-text-muted leading-relaxed">{val}</p>
                 </div>
               )
             })}
@@ -532,7 +532,7 @@ const AnalysisResultPage = () => {
       {/* ═══ JD Preview ═══ */}
       <Card delay={0.8}>
         <CardHeader icon={FileText} title="Job Description Used" />
-        <p className="text-sm text-slate-400 leading-relaxed whitespace-pre-wrap line-clamp-[8]">{report.jobDescription}</p>
+        <p className="text-sm text-text-muted leading-relaxed whitespace-pre-wrap line-clamp-[8]">{report.jobDescription}</p>
       </Card>
     </div>
   )

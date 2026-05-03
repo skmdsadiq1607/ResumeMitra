@@ -227,7 +227,7 @@ const IsometricMockup = ({ mousePosition }) => {
             <span className="text-cyan-400 font-bold flex items-center gap-2"><Terminal size={12}/> main.tex</span>
             <span className="bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded text-[8px] uppercase">Overleaf Ready</span>
           </div>
-          <div className="text-slate-300 space-y-1 opacity-80">
+          <div className="text-text-muted space-y-1 opacity-80">
             <p><span className="text-pink-400">\documentclass</span>[a4paper]&#123;article&#125;</p>
             <p><span className="text-pink-400">\usepackage</span>&#123;geometry&#125;</p>
             <br/>
@@ -323,7 +323,7 @@ export default function LandingPage() {
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-5 sm:mt-8 text-base sm:text-lg lg:text-xl text-[#AAB2D5] max-w-4xl mx-auto font-light leading-relaxed px-2">
+            className="mt-5 sm:mt-8 text-base sm:text-lg lg:text-xl text-text-muted max-w-4xl mx-auto font-light leading-relaxed px-2">
             Go beyond basic resume checks with deep ATS analysis, job-level matching, and AI-driven improvements that actually align your profile with what recruiters look for.
           </motion.p>
 
@@ -332,7 +332,7 @@ export default function LandingPage() {
             
             {/* 3D Button */}
             <TiltCard>
-              <Link to="/upload" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-white text-base sm:text-lg overflow-hidden bg-primary-600 border border-white/10 transition-all duration-300 shadow-glow">
+              <Link to="/upload" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-white text-base sm:text-lg overflow-hidden bg-primary-600 border border-surface-border transition-all duration-300 shadow-glow">
                 {/* Button Glow */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-violet-600 opacity-80 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZUZpbHRlcikiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')] opacity-20 mix-blend-overlay" />
@@ -344,7 +344,7 @@ export default function LandingPage() {
             </TiltCard>
 
             <TiltCard>
-              <Link to="/analysis/demo" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-bold text-slate-300 text-base sm:text-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all duration-300 backdrop-blur-xl">
+              <Link to="/analysis/demo" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-bold text-text-muted text-base sm:text-lg bg-surface-card border border-surface-border hover:bg-surface-hover hover:text-text-primary transition-all duration-300 backdrop-blur-xl">
                 View Interactive Demo <Eye size={20} className="group-hover:text-primary-400 transition-colors" />
               </Link>
             </TiltCard>

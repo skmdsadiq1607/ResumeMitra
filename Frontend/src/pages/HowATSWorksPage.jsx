@@ -90,7 +90,7 @@ const HowATSWorksPage = () => {
           className="glass-card gradient-border p-8 text-center mb-12">
           <div className="text-6xl font-display font-black gradient-text mb-2">100</div>
           <p className="text-text-primary font-medium">Total Points Across 7 Scoring Dimensions</p>
-          <p className="text-sm text-slate-500 mt-2">Final Score = A + B + C + D + E + F + G</p>
+          <p className="text-sm text-text-muted mt-2">Final Score = A + B + C + D + E + F + G</p>
         </motion.div>
 
         {/* Dimensions */}
@@ -114,12 +114,12 @@ const HowATSWorksPage = () => {
 
         {/* Grade Scale */}
         <div className="mb-16">
-          <h2 className="text-2xl font-display font-bold text-white text-center mb-8">Score Grades</h2>
+          <h2 className="text-2xl font-display font-bold text-text-primary text-center mb-8">Score Grades</h2>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 max-w-4xl mx-auto">
             {grades.map(({ range, label, color, bg }) => (
               <div key={range} className={`p-4 rounded-xl border text-center ${bg}`}>
                 <div className={`text-xl font-bold font-display ${color}`}>{range}</div>
-                <div className="text-xs text-slate-300 mt-1 font-medium">{label}</div>
+                <div className="text-xs text-text-muted mt-1 font-medium">{label}</div>
               </div>
             ))}
           </div>
@@ -127,7 +127,7 @@ const HowATSWorksPage = () => {
 
         {/* FAQ */}
         <div className="max-w-3xl mx-auto mb-16">
-          <h2 className="text-2xl font-display font-bold text-white text-center mb-8">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-display font-bold text-text-primary text-center mb-8">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map(({ q, a }, i) => (
               <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.3}
@@ -142,13 +142,13 @@ const HowATSWorksPage = () => {
         {/* Ethical Warning */}
         <div className="max-w-3xl mx-auto mb-12">
           <div className="glass-card p-6 border-l-4 border-l-amber-500">
-            <h3 className="text-base font-bold text-amber-300 mb-3 flex items-center gap-2"><Shield size={16} /> Ethical Guidelines</h3>
-            <ul className="space-y-2 text-sm text-slate-400">
-              <li className="flex items-start gap-2"><AlertTriangle size={13} className="text-amber-400 flex-shrink-0 mt-0.5" /> Do not keyword-stuff your resume.</li>
+            <h3 className="text-base font-bold text-amber-500 mb-3 flex items-center gap-2"><Shield size={16} /> Ethical Guidelines</h3>
+            <ul className="space-y-2 text-sm text-text-muted">
+              <li className="flex items-start gap-2"><AlertTriangle size={13} className="text-amber-500 flex-shrink-0 mt-0.5" /> Do not keyword-stuff your resume.</li>
               <li className="flex items-start gap-2"><AlertTriangle size={13} className="text-amber-400 flex-shrink-0 mt-0.5" /> Do not fake skills or experience.</li>
               <li className="flex items-start gap-2"><AlertTriangle size={13} className="text-amber-400 flex-shrink-0 mt-0.5" /> Do not copy the job description blindly into your resume.</li>
-              <li className="flex items-start gap-2"><CheckCircle2 size={13} className="text-emerald-400 flex-shrink-0 mt-0.5" /> Keep your resume truthful and authentic.</li>
-              <li className="flex items-start gap-2"><CheckCircle2 size={13} className="text-emerald-400 flex-shrink-0 mt-0.5" /> ATS optimization should improve clarity, not manipulate hiring.</li>
+              <li className="flex items-start gap-2"><CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0 mt-0.5" /> Keep your resume truthful and authentic.</li>
+              <li className="flex items-start gap-2"><CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0 mt-0.5" /> ATS optimization should improve clarity, not manipulate hiring.</li>
             </ul>
           </div>
         </div>

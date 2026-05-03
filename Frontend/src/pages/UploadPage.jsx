@@ -149,13 +149,13 @@ const UploadPage = () => {
           <motion.div key="s1" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
             className="px-4">
             <TiltCard className="glass-card p-2 group hover:border-primary-500/30 transition-all duration-500">
-              <div {...getRootProps()} className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-12 sm:p-20 text-center cursor-pointer transition-all duration-500 ${isDragActive ? 'border-primary-500 bg-primary-500/10' : 'border-surface-border hover:border-primary-500/40 hover:bg-white/[0.02]'}`}>
+              <div {...getRootProps()} className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-12 sm:p-20 text-center cursor-pointer transition-all duration-500 ${isDragActive ? 'border-primary-500 bg-primary-500/10' : 'border-surface-border hover:border-primary-500/40 hover:bg-surface-hover'}`}>
                 <input {...getInputProps()} />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-surface-card/50 pointer-events-none" />
                 
                 <div className="relative z-10">
                   <motion.div animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-6 flex items-center justify-center bg-surface-card border border-surface-border shadow-2xl group-hover:bg-white/5 transition-colors">
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-6 flex items-center justify-center bg-surface-card border border-surface-border shadow-2xl group-hover:bg-surface-hover transition-colors">
                     <Upload size={32} className={isDragActive ? 'text-primary-400' : 'text-text-muted group-hover:text-primary-400 transition-colors'} />
                   </motion.div>
                   <h3 className="text-xl sm:text-2xl font-display font-bold text-text-primary mb-2">
@@ -268,7 +268,7 @@ const UploadPage = () => {
         {step === 2 && localResult && (
           <motion.div key="s3" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
+              <h2 className="text-2xl font-display font-bold text-text-primary flex items-center gap-2">
                 <CheckCircle2 size={24} className="text-emerald-400" /> Analysis Complete
               </h2>
               <button onClick={() => { setStep(1); setLocalResult(null); setFile(null); setJobDescription(''); }} className="btn-secondary text-xs px-4 py-2">
@@ -289,7 +289,7 @@ const UploadPage = () => {
               </div>
               <div className="md:col-span-2 space-y-6">
                 <div className="glass-card p-6">
-                  <h3 className="text-sm font-bold text-white mb-5 uppercase tracking-wider flex items-center gap-2"><BarChart3 size={16} className="text-primary-400" /> Dimension Breakdown</h3>
+                  <h3 className="text-sm font-bold text-text-primary mb-5 uppercase tracking-wider flex items-center gap-2"><BarChart3 size={16} className="text-primary-400" /> Dimension Breakdown</h3>
                   <div className="space-y-5">
                     {Object.entries(localResult.dimensions).map(([key, dim]) => (
                       <SectionScoreBar key={key} label={dim.label} score={dim.score} max={dim.max} color={dim.color} />
@@ -298,21 +298,21 @@ const UploadPage = () => {
                 </div>
 
                 <div className="glass-card p-6">
-                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2"><Eye size={16} className="text-accent-400" /> Recruiter Verdict</h3>
+                  <h3 className="text-sm font-bold text-text-primary mb-4 uppercase tracking-wider flex items-center gap-2"><Eye size={16} className="text-accent-400" /> Recruiter Verdict</h3>
                   <div className={`p-4 rounded-xl border ${localResult.score >= 75 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-100' : localResult.score >= 50 ? 'bg-amber-500/10 border-amber-500/20 text-amber-100' : 'bg-rose-500/10 border-rose-500/20 text-rose-100'}`}>
                     <p className="text-sm font-medium leading-relaxed">"{localResult.recruiterVerdict}"</p>
                   </div>
                 </div>
 
                 <div className="glass-card p-6">
-                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2"><Target size={16} className="text-violet-400" /> Priority Actions</h3>
+                  <h3 className="text-sm font-bold text-text-primary mb-4 uppercase tracking-wider flex items-center gap-2"><Target size={16} className="text-violet-400" /> Priority Actions</h3>
                   <div className="space-y-3">
                     {localResult.suggestions.slice(0, 5).map((sugg, i) => (
-                      <div key={i} className={`flex gap-3 items-start p-3 rounded-xl border ${sugg.priority === 'critical' ? 'bg-rose-500/5 border-rose-500/20' : sugg.priority === 'high' ? 'bg-amber-500/5 border-amber-500/20' : 'bg-dark-800 border-surface-border'}`}>
-                        <div className="w-6 h-6 rounded-lg bg-dark-700 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <CornerDownRight size={12} className={sugg.priority === 'critical' ? 'text-rose-400' : 'text-slate-400'} />
+                      <div key={i} className={`flex gap-3 items-start p-3 rounded-xl border ${sugg.priority === 'critical' ? 'bg-rose-500/5 border-rose-500/20' : sugg.priority === 'high' ? 'bg-amber-500/5 border-amber-500/20' : 'bg-surface-card border-surface-border'}`}>
+                        <div className="w-6 h-6 rounded-lg bg-surface-hover flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <CornerDownRight size={12} className={sugg.priority === 'critical' ? 'text-rose-400' : 'text-text-muted'} />
                         </div>
-                        <p className="text-sm text-slate-300 font-medium">{sugg.text}</p>
+                        <p className="text-sm text-text-muted font-medium">{sugg.text}</p>
                       </div>
                     ))}
                   </div>

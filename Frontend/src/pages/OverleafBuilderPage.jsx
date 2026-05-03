@@ -189,7 +189,7 @@ const OverleafBuilderPage = () => {
               <textarea 
                 value={latexCode}
                 onChange={(e) => setLatexCode(e.target.value)}
-                className="flex-1 w-full bg-dark-950 text-emerald-300 font-mono text-sm p-6 resize-none focus:outline-none focus:ring-0 selection:bg-primary-500/30"
+                className="flex-1 w-full bg-[#0d1117] text-emerald-400 font-mono text-sm p-6 resize-none focus:outline-none focus:ring-0 selection:bg-primary-500/30"
                 spellCheck="false"
               />
             </div>
@@ -237,7 +237,7 @@ const OverleafBuilderPage = () => {
               
               {insights.improvements?.length > 0 && (
                 <div className="mb-4">
-                  <p className="text-xs font-bold text-primary-300 uppercase tracking-wider mb-2">Improvements Made</p>
+                  <p className="text-xs font-bold text-primary-500 uppercase tracking-wider mb-2">Improvements Made</p>
                   <ul className="space-y-1.5 list-disc list-inside text-sm text-text-muted">
                     {insights.improvements.map((imp, i) => <li key={i} className="leading-relaxed">{imp}</li>)}
                   </ul>
@@ -246,7 +246,7 @@ const OverleafBuilderPage = () => {
 
               {insights.missing?.length > 0 && (
                 <div className="mb-4">
-                  <p className="text-xs font-bold text-rose-300 uppercase tracking-wider mb-2">Missing Data</p>
+                  <p className="text-xs font-bold text-rose-500 uppercase tracking-wider mb-2">Missing Data</p>
                   <ul className="space-y-1.5 list-disc list-inside text-sm text-text-muted">
                     {insights.missing.map((imp, i) => <li key={i} className="leading-relaxed">{imp}</li>)}
                   </ul>

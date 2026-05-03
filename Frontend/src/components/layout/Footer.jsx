@@ -28,7 +28,7 @@ const Footer = () => (
               { icon: Shield, text: 'Private' },
               { icon: Trash2, text: 'Delete anytime' },
             ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-1.5 text-[10px] text-slate-500 bg-white/[0.02] px-2.5 py-1.5 rounded-full border border-surface-border/50">
+              <div key={text} className="flex items-center gap-1.5 text-[10px] text-text-muted bg-surface-card px-2.5 py-1.5 rounded-full border border-surface-border/50">
                 <Icon size={10} className="text-emerald-500" /> {text}
               </div>
             ))}
@@ -48,8 +48,8 @@ const Footer = () => (
 
         {/* Trust */}
         <div>
-          <h3 className="text-sm font-semibold text-slate-200 mb-5">Privacy & Trust</h3>
-          <ul className="space-y-3 text-sm text-slate-500">
+          <h3 className="text-sm font-semibold text-text-primary mb-5">Privacy & Trust</h3>
+          <ul className="space-y-3 text-sm text-text-muted">
             <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Your resume is private</li>
             <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Never shared with anyone</li>
             <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Delete data anytime</li>
@@ -63,7 +63,7 @@ const Footer = () => (
           Built with <Heart size={14} className="text-rose-500 fill-rose-500" /> By Sxdiq
         </p>
         
-        <div className="flex flex-wrap justify-center items-center gap-4 text-xs text-slate-500">
+        <div className="flex flex-wrap justify-center items-center gap-4 text-xs text-text-muted">
           <a href="https://github.com/skmdsadiq1607" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">GitHub</a>
           <span>&bull;</span>
           <a href="https://www.linkedin.com/in/shaik-sadiq-b1650a377/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">LinkedIn</a>
@@ -75,7 +75,7 @@ const Footer = () => (
           <a href="mailto:skmdsadiq1607@gmail.com" className="hover:text-emerald-400 transition-colors">skmdsadiq1607@gmail.com</a>
         </div>
         
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full text-xs text-slate-600 mt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full text-xs text-text-muted opacity-60 mt-2">
           <p>© 2026 ResumeMitra. All rights reserved.</p>
           <p>Powered by Google Gemini AI · 100% Free</p>
         </div>

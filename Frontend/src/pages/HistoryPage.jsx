@@ -115,7 +115,7 @@ const HistoryPage = () => {
                     className={`w-8 h-8 rounded-lg text-xs font-semibold transition-all ${
                       page === i + 1
                         ? 'bg-primary-500 text-white shadow-glow-sm'
-                        : 'text-text-muted hover:text-text-primary hover:bg-white/5'
+                        : 'text-text-muted hover:text-text-primary hover:bg-surface-hover'
                     }`}
                   >
                     {i + 1}

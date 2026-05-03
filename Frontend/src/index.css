@@ -198,28 +198,28 @@ body {
 
   .btn-secondary {
     @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold;
-    @apply bg-surface-card border border-surface-border text-slate-200;
+    @apply bg-surface-card border border-surface-border text-text-primary;
     transition: all 0.2s ease;
   }
 
   .btn-secondary:hover {
-    @apply border-primary-500/40 text-white -translate-y-0.5;
+    @apply border-primary-500/40 text-primary-500 -translate-y-0.5;
     box-shadow: 0 4px 15px rgba(99,102,241,0.1);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-slate-400;
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-text-muted;
     transition: all 0.2s ease;
   }
 
   .btn-ghost:hover {
-    @apply text-white bg-white/5;
+    @apply text-text-primary bg-surface-hover;
   }
 
   /* Input */
   .input-field {
     @apply w-full px-4 py-3 rounded-xl bg-surface-card border border-surface-border;
-    @apply text-slate-100 placeholder-slate-500 outline-none;
+    @apply text-text-primary placeholder-text-muted/50 outline-none;
     transition: all 0.2s ease;
   }
 
@@ -345,8 +345,8 @@ select.input-field {
 }
 
 select.input-field option {
-  background-color: #14141f;
-  color: #f1f5f9;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
   padding: 8px;
 }
 

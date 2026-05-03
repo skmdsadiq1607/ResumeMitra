@@ -47,12 +47,12 @@ const StatCard = ({ label, value, sub, icon: Icon, gradient, delay }) => (
     <div className="absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg -z-10"
       style={{ background: `linear-gradient(135deg, var(--tw-gradient-from) 20%, transparent)` }} />
     <div className={`glass-card p-6 h-full border border-surface-border hover:border-primary-500/30 transition-all duration-500 relative overflow-hidden bg-gradient-to-br ${gradient} bg-opacity-5`}>
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
       <div className="flex items-center justify-between mb-4">
         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500`}>
           <Icon size={20} className="text-white" />
         </div>
-        <span className="px-2.5 py-1 rounded-full bg-white/5 border border-surface-border text-[10px] text-text-muted uppercase tracking-wider font-bold">{sub}</span>
+        <span className="px-2.5 py-1 rounded-full bg-surface-card border border-surface-border text-[10px] text-text-muted uppercase tracking-wider font-bold">{sub}</span>
       </div>
       <div className="text-4xl font-display font-black text-text-primary mb-1 tracking-tight">{value}</div>
       <div className="text-sm font-medium text-text-muted">{label}</div>
@@ -74,7 +74,7 @@ const ActionCard = ({ to, icon: Icon, title, desc, gradient, delay }) => (
           <p className="text-base font-bold text-text-primary group-hover:text-primary-500 transition-colors">{title}</p>
           <p className="text-xs text-text-muted">{desc}</p>
         </div>
-        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
+        <div className="w-8 h-8 rounded-full bg-surface-hover flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
           <ChevronRight size={16} className="text-text-muted group-hover:text-primary-500 transition-colors" />
         </div>
       </div>

@@ -32,18 +32,18 @@ const ReportCard = ({ report, index = 0, isSelected = false, onToggleSelect }) =
               <FileText size={17} className="text-primary-400" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-slate-200 truncate group-hover:text-white transition-colors">
+              <p className="text-sm font-semibold text-text-primary truncate group-hover:text-primary-500 transition-colors">
                 {report.originalFileName || 'Resume'}
               </p>
               <div className="flex items-center gap-2 mt-1 flex-wrap">
-                {report.jobTitle && <span className="text-xs text-slate-500 truncate">{report.jobTitle}</span>}
+                {report.jobTitle && <span className="text-xs text-text-muted opacity-70 truncate">{report.jobTitle}</span>}
                 {report.targetRole && (
                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold text-primary-300 bg-primary-500/10 border border-primary-500/15">
                     <Target size={8} /> {report.targetRole}
                   </span>
                 )}
               </div>
-              <p className="text-[10px] text-slate-600 mt-1">{formatDate(report.createdAt)}</p>
+              <p className="text-[10px] text-text-muted mt-1 opacity-60">{formatDate(report.createdAt)}</p>
             </div>
           </Link>
           
@@ -51,13 +51,13 @@ const ReportCard = ({ report, index = 0, isSelected = false, onToggleSelect }) =
           <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
             <span className="text-lg">{getScoreEmoji(score)}</span>
             <div className={`text-xl font-bold font-display ${getScoreColor(score)}`}>{score}</div>
-            <div className="text-[10px] text-slate-600">{getScoreLabel(score)}</div>
+            <div className="text-[10px] text-text-muted opacity-70">{getScoreLabel(score)}</div>
           </div>
         </div>
 
         {/* Score bar + stats */}
         <div className="mt-4">
-          <div className="h-1.5 bg-dark-600 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-surface-hover rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-700 ${
                 score >= 80 ? 'bg-emerald-500' : score >= 60 ? 'bg-amber-500' : score >= 40 ? 'bg-orange-500' : 'bg-rose-500'
@@ -69,7 +69,7 @@ const ReportCard = ({ report, index = 0, isSelected = false, onToggleSelect }) =
             <div className="flex items-center gap-3 text-[10px]">
               <span className="text-emerald-400">{matched} matched</span>
               <span className="text-rose-400">{missing} missing</span>
-              {total > 0 && <span className="text-slate-600">{Math.round((matched / total) * 100)}% match</span>}
+              {total > 0 && <span className="text-text-muted opacity-60">{Math.round((matched / total) * 100)}% match</span>}
             </div>
           </div>
         </div>
