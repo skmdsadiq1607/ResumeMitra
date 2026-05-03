@@ -20,15 +20,19 @@
 }
 
 .light-mode {
-  /* Light Theme */
-  --color-bg: #f8fafc;
-  --color-bg-secondary: #f1f5f9;
-  --color-surface-card: #ffffff;
-  --color-surface-border: rgba(0, 0, 0, 0.08);
-  --color-surface-hover: rgba(0, 0, 0, 0.02);
-  --color-text-primary: #0f172a;
+  /* Premium Light Theme Refinement */
+  --color-bg: #fdfdfd;
+  --color-bg-secondary: #f4f7f9;
+  --color-surface-card: rgba(255, 255, 255, 0.85);
+  --color-surface-border: rgba(0, 0, 0, 0.06);
+  --color-surface-hover: rgba(0, 0, 0, 0.03);
+  --color-text-primary: #1e293b;
   --color-text-secondary: #475569;
   --color-text-muted: #64748b;
+}
+
+.dark {
+  /* Dark Theme Variables already defined in :root */
 }
 
 body {

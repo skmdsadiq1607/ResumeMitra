@@ -63,7 +63,7 @@ const Navbar = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`mx-auto max-w-7xl transition-all duration-500 rounded-2xl pointer-events-auto ${
           scrolled
-            ? 'bg-dark-950/85 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+            ? 'bg-dark-950/85 backdrop-blur-xl border border-surface-border shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
             : 'bg-transparent border border-transparent'
         }`}
       >
@@ -146,7 +146,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[76px] left-4 right-4 bg-[#080A1A]/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.5)] xl:hidden pointer-events-auto"
+            className="absolute top-[76px] left-4 right-4 bg-dark-950/95 backdrop-blur-2xl border border-surface-border rounded-2xl overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.2)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.5)] xl:hidden pointer-events-auto"
           >
             <div className="p-3 flex flex-col gap-0.5">
               {navItems.map((item) => (

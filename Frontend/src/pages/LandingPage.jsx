@@ -354,7 +354,7 @@ export default function LandingPage() {
         </motion.div>
       </section>
       {/* ─── TRUST SECTION ─── */}
-      <section className="py-12 sm:py-24 relative z-10 border-y border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.01)]">
+      <section className="py-12 sm:py-24 relative z-10 border-y border-surface-border bg-surface-hover/30">
          <div className="text-center max-w-4xl mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-text-primary mb-4">
                Built for Accuracy, Privacy, and Ethical Resume Improvement
@@ -374,7 +374,7 @@ export default function LandingPage() {
         <div className="page-container">
           <div className="max-w-4xl mx-auto">
             {/* CTA Card */}
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-8 sm:p-16 border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.03)] text-center flex flex-col items-center">
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-8 sm:p-16 border border-surface-border bg-surface-card text-center flex flex-col items-center">
               <div className="absolute inset-0 bg-gradient-to-br from-[#6C63FF]/10 to-[#00D4FF]/5" />
               <div className="relative z-10 flex flex-col items-center">
                 <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(108,99,255,0.4)]">
