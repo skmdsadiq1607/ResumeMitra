@@ -23,6 +23,7 @@ export const resumeService = {
   getReport: (id) => api.get(`/resume/report/${id}`),
   deleteReport: (id) => api.delete(`/resume/report/${id}`),
   compareReports: (idA, idB) => api.get('/resume/compare', { params: { idA, idB } }),
+  generateLatex: (id) => api.post(`/resume/report/${id}/latex`, {}, { timeout: 120000 }),
 }
 
 // Dashboard API calls

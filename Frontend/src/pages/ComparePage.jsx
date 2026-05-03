@@ -1,10 +1,15 @@
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
 import { ArrowLeft, CheckCircle2, XCircle, FileText, Search, TrendingUp, Zap, ArrowRight, Shield, Target } from 'lucide-react'
 import { resumeService } from '../services/resumeService'
 import { ResultSkeleton } from '../components/ui/Skeleton'
 import { getScoreColor, getScoreEmoji, SCORE_LABELS } from '../utils/helpers'
+
+const DeltaValue = ({ val }) => (
+  <span className={`text-xs font-bold ${val > 0 ? 'text-emerald-400' : val < 0 ? 'text-rose-400' : 'text-slate-500'}`}>
+    {val > 0 ? `+${val}` : val}
+  </span>
+)
 
 const ComparePage = () => {
   const [searchParams] = useSearchParams()
@@ -29,11 +34,7 @@ const ComparePage = () => {
 
   const { older, newer, delta, newlyMatched, newlyMissing } = data
 
-  const DeltaValue = ({ val }) => (
-    <span className={`text-xs font-bold ${val > 0 ? 'text-emerald-400' : val < 0 ? 'text-rose-400' : 'text-slate-500'}`}>
-      {val > 0 ? `+${val}` : val}
-    </span>
-  )
+
 
   return (
     <div className="space-y-6 animate-fade-in max-w-6xl mx-auto pb-12">

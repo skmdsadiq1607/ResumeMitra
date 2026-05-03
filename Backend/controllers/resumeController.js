@@ -9,7 +9,7 @@ const path = require('path');
 const { validationResult } = require('express-validator');
 const ResumeReport = require('../models/ResumeReport');
 const { extractTextFromPDF, deleteFile } = require('../utils/extractText');
-const { analyzeResumeWithGemini } = require('../services/geminiService');
+const { analyzeResumeWithGemini, generateLatexResume } = require('../services/geminiService');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 // ─── Upload Resume ─────────────────────────────────────────────────────────
@@ -215,4 +215,34 @@ const compareReports = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadResume, analyzeResume, getHistory, getReport, deleteReport, compareReports };
+// ─── Generate LaTeX ─────────────────────────────────────────────────────────
+const generateLatex = async (req, res, next) => {
+  try {
+    const report = await ResumeReport.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+    if (!report) return errorResponse(res, 'Report not found.', 404);
+
+    let resumeText = '';
+    if (report.uploadedResumePath) {
+      try {
+        resumeText = await extractTextFromPDF(report.uploadedResumePath);
+      } catch (err) {
+        console.error('Failed to extract text for latex generation:', err);
+      }
+    }
+
+    if (!resumeText) {
+       return errorResponse(res, 'Could not read original resume text for LaTeX generation.', 400);
+    }
+
+    const latexResult = await generateLatexResume(resumeText, report.jobDescription, report.toObject());
+
+    return successResponse(res, 'LaTeX generated successfully.', latexResult);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { uploadResume, analyzeResume, getHistory, getReport, deleteReport, compareReports, generateLatex };

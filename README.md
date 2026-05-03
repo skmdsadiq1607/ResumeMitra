@@ -1,8 +1,8 @@
-# ResumeAI – AI-Powered ATS Resume Grader
+# ResumeMithra – AI-Powered ATS Resume Grader
 
 > A production-style MERN web application that helps job seekers optimize their resumes for ATS systems using Google Gemini AI.
 
-![ResumeAI Banner](https://img.shields.io/badge/Status-Production%20Ready-6366f1?style=for-the-badge)
+![ResumeMithra Banner](https://img.shields.io/badge/Status-Production%20Ready-6366f1?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-06b6d4?style=for-the-badge)
 ![Node](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)
@@ -26,7 +26,7 @@
 ## 📁 Project Structure
 
 ```
-AI Resume Builder/
+ResumeMithra/
 ├── Backend/                    # Node.js + Express API
 │   ├── config/
 │   │   ├── db.js               # MongoDB connection

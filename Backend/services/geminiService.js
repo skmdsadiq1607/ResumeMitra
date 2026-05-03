@@ -286,4 +286,65 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
   }
 };
 
-module.exports = { analyzeResumeWithGemini };
+const generateLatexResume = async (resumeText, jobDescription, reportData) => {
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error('Gemini API key is not configured.');
+  }
+
+  const model = genAI.getGenerativeModel({
+    model: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+    generationConfig: {
+      temperature: 0.2,
+      topP: 0.85,
+      maxOutputTokens: 8192,
+    },
+  });
+
+  const prompt = `
+You are an expert ATS resume writer and LaTeX resume formatter.
+
+Generate a clean ATS-friendly LaTeX resume for Overleaf using ONLY the provided resume data and job description.
+Do not invent fake experience, fake CGPA, fake dates, fake companies, fake certifications, or fake metrics.
+Improve wording where possible based on the ATS analysis.
+Use job-relevant keywords naturally.
+Keep it one-page friendly.
+Use simple ATS-safe LaTeX formatting.
+
+────────────────────────────── RESUME ──────────────────────────────
+${resumeText}
+
+────────────────────────── JOB DESCRIPTION ────────────────────────
+${jobDescription}
+
+────────────────────────── ATS ANALYSIS ───────────────────────────
+Strengths: ${reportData.strengths?.join(', ')}
+Missing Keywords: ${reportData.missingKeywords?.join(', ')}
+
+Return JSON ONLY in this format:
+{
+  "latexCode": "<the full latex code document>",
+  "improvementsMade": ["<improvement 1>", "<improvement 2>"],
+  "missingDataPlaceholders": ["<placeholder 1>"],
+  "atsFriendlyNotes": ["<note 1>"]
+}
+  `.trim();
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const rawText = response.text();
+    
+    const cleaned = rawText
+      .replace(/```json\n?/gi, '')
+      .replace(/```\n?/gi, '')
+      .trim();
+      
+    const parsed = JSON.parse(cleaned);
+    return parsed;
+  } catch (error) {
+    console.error('Gemini LaTeX API error:', error);
+    throw new Error('Failed to generate LaTeX resume.');
+  }
+};
+
+module.exports = { analyzeResumeWithGemini, generateLatexResume };

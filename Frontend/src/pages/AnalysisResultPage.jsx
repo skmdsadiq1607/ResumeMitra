@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
+
 import {
   ArrowLeft, CheckCircle2, XCircle, Lightbulb, Pencil, Trash2,
   Code, Briefcase, GraduationCap, FolderGit2, Star, Layout,
@@ -12,8 +13,9 @@ import { resumeService } from '../services/resumeService'
 import { ResultSkeleton } from '../components/ui/Skeleton'
 import ScoreCircle from '../components/ui/ScoreCircle'
 import SectionScoreBar from '../components/ui/SectionScoreBar'
-import { formatDate, getScoreColor, getScoreLabel, getScoreEmoji, getConfidenceColor, getImpactColor, SCORE_LABELS } from '../utils/helpers'
+import { formatDate, getScoreEmoji, getConfidenceColor, getImpactColor, SCORE_LABELS } from '../utils/helpers'
 import toast from 'react-hot-toast'
+import { demoReport } from '../data/demoReport'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -48,12 +50,16 @@ const CardHeader = ({ icon: Icon, title, badge, iconColor = 'text-primary-400', 
 )
 
 const AnalysisResultPage = () => {
-  const { id } = useParams()
+  const params = useParams()
+  const id = params.id || (window.location.pathname.endsWith('/demo') ? 'demo' : undefined)
   const navigate = useNavigate()
 
   const { data: report, isLoading, error } = useQuery({
     queryKey: ['report', id],
-    queryFn: () => resumeService.getReport(id).then((r) => r.data.data.report),
+    queryFn: () => {
+      if (id === 'demo') return Promise.resolve(demoReport)
+      return resumeService.getReport(id).then((r) => r.data.data.report)
+    },
   })
 
   const handleDelete = async () => {
@@ -90,6 +96,11 @@ const AnalysisResultPage = () => {
           <div className="flex items-center gap-3 mt-1 flex-wrap">
             <span className="text-xs text-slate-500">{formatDate(report.createdAt)}</span>
             {report.targetRole && <span className="section-badge text-[10px]">{report.targetRole}</span>}
+            {id === 'demo' && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border text-amber-400 border-amber-400 bg-amber-500/10">
+                <Star size={9} /> Demo Preview
+              </span>
+            )}
             {report.confidenceLevel && (
               <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${getConfidenceColor(report.confidenceLevel)}`}>
                 <Shield size={9} /> {report.confidenceLevel} confidence
@@ -98,11 +109,18 @@ const AnalysisResultPage = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => window.print()} className="btn-secondary text-xs py-2 px-4">
-            <Printer size={13} /> Export PDF
+          <Link to={`/overleaf-builder/${id}`} className="btn-primary text-xs py-2 px-4 shadow-glow flex items-center gap-1.5 bg-violet-600 hover:bg-violet-500 border-violet-500/50">
+            <Code size={13} /> Generate Overleaf Resume
+          </Link>
+          <button onClick={() => window.print()} className="btn-secondary text-xs py-2 px-4 hidden sm:flex items-center gap-1.5">
+            <Printer size={13} /> PDF
           </button>
-          <Link to="/upload" className="btn-primary text-xs py-2 px-4"><Zap size={13} /> Re-analyze</Link>
-          <button onClick={handleDelete} className="btn-ghost text-xs text-rose-400 hover:bg-rose-500/5"><Trash2 size={13} /></button>
+          <Link to="/upload" className="btn-secondary text-xs py-2 px-4 hidden sm:flex items-center gap-1.5">
+            <Zap size={13} /> Re-analyze
+          </Link>
+          <button onClick={handleDelete} className="btn-ghost text-xs text-rose-400 hover:bg-rose-500/5 p-2" title="Delete Report">
+            <Trash2 size={15} />
+          </button>
         </div>
       </div>
 
@@ -352,13 +370,13 @@ const AnalysisResultPage = () => {
               { key: 'atsOptimization', label: 'ATS Optimization', color: 'primary', icon: Target },
               { key: 'roleSpecific', label: 'Role-Specific', color: 'violet', icon: Briefcase },
               { key: 'polish', label: 'Polish & Refinement', color: 'slate', icon: Pencil },
-            ].map(({ key, label, color, icon: CatIcon }) => {
+            ].map(({ key, label, color, icon: Icon }) => {
               const items = cats[key] || []
               if (items.length === 0) return null
               return (
                 <div key={key}>
                   <div className="flex items-center gap-2 mb-3">
-                    <CatIcon size={13} className={`text-${color}-400`} />
+                    <Icon size={13} className={`text-${color}-400`} />
                     <span className={`text-xs font-semibold text-${color}-300 uppercase tracking-wider`}>{label}</span>
                     <span className="text-[10px] text-slate-600">{items.length}</span>
                   </div>

@@ -12,6 +12,7 @@ const {
   getReport,
   deleteReport,
   compareReports,
+  generateLatex,
 } = require('../controllers/resumeController');
 const { protect } = require('../middlewares/auth');
 const upload = require('../config/multer');
@@ -34,6 +35,7 @@ router.post('/analyze', upload.single('resume'), analyzeValidation, analyzeResum
 router.get('/history', getHistory);
 router.get('/report/:id', getReport);
 router.delete('/report/:id', deleteReport);
+router.post('/report/:id/latex', generateLatex);
 router.get('/compare', compareReports);
 
 module.exports = router;

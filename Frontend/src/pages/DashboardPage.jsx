@@ -1,30 +1,56 @@
 import { useQuery } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import {
   BarChart3, Upload, History, TrendingUp, Zap, ArrowRight,
-  FileText, Sparkles, Target, Brain, Award, Rocket
+  FileText, Sparkles, Target, Brain, Award, Cpu,
+  ChevronRight, CheckCircle2, AlertCircle
 } from 'lucide-react'
 import { dashboardService } from '../services/resumeService'
 import { CardSkeleton } from '../components/ui/Skeleton'
 import ReportCard from '../components/ui/ReportCard'
-import { getScoreColor, getScoreLabel, getScoreEmoji } from '../utils/helpers'
+import { getScoreLabel } from '../utils/helpers'
+
+const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] } }) }
 
 const StatCard = ({ label, value, sub, icon: Icon, gradient, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay }}
-    className="stat-card group hover:shadow-card-hover"
-  >
-    <div className="flex items-center justify-between">
-      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-glow-sm`}>
-        <Icon size={18} className="text-white" />
+  <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={delay}
+    className="relative group">
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg -z-10"
+      style={{ background: `linear-gradient(135deg, var(--tw-gradient-from) 20%, transparent)` }} />
+    <div className={`glass-card p-6 h-full hover:border-white/10 transition-all duration-500 group-hover:-translate-y-1 relative overflow-hidden bg-gradient-to-br ${gradient} bg-opacity-5`}>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+      <div className="flex items-center justify-between mb-4">
+        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+          <Icon size={20} className="text-white" />
+        </div>
+        <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-slate-300 uppercase tracking-wider font-bold">{sub}</span>
       </div>
-      <span className="text-[10px] text-slate-600 uppercase tracking-wider font-semibold">{sub}</span>
+      <div className="text-4xl font-display font-black text-white mb-1 tracking-tight">{value}</div>
+      <div className="text-sm font-medium text-slate-400">{label}</div>
     </div>
-    <div className="text-3xl font-display font-bold text-white mt-3">{value}</div>
-    <div className="text-sm text-slate-400 mt-0.5">{label}</div>
+  </motion.div>
+)
+
+const ActionCard = ({ to, icon: Icon, title, desc, gradient, delay }) => (
+  <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={delay}>
+    <Link to={to} className="glass-card p-5 block group hover:border-white/15 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+      <div className="flex items-center gap-4 relative z-10">
+        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} p-0.5 group-hover:scale-105 transition-transform duration-300`}>
+          <div className="w-full h-full bg-dark-900 rounded-[10px] flex items-center justify-center">
+            <Icon size={20} className="text-white" />
+          </div>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-base font-bold text-slate-200 group-hover:text-white transition-colors">{title}</p>
+          <p className="text-xs text-slate-500">{desc}</p>
+        </div>
+        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+          <ChevronRight size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+        </div>
+      </div>
+    </Link>
   </motion.div>
 )
 
@@ -36,11 +62,15 @@ const DashboardPage = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 animate-fade-in">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="space-y-8 animate-fade-in">
+        <div className="flex justify-between"><div className="w-48 h-8 bg-dark-700 rounded animate-pulse" /><div className="w-32 h-10 bg-dark-700 rounded animate-pulse" /></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => <CardSkeleton key={i} />)}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6"><CardSkeleton /><CardSkeleton /></div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4"><CardSkeleton /><CardSkeleton /></div>
+          <div className="space-y-4"><CardSkeleton /></div>
+        </div>
       </div>
     )
   }
@@ -49,113 +79,118 @@ const DashboardPage = () => {
   const hasReports = (s.recentReports?.length || 0) > 0
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 relative">
+      {/* Ambient glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-display font-bold text-white">Dashboard</h1>
-          <p className="text-slate-400 mt-1 text-sm">Your resume optimization command center.</p>
+          <h1 className="text-3xl font-display font-extrabold text-white tracking-tight flex items-center gap-3">
+            Dashboard
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Free Plan
+            </span>
+          </h1>
+          <p className="text-slate-400 mt-2 text-sm font-medium">Your AI-powered resume command center.</p>
         </div>
-        <Link to="/upload" className="btn-primary text-sm py-2.5 px-5">
-          <Sparkles size={15} /> New Analysis
+        <Link to="/upload" className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white text-sm overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/25">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-500 via-violet-500 to-primary-500 bg-[length:200%_auto] animate-gradient-x" />
+          <span className="relative z-10 flex items-center gap-2">
+            <Sparkles size={16} /> New Analysis
+          </span>
         </Link>
+      </motion.div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard label="Total Analyses" value={s.totalAnalyses ?? 0} sub="Lifetime" icon={FileText} gradient="from-blue-500 to-indigo-500" delay={1} />
+        <StatCard label="Average Score" value={`${s.averageScore ?? 0}`} sub="/100" icon={BarChart3} gradient="from-primary-500 to-violet-500" delay={2} />
+        <StatCard label="Best Score" value={`${s.bestScore ?? 0}`} sub={getScoreLabel(s.bestScore ?? 0)} icon={Award} gradient="from-emerald-500 to-teal-500" delay={3} />
+        <StatCard label="Score Growth" value={`${(s.improvement ?? 0) >= 0 ? '+' : ''}${s.improvement ?? 0}`} sub="Points" icon={TrendingUp} gradient="from-amber-500 to-orange-500" delay={4} />
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total Analyses" value={s.totalAnalyses ?? 0} sub="all time" icon={FileText} gradient="from-primary-500 to-violet-500" delay={0.05} />
-        <StatCard label="Average Score" value={`${s.averageScore ?? 0}`} sub="/100" icon={BarChart3} gradient="from-accent-500 to-teal-500" delay={0.1} />
-        <StatCard label="Best Score" value={`${s.bestScore ?? 0}`} sub={getScoreLabel(s.bestScore ?? 0)} icon={Award} gradient="from-emerald-500 to-green-500" delay={0.15} />
-        <StatCard label="Improvement" value={`${(s.improvement ?? 0) >= 0 ? '+' : ''}${s.improvement ?? 0}`} sub="pts gained" icon={TrendingUp} gradient="from-amber-500 to-orange-500" delay={0.2} />
-      </div>
-
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent reports (2/3) */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-white">Recent Analyses</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Column: Recent Reports */}
+        <div className="lg:col-span-2 space-y-6">
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={5} className="flex items-center justify-between">
+            <h2 className="text-xl font-display font-bold text-white flex items-center gap-2">
+              <History size={20} className="text-primary-400" /> Recent Analyses
+            </h2>
             {hasReports && (
-              <Link to="/history" className="text-xs text-primary-400 hover:text-primary-300 flex items-center gap-1">View all <ArrowRight size={12} /></Link>
-            )}
-          </div>
-          {hasReports ? (
-            <div className="space-y-3">
-              {s.recentReports.map((r, i) => <ReportCard key={r._id} report={r} index={i} />)}
-            </div>
-          ) : (
-            <div className="glass-card gradient-border p-16 text-center">
-              <Brain size={48} className="text-slate-600 mx-auto mb-4" />
-              <h3 className="text-lg font-display font-semibold text-white mb-2">No analyses yet</h3>
-              <p className="text-sm text-slate-500 mb-6 max-w-xs mx-auto">Upload your resume and get a comprehensive AI-powered ATS analysis in seconds.</p>
-              <Link to="/upload" className="btn-primary text-sm py-3 px-6 shadow-glow">
-                <Sparkles size={15} /> Analyze My Resume
+              <Link to="/history" className="text-sm font-medium text-slate-400 hover:text-primary-400 transition-colors flex items-center gap-1 group">
+                View all <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
-          )}
-        </motion.div>
+            )}
+          </motion.div>
 
-        {/* Sidebar (1/3) */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-4">
-          <h2 className="text-base font-semibold text-white">Quick Actions</h2>
+          <AnimatePresence mode="popLayout">
+            {hasReports ? (
+              <div className="space-y-4">
+                {s.recentReports.map((r, i) => (
+                  <motion.div key={r._id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + (i * 0.1) }}>
+                    <ReportCard report={r} index={i} />
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
+                className="relative glass-card border-dashed border-2 border-surface-border p-16 text-center group overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-violet-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative z-10 flex flex-col items-center">
+                  <div className="w-20 h-20 rounded-full bg-dark-800 flex items-center justify-center mb-6 border border-surface-border shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <Cpu size={32} className="text-primary-400" />
+                  </div>
+                  <h3 className="text-2xl font-display font-bold text-white mb-3">No analyses yet</h3>
+                  <p className="text-base text-slate-400 mb-8 max-w-sm mx-auto leading-relaxed">
+                    Upload your resume and a job description to get a comprehensive AI-powered ATS analysis instantly.
+                  </p>
+                  <Link to="/upload" className="btn-primary px-8 py-4 text-base shadow-glow group-hover:shadow-glow-lg transition-all duration-300">
+                    <Zap size={18} /> Start Your First Analysis
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-          <Link to="/upload" className="glass-card block p-5 hover:border-primary-500/30 group transition-all duration-200">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500/20 to-violet-500/20 border border-primary-500/20 flex items-center justify-center group-hover:scale-105 transition-all">
-                <Upload size={18} className="text-primary-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-200 group-hover:text-white">Analyze Resume</p>
-                <p className="text-xs text-slate-500">15+ AI dimensions</p>
-              </div>
-              <ArrowRight size={16} className="text-slate-600 group-hover:text-primary-400 transition-colors" />
-            </div>
-          </Link>
+        {/* Sidebar */}
+        <div className="space-y-6">
+          <motion.h2 variants={fadeUp} initial="hidden" animate="visible" custom={6} className="text-xl font-display font-bold text-white flex items-center gap-2">
+            <Zap size={20} className="text-accent-400" /> Quick Actions
+          </motion.h2>
 
-          <Link to="/history" className="glass-card block p-5 hover:border-primary-500/30 group transition-all duration-200">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500/20 to-teal-500/20 border border-accent-500/20 flex items-center justify-center group-hover:scale-105 transition-all">
-                <History size={18} className="text-accent-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-200 group-hover:text-white">View History</p>
-                <p className="text-xs text-slate-500">Compare analyses</p>
-              </div>
-              <ArrowRight size={16} className="text-slate-600 group-hover:text-accent-400 transition-colors" />
-            </div>
-          </Link>
-
-          {/* What you get */}
-          <div className="glass-card p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">What AI Analyzes</p>
-            {[
-              ['Keyword Match', 'text-primary-400'],
-              ['Content Strength', 'text-accent-400'],
-              ['Skills Alignment', 'text-violet-400'],
-              ['Experience Impact', 'text-emerald-400'],
-              ['Project Relevance', 'text-amber-400'],
-              ['ATS Formatting', 'text-rose-400'],
-              ['Readability', 'text-teal-400'],
-              ['Interview Readiness', 'text-blue-400'],
-            ].map(([label, color]) => (
-              <div key={label} className="flex items-center justify-between py-0.5">
-                <span className="text-xs text-slate-400">{label}</span>
-                <div className={`w-2 h-2 rounded-full ${color.replace('text-', 'bg-')}`} />
-              </div>
-            ))}
+          <div className="space-y-3">
+            <ActionCard to="/upload" icon={Upload} title="Analyze Resume" desc="Get instant ATS score & feedback" gradient="from-primary-500 to-violet-500" delay={7} />
+            <ActionCard to="/history" icon={FileText} title="View History" desc="Compare your past analyses" gradient="from-accent-500 to-teal-500" delay={8} />
           </div>
 
-          {/* Score guide */}
-          <div className="glass-card p-4">
-            <p className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider">Score Guide</p>
-            {[['90-100', 'Outstanding', 'text-emerald-400'], ['70-89', 'Strong', 'text-amber-400'], ['50-69', 'Needs Work', 'text-orange-400'], ['0-49', 'Major Rewrite', 'text-rose-400']].map(([range, label, color]) => (
-              <div key={range} className="flex justify-between items-center py-1.5 border-b border-surface-border last:border-0">
-                <span className={`text-xs font-bold ${color}`}>{range}</span>
-                <span className="text-xs text-slate-500">{label}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={9} className="glass-card p-6 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 blur-3xl -mr-10 -mt-10" />
+            <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2">
+              <Brain size={16} className="text-primary-400" /> Scoring Engine
+            </h3>
+            <div className="space-y-4">
+              {[
+                { label: 'Keyword Match', pts: 25, color: 'text-primary-400', bg: 'bg-primary-500/20' },
+                { label: 'Skills Match', pts: 20, color: 'text-violet-400', bg: 'bg-violet-500/20' },
+                { label: 'Experience', pts: 15, color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
+                { label: 'Formatting', pts: 10, color: 'text-amber-400', bg: 'bg-amber-500/20' },
+              ].map(({ label, pts, color, bg }) => (
+                <div key={label} className="flex items-center justify-between group/item">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={14} className={color} />
+                    <span className="text-sm font-medium text-slate-300 group-hover/item:text-white transition-colors">{label}</span>
+                  </div>
+                  <span className={`text-xs font-bold ${color} ${bg} px-2 py-0.5 rounded-md`}>{pts} pts</span>
+                </div>
+              ))}
+            </div>
+            <Link to="/how-ats-works" className="mt-5 text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors">
+              <AlertCircle size={12} /> View full scoring criteria
+            </Link>
+          </motion.div>
+        </div>
       </div>
     </div>
   )

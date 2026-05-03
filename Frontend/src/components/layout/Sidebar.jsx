@@ -36,7 +36,7 @@ const Sidebar = () => {
         <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow-sm">
           <Zap size={16} className="text-white" />
         </div>
-        <span className="font-display font-bold text-lg gradient-text">ResumeAI</span>
+        <span className="font-display font-bold text-lg gradient-text">Resume Mitra</span>
       </div>
 
       {/* Nav items */}

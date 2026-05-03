@@ -1,49 +1,81 @@
 import { Link } from 'react-router-dom'
-import { Zap, ExternalLink, AtSign, Link as LinkIcon } from 'lucide-react'
+import { Zap, Shield, Lock, Trash2, Heart } from 'lucide-react'
 
 const Footer = () => (
-  <footer className="border-t border-surface-border/50 bg-dark-900/50 mt-auto">
-    <div className="page-container py-12">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+  <footer className="border-t border-surface-border/30 bg-dark-950/80 mt-auto relative overflow-hidden">
+    {/* Ambient glow */}
+    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary-500/3 blur-[100px] rounded-full pointer-events-none" />
+
+    <div className="page-container py-14 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Brand */}
-        <div className="col-span-1 md:col-span-2">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
+        <div className="md:col-span-2">
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 via-violet-500 to-accent-500 flex items-center justify-center">
               <Zap size={14} className="text-white" />
             </div>
-            <span className="font-display font-bold gradient-text">ResumeAI</span>
+            <span className="font-display font-extrabold text-lg gradient-text">ResumeMithra</span>
           </div>
-          <p className="text-sm text-slate-500 max-w-xs leading-relaxed">
-            AI-powered resume grader that helps you optimize your resume for ATS systems and land more interviews.
+          <p className="text-sm text-slate-500 max-w-sm leading-relaxed mb-5">
+            AI-powered ATS resume analyzer that helps you optimize your resume for applicant tracking systems. 100% free, forever.
           </p>
-          <div className="flex items-center gap-3 mt-4">
-            <a href="#" className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-all"><ExternalLink size={16} /></a>
-            <a href="#" className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-all"><AtSign size={16} /></a>
-            <a href="#" className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-all"><LinkIcon size={16} /></a>
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { icon: Lock, text: 'Encrypted' },
+              { icon: Shield, text: 'Private' },
+              { icon: Trash2, text: 'Delete anytime' },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-1.5 text-[10px] text-slate-500 bg-white/[0.02] px-2.5 py-1.5 rounded-full border border-surface-border/50">
+                <Icon size={10} className="text-emerald-500" /> {text}
+              </div>
+            ))}
           </div>
         </div>
-        {/* Product */}
+
+        {/* Navigation */}
         <div>
-          <h3 className="text-sm font-semibold text-slate-300 mb-4">Product</h3>
-          <ul className="space-y-2 text-sm text-slate-500">
-            <li><Link to="/#features" className="hover:text-slate-300 transition-colors">Features</Link></li>
-            <li><Link to="/#how-it-works" className="hover:text-slate-300 transition-colors">How it works</Link></li>
-            <li><Link to="/register" className="hover:text-slate-300 transition-colors">Get Started</Link></li>
+          <h3 className="text-sm font-semibold text-slate-200 mb-5">Platform</h3>
+          <ul className="space-y-3 text-sm text-slate-500">
+            <li><Link to="/register" className="hover:text-slate-200 transition-colors duration-300">Get Started</Link></li>
+            <li><Link to="/how-ats-works" className="hover:text-slate-200 transition-colors duration-300">How ATS Works</Link></li>
+            <li><Link to="/login" className="hover:text-slate-200 transition-colors duration-300">Sign In</Link></li>
+            <li><Link to="/dashboard" className="hover:text-slate-200 transition-colors duration-300">Dashboard</Link></li>
           </ul>
         </div>
-        {/* Account */}
+
+        {/* Trust */}
         <div>
-          <h3 className="text-sm font-semibold text-slate-300 mb-4">Account</h3>
-          <ul className="space-y-2 text-sm text-slate-500">
-            <li><Link to="/login" className="hover:text-slate-300 transition-colors">Sign In</Link></li>
-            <li><Link to="/register" className="hover:text-slate-300 transition-colors">Register</Link></li>
-            <li><Link to="/dashboard" className="hover:text-slate-300 transition-colors">Dashboard</Link></li>
+          <h3 className="text-sm font-semibold text-slate-200 mb-5">Privacy & Trust</h3>
+          <ul className="space-y-3 text-sm text-slate-500">
+            <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Your resume is private</li>
+            <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Never shared with anyone</li>
+            <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Delete data anytime</li>
+            <li className="flex items-center gap-2"><Shield size={12} className="text-emerald-500 flex-shrink-0" /> Open & transparent AI</li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-surface-border/50 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-slate-600">© 2026 ResumeAI. Built with ❤️ for job seekers.</p>
-        <p className="text-xs text-slate-600">Powered by Google Gemini AI</p>
+
+      <div className="border-t border-surface-border/30 mt-10 pt-6 flex flex-col items-center justify-between gap-6">
+        <p className="text-sm font-semibold text-slate-400 flex items-center gap-1.5">
+          Built with <Heart size={14} className="text-rose-500 fill-rose-500" /> by Sxdiq
+        </p>
+        
+        <div className="flex flex-wrap justify-center items-center gap-4 text-xs text-slate-500">
+          <a href="https://github.com/skmdsadiq1607" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">GitHub</a>
+          <span>&bull;</span>
+          <a href="https://www.linkedin.com/in/shaik-sadiq-b1650a377/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">LinkedIn</a>
+          <span>&bull;</span>
+          <a href="https://sxdiq.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">Portfolio</a>
+          <span>&bull;</span>
+          <a href="tel:+919441921812" className="hover:text-emerald-400 transition-colors">+91 9441921812</a>
+          <span>&bull;</span>
+          <a href="mailto:skmdsadiq1607@gmail.com" className="hover:text-emerald-400 transition-colors">skmdsadiq1607@gmail.com</a>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full text-xs text-slate-600 mt-2">
+          <p>© 2026 ResumeMithra. All rights reserved.</p>
+          <p>Powered by Google Gemini AI · 100% Free</p>
+        </div>
       </div>
     </div>
   </footer>

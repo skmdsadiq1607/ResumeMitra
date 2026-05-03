@@ -1,3 +1,5 @@
+import forms from '@tailwindcss/forms'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -8,48 +10,45 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary brand palette - deep violet/indigo
         primary: {
-          50:  '#f0f0ff',
-          100: '#e1e1ff',
-          200: '#c3c3fe',
-          300: '#a5a5fd',
-          400: '#8787fc',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+          400: '#8A82FF',
+          500: '#6C63FF', // Primary
+          600: '#564FCC',
         },
-        // Accent cyan/teal
         accent: {
-          50:  '#ecfeff',
-          100: '#cffafe',
-          200: '#a5f3fc',
-          300: '#67e8f9',
-          400: '#22d3ee',
-          500: '#06b6d4',
-          600: '#0891b2',
-          700: '#0e7490',
-          800: '#155e75',
-          900: '#164e63',
+          400: '#33DDFF',
+          500: '#00D4FF', // Accent
+          600: '#00A9CC',
         },
-        // Background tokens
+        purple: {
+          400: '#B282FF',
+          500: '#9B5CFF', // Purple
+          600: '#7C49CC',
+        },
+        success: {
+          500: '#00C896',
+        },
+        warning: {
+          500: '#FFD166',
+        },
+        error: {
+          500: '#FF5C7A',
+        },
         dark: {
-          950: '#080810',
-          900: '#0c0c1a',
+          950: '#050510', // Background
+          900: '#080A1A', // Secondary Background
           800: '#11111f',
           700: '#16162a',
-          600: '#1d1d35',
-          500: '#252540',
         },
-        // Surface tokens
         surface: {
-          DEFAULT: '#14141f',
-          card: '#1a1a2e',
-          border: '#2a2a4a',
-          hover: '#22223a',
+          DEFAULT: '#080A1A',
+          card: 'rgba(255,255,255,0.06)',
+          border: 'rgba(255,255,255,0.12)',
+          hover: 'rgba(255,255,255,0.08)',
+        },
+        text: {
+          primary: '#FFFFFF',
+          muted: '#AAB2D5',
         }
       },
       fontFamily: {
@@ -111,6 +110,6 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
+    forms,
   ],
 }

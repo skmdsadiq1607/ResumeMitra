@@ -1,279 +1,286 @@
 import { useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useDropzone } from 'react-dropzone'
 import {
-  Upload, FileText, X, Loader2, Sparkles, AlertCircle,
-  CheckCircle2, ChevronRight, Briefcase, Target, Brain,
-  Zap, Shield, Eye
+  Upload, FileText, X, Loader2, Sparkles,
+  CheckCircle2, Briefcase, Target, Brain,
+  Zap, Shield, Eye, BarChart3, Download, ArrowRight, CornerDownRight
 } from 'lucide-react'
 import { resumeService } from '../services/resumeService'
 import { extractError, formatFileSize, TARGET_ROLES } from '../utils/helpers'
+import { extractTextFromFile } from '../utils/textExtractor'
+import { calculateATSScore, generateSuggestions, generateRecruiterVerdict } from '../utils/atsEngine'
+import { generateATSReport } from '../utils/reportGenerator'
 import toast from 'react-hot-toast'
+import ScoreCircle from '../components/ui/ScoreCircle'
+import SectionScoreBar from '../components/ui/SectionScoreBar'
 
-const tips = [
-  { icon: Target, text: 'Paste the FULL job description for best results — including requirements and qualifications.' },
-  { icon: Brain, text: 'The AI evaluates 15+ dimensions including keyword match, content strength, and ATS formatting.' },
-  { icon: Shield, text: 'Your resume data is private and never shared with third parties.' },
-]
+const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }) }
+
+const ACCEPTED_TYPES = {
+  'application/pdf': ['.pdf'],
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+  'text/plain': ['.txt'],
+}
 
 const UploadPage = () => {
   const [file, setFile] = useState(null)
   const [jobDescription, setJobDescription] = useState('')
-  const [jobTitle, setJobTitle] = useState('')
   const [targetRole, setTargetRole] = useState('')
   const [loading, setLoading] = useState(false)
-  const [step, setStep] = useState(1) // 1: upload, 2: details
+  const [step, setStep] = useState(1)
+  const [analysisMode, setAnalysisMode] = useState('local')
+  const [localResult, setLocalResult] = useState(null)
+  const [experienceLevel, setExperienceLevel] = useState('auto')
   const navigate = useNavigate()
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (rejectedFiles.length > 0) {
-      const error = rejectedFiles[0].errors[0]
-      toast.error(error.code === 'file-too-large' ? 'File is too large. Max 5MB.' : 'Only PDF files are accepted.')
+      toast.error(rejectedFiles[0].errors[0].code === 'file-too-large' ? 'File too large (Max 5MB).' : 'Only PDF, DOCX, and TXT allowed.')
       return
     }
     if (acceptedFiles[0]) {
       setFile(acceptedFiles[0])
       setStep(2)
+      setLocalResult(null)
     }
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { 'application/pdf': ['.pdf'] },
-    maxSize: 5 * 1024 * 1024,
-    multiple: false,
+    onDrop, accept: ACCEPTED_TYPES, maxSize: 5 * 1024 * 1024, multiple: false
   })
 
-  const handleAnalyze = async (e) => {
-    e.preventDefault()
-    if (!file) return toast.error('Please upload a PDF resume.')
-    if (jobDescription.trim().length < 50) return toast.error('Please enter a more detailed job description (at least 50 characters).')
-
+  const handleLocalAnalysis = async () => {
+    if (!file || jobDescription.trim().length < 50) return toast.error('Valid file and 50+ chars JD required.')
     setLoading(true)
-    const formData = new FormData()
-    formData.append('resume', file)
-    formData.append('jobDescription', jobDescription.trim())
-    formData.append('jobTitle', jobTitle.trim())
-    formData.append('targetRole', targetRole)
-
     try {
-      toast.loading('AI is performing deep analysis... This may take 30-60 seconds.', { id: 'analyzing' })
-      const res = await resumeService.analyze(formData)
-      toast.dismiss('analyzing')
-      toast.success('Deep analysis complete! 🎉')
-      navigate(`/analysis/${res.data.data.report._id}`)
+      toast.loading('Analyzing locally...', { id: 'analysis' })
+      const text = await extractTextFromFile(file)
+      if (!text || text.trim().length < 30) throw new Error('Could not extract text. Check file format.')
+      const res = calculateATSScore(text, jobDescription)
+      res.suggestions = generateSuggestions(res)
+      res.recruiterVerdict = generateRecruiterVerdict(res)
+      setLocalResult(res)
+      toast.success('Local analysis complete! 🎯', { id: 'analysis' })
     } catch (err) {
-      toast.dismiss('analyzing')
+      toast.error(err.message || 'Analysis failed', { id: 'analysis' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleAIAnalysis = async (e) => {
+    e.preventDefault()
+    if (!file || jobDescription.trim().length < 50) return toast.error('Valid file and 50+ chars JD required.')
+    setLoading(true)
+    const fd = new FormData()
+    fd.append('resume', file)
+    fd.append('jobDescription', jobDescription.trim())
+    fd.append('targetRole', targetRole)
+    try {
+      const { data } = await resumeService.analyze(fd)
+      toast.success('AI Deep Analysis complete!')
+      navigate(`/analysis/${data.data._id}`)
+    } catch (err) {
       toast.error(extractError(err))
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-display font-bold text-white">Analyze Resume</h1>
-        <p className="text-slate-400 mt-1 text-sm">Upload your PDF, paste the job description, and let AI do a deep recruiter-grade analysis.</p>
-      </div>
+  const fileExt = file?.name.split('.').pop().toUpperCase()
 
-      {/* Steps */}
-      <div className="flex items-center gap-3">
-        {[{ n: 1, label: 'Upload Resume' }, { n: 2, label: 'Job Details' }].map(({ n, label }, idx) => (
-          <div key={n} className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-              step > n ? 'bg-emerald-500 text-white' : step === n ? 'bg-primary-500 text-white shadow-glow-sm' : 'bg-dark-600 text-slate-500'
-            }`}>
-              {step > n ? <CheckCircle2 size={14} /> : n}
-            </div>
-            <span className={`text-sm font-medium ${step >= n ? 'text-slate-200' : 'text-slate-600'}`}>{label}</span>
-            {idx < 1 && <ChevronRight size={14} className="text-slate-600" />}
-          </div>
-        ))}
-      </div>
+  return (
+    <div className="max-w-4xl mx-auto pb-20 relative">
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+
+      {/* Header */}
+      <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="text-center mb-10">
+        <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight mb-3">
+          Analyze Your Resume
+        </h1>
+        <p className="text-slate-400 font-medium mb-4">Get an instant, actionable ATS score to beat the bots.</p>
+        <Link to="/analysis/demo" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-surface-border hover:border-primary-500/50 hover:bg-primary-500/10 text-xs font-bold text-slate-300 hover:text-primary-300 transition-all duration-300">
+          <Eye size={14} /> View Demo Preview
+        </Link>
+      </motion.div>
+
+      {/* Stepper */}
+      <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={1} className="flex items-center justify-center mb-10">
+        <div className="flex items-center gap-3">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${step >= 1 ? 'bg-primary-500 text-white shadow-glow' : 'bg-dark-700 text-slate-500'}`}>1</div>
+          <div className={`w-12 h-1 rounded-full transition-colors ${step >= 2 ? 'bg-primary-500' : 'bg-dark-700'}`} />
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${step >= 2 ? 'bg-primary-500 text-white shadow-glow' : 'bg-dark-700 text-slate-500'}`}>2</div>
+        </div>
+      </motion.div>
 
       <AnimatePresence mode="wait">
-        {/* Step 1: File Upload */}
         {step === 1 && (
-          <motion.div key="s1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-            <div
-              {...getRootProps()}
-              className={`glass-card p-16 text-center cursor-pointer transition-all duration-300 border-2 border-dashed group ${
-                isDragActive
-                  ? 'border-primary-500 bg-primary-500/5 shadow-glow'
-                  : 'border-surface-border hover:border-primary-500/40 hover:bg-primary-500/[0.02]'
-              }`}
-            >
+          <motion.div key="s1" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+            className="glass-card p-2 group hover:border-primary-500/30 transition-all duration-500">
+            <div {...getRootProps()} className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-16 text-center cursor-pointer transition-all duration-500 ${isDragActive ? 'border-primary-500 bg-primary-500/10' : 'border-surface-border hover:border-primary-500/40 hover:bg-white/[0.02]'}`}>
               <input {...getInputProps()} />
-              <motion.div
-                animate={isDragActive ? { scale: 1.1, rotate: 3 } : { scale: 1, rotate: 0 }}
-                className={`w-20 h-20 rounded-2xl mx-auto mb-5 flex items-center justify-center transition-colors ${
-                  isDragActive ? 'bg-primary-500/20' : 'bg-dark-600 group-hover:bg-dark-500'
-                }`}
-              >
-                <Upload size={32} className={isDragActive ? 'text-primary-400' : 'text-slate-400 group-hover:text-primary-400 transition-colors'} />
-              </motion.div>
-              <h3 className="text-xl font-display font-semibold text-white mb-2">
-                {isDragActive ? 'Drop your resume here' : 'Drag & drop your resume'}
-              </h3>
-              <p className="text-sm text-slate-400 mb-6">or click anywhere to browse files</p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-500/10 border border-primary-500/20 text-xs font-medium text-primary-300">
-                <FileText size={13} /> PDF only · Max 5MB
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-dark-900/50 pointer-events-none" />
+              
+              <div className="relative z-10">
+                <motion.div animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+                  className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center bg-dark-800 border border-surface-border shadow-2xl group-hover:bg-dark-700 transition-colors">
+                  <Upload size={36} className={isDragActive ? 'text-primary-400' : 'text-slate-400 group-hover:text-primary-400 transition-colors'} />
+                </motion.div>
+                <h3 className="text-2xl font-display font-bold text-white mb-2">
+                  {isDragActive ? 'Drop it like it\'s hot' : 'Select or drop your resume'}
+                </h3>
+                <p className="text-sm text-slate-400 mb-8">PDF, DOCX, or TXT up to 5MB</p>
+                <button className="btn-primary px-8 py-3.5 text-sm shadow-glow pointer-events-none">
+                  Browse Files
+                </button>
               </div>
             </div>
 
-            {/* Tips */}
-            <div className="mt-6 space-y-3">
-              {tips.map(({ icon: Icon, text }, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-dark-800/50 border border-surface-border/50"
-                >
-                  <Icon size={15} className="text-primary-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-xs text-slate-400 leading-relaxed">{text}</p>
-                </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4">
+              {[{i: Target, t: 'Paste full job description'}, {i: Brain, t: '15+ ATS dimensions checked'}, {i: Shield, t: '100% private & secure'}].map(({i: Icon, t}, j) => (
+                <div key={j} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-dark-800/50 border border-surface-border/50">
+                  <Icon size={16} className="text-primary-400" />
+                  <span className="text-xs font-medium text-slate-300">{t}</span>
+                </div>
               ))}
             </div>
           </motion.div>
         )}
 
-        {/* Step 2: Job Details */}
-        {step === 2 && (
+        {step === 2 && !localResult && (
           <motion.div key="s2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <form onSubmit={handleAnalyze} className="space-y-5">
-              {/* File preview */}
-              <div className="glass-card p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                    <FileText size={17} className="text-emerald-400" />
+            <form onSubmit={analysisMode === 'ai' ? handleAIAnalysis : (e) => { e.preventDefault(); handleLocalAnalysis(); }} className="space-y-6">
+              
+              <div className="glass-card p-5 flex items-center justify-between border-emerald-500/20 bg-emerald-500/5">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shadow-inner">
+                    <FileText size={20} className="text-emerald-400" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-200">{file?.name}</p>
-                    <p className="text-xs text-slate-500">{formatFileSize(file?.size || 0)} · PDF</p>
+                    <p className="text-sm font-bold text-emerald-100">{file?.name}</p>
+                    <p className="text-xs text-emerald-500/70 font-medium">{formatFileSize(file?.size || 0)} · {fileExt}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-emerald-400 font-medium">Ready ✓</span>
-                  <button
-                    type="button"
-                    onClick={() => { setFile(null); setStep(1) }}
-                    className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
+                <button type="button" onClick={() => { setFile(null); setStep(1) }} className="p-2 text-emerald-500/50 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors">
+                  <X size={18} />
+                </button>
               </div>
 
-              {/* Two-column: Job Title + Target Role */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="glass-card p-6 space-y-6">
                 <div>
-                  <label className="text-sm font-medium text-slate-300 mb-2 block">
-                    Job Title <span className="text-slate-600 font-normal">(optional)</span>
+                  <label className="text-sm font-bold text-white mb-3 block flex items-center gap-2">
+                    <Zap size={16} className="text-primary-400" /> Choose Analysis Mode
                   </label>
-                  <div className="relative">
-                    <Briefcase size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-                    <input
-                      type="text"
-                      placeholder="e.g. Frontend Developer"
-                      value={jobTitle}
-                      onChange={(e) => setJobTitle(e.target.value)}
-                      className="input-field pl-10"
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <button type="button" onClick={() => setAnalysisMode('local')} className={`p-4 rounded-xl border text-left transition-all ${analysisMode === 'local' ? 'bg-primary-500/10 border-primary-500 shadow-glow' : 'bg-dark-800 border-surface-border hover:border-slate-600'}`}>
+                      <div className="flex items-center gap-2 mb-1"><Zap size={16} className={analysisMode === 'local' ? 'text-primary-400' : 'text-slate-400'} /><span className={`font-bold ${analysisMode === 'local' ? 'text-white' : 'text-slate-300'}`}>Instant (Local)</span></div>
+                      <p className="text-xs text-slate-500 font-medium">Fast. Private. 7 dimensions.</p>
+                    </button>
+                    <button type="button" onClick={() => setAnalysisMode('ai')} className={`p-4 rounded-xl border text-left transition-all ${analysisMode === 'ai' ? 'bg-violet-500/10 border-violet-500 shadow-glow' : 'bg-dark-800 border-surface-border hover:border-slate-600'}`}>
+                      <div className="flex items-center gap-2 mb-1"><Brain size={16} className={analysisMode === 'ai' ? 'text-violet-400' : 'text-slate-400'} /><span className={`font-bold ${analysisMode === 'ai' ? 'text-white' : 'text-slate-300'}`}>AI Deep Analysis</span></div>
+                      <p className="text-xs text-slate-500 font-medium">Gemini AI. 15+ dimensions.</p>
+                    </button>
                   </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-slate-300 mb-2 block">
-                    Target Role
-                  </label>
-                  <div className="relative">
-                    <Target size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
-                    <select
-                      value={targetRole}
-                      onChange={(e) => setTargetRole(e.target.value)}
-                      className="input-field pl-10 appearance-none cursor-pointer"
-                    >
-                      {TARGET_ROLES.map(r => (
-                        <option key={r.value} value={r.value}>{r.label}</option>
-                      ))}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-bold text-slate-300 mb-2 block uppercase tracking-wider">Experience Level</label>
+                    <select value={experienceLevel} onChange={(e) => setExperienceLevel(e.target.value)} className="input-field text-sm font-medium">
+                      <option value="auto">Auto-detect</option>
+                      <option value="fresher">Student / Fresher</option>
+                      <option value="experienced">Experienced Pro</option>
                     </select>
-                    <ChevronRight size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 rotate-90 pointer-events-none" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-slate-300 mb-2 block uppercase tracking-wider">Target Role (Optional)</label>
+                    <select value={targetRole} onChange={(e) => setTargetRole(e.target.value)} className="input-field text-sm font-medium">
+                      {TARGET_ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-bold text-white flex items-center gap-2">
+                      <Briefcase size={16} className="text-accent-400" /> Job Description
+                    </label>
+                    <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${jobDescription.length < 50 ? 'bg-rose-500/10 text-rose-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
+                      {jobDescription.length} chars
+                    </span>
+                  </div>
+                  <textarea required rows={8} placeholder="Paste the complete job description here to get an accurate keyword and skill match score..."
+                    value={jobDescription} onChange={(e) => setJobDescription(e.target.value)}
+                    className="input-field resize-none font-medium text-sm leading-relaxed" />
+                </div>
+
+                <button type="submit" disabled={loading} className="w-full btn-primary py-4 text-base shadow-glow group">
+                  {loading ? <span className="flex items-center justify-center gap-2"><Loader2 size={18} className="animate-spin" /> Analyzing...</span> : 
+                    <span className="flex items-center justify-center gap-2">
+                      <Sparkles size={18} /> {analysisMode === 'local' ? 'Run Local Analysis' : 'Run AI Deep Analysis'} 
+                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  }
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+
+        {step === 2 && localResult && (
+          <motion.div key="s3" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
+                <CheckCircle2 size={24} className="text-emerald-400" /> Analysis Complete
+              </h2>
+              <button onClick={() => { setStep(1); setLocalResult(null); setFile(null); setJobDescription(''); }} className="btn-secondary text-xs px-4 py-2">
+                New Analysis
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-1">
+                <div className="glass-card p-8 text-center sticky top-24">
+                  <ScoreCircle score={localResult.score} size={160} strokeWidth={12} className="mx-auto" />
+                  <div className="mt-6 flex justify-center gap-2">
+                    <button onClick={() => generateATSReport(localResult, file?.name || 'Resume')} className="btn-primary text-xs py-2 px-4 shadow-glow flex-1 justify-center">
+                      <Download size={14} /> Save PDF
+                    </button>
                   </div>
                 </div>
               </div>
-
-              {/* Job Description */}
-              <div>
-                <label className="text-sm font-medium text-slate-300 mb-2 flex items-center justify-between">
-                  Job Description
-                  <span className={`text-xs font-mono ${jobDescription.length < 50 ? 'text-slate-600' : 'text-emerald-400'}`}>
-                    {jobDescription.length} chars
-                  </span>
-                </label>
-                <textarea
-                  required
-                  rows={12}
-                  placeholder={"Paste the FULL job description here...\n\nInclude:\n• Required skills & qualifications\n• Responsibilities\n• Nice-to-haves\n\nThe more detail you provide, the better the AI analysis."}
-                  value={jobDescription}
-                  onChange={(e) => setJobDescription(e.target.value)}
-                  className="input-field resize-none"
-                />
-                {jobDescription.length > 0 && jobDescription.length < 50 && (
-                  <p className="text-xs text-amber-400 mt-1.5 flex items-center gap-1">
-                    <AlertCircle size={11} /> Minimum 50 characters required for meaningful analysis.
-                  </p>
-                )}
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-3 pt-1">
-                <button type="button" onClick={() => setStep(1)} className="btn-secondary flex-none">
-                  Back
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading || jobDescription.trim().length < 50}
-                  className="btn-primary flex-1 justify-center py-3.5 text-base disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <><Loader2 size={18} className="animate-spin" /> Analyzing...</>
-                  ) : (
-                    <><Sparkles size={18} /> Run Deep AI Analysis</>
-                  )}
-                </button>
-              </div>
-
-              {/* Loading state */}
-              {loading && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="glass-card gradient-border p-5 space-y-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center animate-pulse">
-                      <Brain size={16} className="text-primary-400" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-white">AI Analysis in Progress</p>
-                      <p className="text-xs text-slate-500">Evaluating 15+ dimensions across your resume...</p>
-                    </div>
+              <div className="md:col-span-2 space-y-6">
+                <div className="glass-card p-6">
+                  <h3 className="text-sm font-bold text-white mb-5 uppercase tracking-wider flex items-center gap-2"><BarChart3 size={16} className="text-primary-400" /> Dimension Breakdown</h3>
+                  <div className="space-y-5">
+                    {Object.entries(localResult.dimensions).map(([key, dim]) => (
+                      <SectionScoreBar key={key} label={dim.label} score={dim.score} max={dim.max} color={dim.color} />
+                    ))}
                   </div>
-                  <div className="space-y-2">
-                    {['Extracting keywords & skills', 'Comparing with job description', 'Scoring ATS compatibility', 'Generating recruiter-grade insights'].map((t, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-slate-400">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse" style={{ animationDelay: `${i * 0.4}s` }} />
-                        {t}
+                </div>
+
+                <div className="glass-card p-6">
+                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2"><Eye size={16} className="text-accent-400" /> Recruiter Verdict</h3>
+                  <div className={`p-4 rounded-xl border ${localResult.score >= 75 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-100' : localResult.score >= 50 ? 'bg-amber-500/10 border-amber-500/20 text-amber-100' : 'bg-rose-500/10 border-rose-500/20 text-rose-100'}`}>
+                    <p className="text-sm font-medium leading-relaxed">"{localResult.recruiterVerdict}"</p>
+                  </div>
+                </div>
+
+                <div className="glass-card p-6">
+                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2"><Target size={16} className="text-violet-400" /> Priority Actions</h3>
+                  <div className="space-y-3">
+                    {localResult.suggestions.slice(0, 5).map((sugg, i) => (
+                      <div key={i} className="flex gap-3 items-start p-3 rounded-xl bg-dark-800 border border-surface-border">
+                        <div className="w-6 h-6 rounded-lg bg-dark-700 flex items-center justify-center flex-shrink-0 mt-0.5"><CornerDownRight size={12} className="text-slate-400" /></div>
+                        <p className="text-sm text-slate-300 font-medium">{sugg}</p>
                       </div>
                     ))}
                   </div>
-                </motion.div>
-              )}
-            </form>
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

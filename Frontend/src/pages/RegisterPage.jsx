@@ -26,7 +26,7 @@ const RegisterPage = () => {
       const res = await authService.register(form)
       const { user, token } = res.data.data
       setAuth(user, token)
-      toast.success('Account created! Welcome to ResumeAI 🎉')
+      toast.success('Account created! Welcome to Resume Mitra 🎉')
       navigate('/dashboard')
     } catch (err) {
       toast.error(extractError(err))
@@ -49,7 +49,7 @@ const RegisterPage = () => {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow">
               <Zap size={18} className="text-white" />
             </div>
-            <span className="font-display font-bold text-xl gradient-text">ResumeAI</span>
+            <span className="font-display font-bold text-xl gradient-text">ResumeMithra</span>
           </div>
 
           <h1 className="text-2xl font-display font-bold text-white text-center mb-1">Create your account</h1>

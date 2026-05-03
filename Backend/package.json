@@ -1,5 +1,5 @@
 {
-  "name": "ai-resume-grader-backend",
+  "name": "resumemithra-backend",
   "version": "1.0.0",
   "description": "AI-Powered Resume Grader Backend API",
   "main": "server.js",
