@@ -365,9 +365,18 @@ export function calculateATSScore(resumeText, jdText) {
   else { grade = 'D'; gradeLabel = 'Poor Match'; }
 
   return {
-    totalScore,
+    score: totalScore,
     grade,
     gradeLabel,
+    dimensions: {
+      keyword: { label: 'Keyword Match', score: keyword.score, max: 25, color: 'primary' },
+      skill: { label: 'Skills Alignment', score: skill.score, max: 20, color: 'violet' },
+      experience: { label: 'Experience Depth', score: experience.score, max: 15, color: 'emerald' },
+      structure: { label: 'Section Health', score: structure.score, max: 15, color: 'blue' },
+      formatting: { label: 'ATS Formatting', score: formatting.score, max: 10, color: 'amber' },
+      impact: { label: 'Impact & Metrics', score: impact.score, max: 10, color: 'rose' },
+      grammar: { label: 'Professional Tone', score: grammar.score, max: 5, color: 'indigo' },
+    },
     breakdown: {
       keyword,
       skill,

@@ -272,9 +272,11 @@ const UploadPage = () => {
                   <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2"><Target size={16} className="text-violet-400" /> Priority Actions</h3>
                   <div className="space-y-3">
                     {localResult.suggestions.slice(0, 5).map((sugg, i) => (
-                      <div key={i} className="flex gap-3 items-start p-3 rounded-xl bg-dark-800 border border-surface-border">
-                        <div className="w-6 h-6 rounded-lg bg-dark-700 flex items-center justify-center flex-shrink-0 mt-0.5"><CornerDownRight size={12} className="text-slate-400" /></div>
-                        <p className="text-sm text-slate-300 font-medium">{sugg}</p>
+                      <div key={i} className={`flex gap-3 items-start p-3 rounded-xl border ${sugg.priority === 'critical' ? 'bg-rose-500/5 border-rose-500/20' : sugg.priority === 'high' ? 'bg-amber-500/5 border-amber-500/20' : 'bg-dark-800 border-surface-border'}`}>
+                        <div className="w-6 h-6 rounded-lg bg-dark-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <CornerDownRight size={12} className={sugg.priority === 'critical' ? 'text-rose-400' : 'text-slate-400'} />
+                        </div>
+                        <p className="text-sm text-slate-300 font-medium">{sugg.text}</p>
                       </div>
                     ))}
                   </div>
