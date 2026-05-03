@@ -159,7 +159,6 @@ body {
     left: 100%;
     top: 100%;
   }
-}
 
   /* Gradient text */
   .gradient-text {
@@ -421,21 +420,3 @@ select.input-field option {
   animation: gradient-x 4s ease infinite;
 }
 
-/* ─── Keyword Chips ────────────────────────────────────────────────────── */
-.keyword-chip-matched {
-  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  color: #6ee7b7;
-}
-.keyword-chip-missing {
-  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium;
-  background: rgba(244, 63, 94, 0.1);
-  border: 1px solid rgba(244, 63, 94, 0.2);
-  color: #fda4af;
-}
-
-/* ─── Ghost Button ─────────────────────────────────────────────────────── */
-.btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300;
-}
