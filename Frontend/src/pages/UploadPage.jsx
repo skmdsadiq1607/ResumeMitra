@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useDropzone } from 'react-dropzone'
@@ -17,11 +17,19 @@ import ScoreCircle from '../components/ui/ScoreCircle'
 import SectionScoreBar from '../components/ui/SectionScoreBar'
 
 const TiltCard = ({ children, className }) => {
-  const ref = React.useRef(null);
-  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+  const ref = useRef(null);
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return;
+    if (!ref.current || isMobile) return;
     const rect = ref.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -35,7 +43,7 @@ const TiltCard = ({ children, className }) => {
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      animate={!isMobile ? { rotateX: rotate.x, rotateY: rotate.y } : {}}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       style={{ transformStyle: 'preserve-3d' }}
       className={className}

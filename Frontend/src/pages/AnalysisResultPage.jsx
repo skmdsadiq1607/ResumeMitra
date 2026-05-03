@@ -1,3 +1,4 @@
+import React, { useRef, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -36,11 +37,19 @@ const scoreIcons = {
 
 // ─── Tilt Card component ───
 const TiltCard = ({ children, className = '', delay = 0, gradient = false }) => {
-  const ref = React.useRef(null);
-  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+  const ref = useRef(null);
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return;
+    if (!ref.current || isMobile) return;
     const rect = ref.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -55,7 +64,7 @@ const TiltCard = ({ children, className = '', delay = 0, gradient = false }) => 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       {...fadeUp(delay)}
-      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      animate={!isMobile ? { rotateX: rotate.x, rotateY: rotate.y } : {}}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       style={{ transformStyle: 'preserve-3d' }}
       className={`glass-card p-6 ${gradient ? 'gradient-border' : ''} ${className}`}
