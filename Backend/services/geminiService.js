@@ -52,8 +52,8 @@ JSON SCHEMA:
 
   for (const model of [...new Set(models)]) {
     try {
-      console.log(`📡 Direct API Attempt: ${model}...`);
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      console.log(`📡 Direct API Attempt: ${model} (v1)...`);
+      const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
       
       const response = await axios.post(url, {
         contents: [{ parts: [{ text: prompt }] }],
