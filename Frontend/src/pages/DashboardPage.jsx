@@ -90,7 +90,11 @@ const DashboardPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-between px-4"><div className="w-48 h-8 bg-surface-card rounded animate-pulse border border-surface-border" /><div className="w-32 h-10 bg-surface-card rounded animate-pulse border border-surface-border" /></div>
+      <>
+        <div className="flex justify-between px-4">
+          <div className="w-48 h-8 bg-surface-card rounded animate-pulse border border-surface-border" />
+          <div className="w-32 h-10 bg-surface-card rounded animate-pulse border border-surface-border" />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => <CardSkeleton key={i} />)}
         </div>
@@ -98,7 +102,7 @@ const DashboardPage = () => {
           <div className="lg:col-span-2 space-y-4"><CardSkeleton /><CardSkeleton /></div>
           <div className="space-y-4"><CardSkeleton /></div>
         </div>
-      </div>
+      </>
     )
   }
 

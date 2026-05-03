@@ -1,8 +1,8 @@
 
 import { useNavigate, Link } from 'react-router-dom'
 import { Menu, Bell, Search, Upload, Sun, Moon, ArrowLeft } from 'lucide-react'
-import { useAuthStore } from '../stores/authStore'
-import { useThemeStore } from '../stores/themeStore'
+import { useAuthStore } from '../../stores/authStore'
+import { useThemeStore } from '../../stores/themeStore'
 
 const DashboardNavbar = () => {
   const { user, isAuthenticated } = useAuthStore()

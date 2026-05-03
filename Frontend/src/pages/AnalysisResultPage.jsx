@@ -201,7 +201,7 @@ const AnalysisResultPage = () => {
             </div>
           </div>
         </div>
-      </Card>
+      </TiltCard>
 
       {/* ═══ Recruiter Verdict ═══ */}
       {report.recruiterVerdict && (
