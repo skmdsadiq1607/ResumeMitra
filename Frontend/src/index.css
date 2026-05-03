@@ -4,16 +4,35 @@
 
 /* ─── CSS Custom Properties ─────────────────────────────────────────────── */
 :root {
+  /* Dark Theme (Default) */
   --color-primary: #6366f1;
   --color-accent: #06b6d4;
   --color-bg: #080810;
-  --color-surface: #14141f;
-  --color-border: #2a2a4a;
+  --color-bg-secondary: #0c0c1a;
+  --color-surface-card: rgba(255, 255, 255, 0.05);
+  --color-surface-border: rgba(255, 255, 255, 0.1);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
   --color-text-primary: #f1f5f9;
   --color-text-secondary: #94a3b8;
-  --color-text-muted: #475569;
+  --color-text-muted: #64748b;
   --radius-card: 1rem;
-  --transition-base: all 0.2s ease;
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-mode {
+  /* Light Theme */
+  --color-bg: #f8fafc;
+  --color-bg-secondary: #f1f5f9;
+  --color-surface-card: #ffffff;
+  --color-surface-border: rgba(0, 0, 0, 0.08);
+  --color-surface-hover: rgba(0, 0, 0, 0.02);
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ─── Base Styles ───────────────────────────────────────────────────────── */

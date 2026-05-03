@@ -1,8 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Menu, X, Sparkles } from 'lucide-react';
+import { Zap, Menu, X, Sparkles, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../../stores/authStore';
+import { useThemeStore } from '../../stores/themeStore';
 
 const navItems = [
   { label: 'Home', path: '/', type: 'route' },
@@ -19,6 +20,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated } = useAuthStore();
+  const { isDarkMode, toggleTheme } = useThemeStore();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const Navbar = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`mx-auto max-w-7xl transition-all duration-500 rounded-2xl pointer-events-auto ${
           scrolled
-            ? 'bg-[#080A1A]/85 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+            ? 'bg-dark-950/85 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
             : 'bg-transparent border border-transparent'
         }`}
       >
@@ -73,7 +75,7 @@ const Navbar = () => {
               <Zap size={18} className="text-white fill-white" />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-black text-lg text-white tracking-tight leading-tight">ResumeMithra</span>
+              <span className="font-display font-black text-lg text-white tracking-tight leading-tight">ResumeMitra</span>
               <span className="text-[9px] font-bold uppercase tracking-widest text-[#00D4FF]">Free ATS Analyzer</span>
             </div>
           </Link>
@@ -95,8 +97,15 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* Auth Buttons */}
+          {/* Auth & Theme Buttons */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-[#AAB2D5] hover:text-white transition-all hover:border-[#6C63FF]/40 hover:bg-white/[0.08]"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             {isAuthenticated ? (
               <Link to="/dashboard" className="relative group px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-white text-sm font-bold overflow-hidden transition-all hover:border-[#6C63FF]/40 hover:bg-white/[0.08]">
                 <span className="relative z-10 flex items-center gap-2"><Sparkles size={14} className="text-[#6C63FF]"/> Dashboard</span>
@@ -113,9 +122,18 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button className="xl:hidden p-2 text-[#AAB2D5] hover:text-white transition-colors rounded-lg hover:bg-white/5" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-2 xl:hidden">
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-[#AAB2D5] hover:text-white transition-colors rounded-lg hover:bg-white/5"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button className="p-2 text-[#AAB2D5] hover:text-white transition-colors rounded-lg hover:bg-white/5" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
 
         </div>
       </motion.div>

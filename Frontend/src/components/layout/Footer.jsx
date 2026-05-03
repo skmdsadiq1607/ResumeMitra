@@ -14,7 +14,7 @@ const Footer = () => (
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 via-violet-500 to-accent-500 flex items-center justify-center">
               <Zap size={14} className="text-white" />
             </div>
-            <span className="font-display font-extrabold text-lg gradient-text">ResumeMithra</span>
+            <span className="font-display font-extrabold text-lg gradient-text">ResumeMitra</span>
           </div>
           <p className="text-sm text-slate-500 max-w-sm leading-relaxed mb-5">
             AI-powered ATS resume analyzer that helps you optimize your resume for applicant tracking systems. 100% free, forever.
@@ -73,7 +73,7 @@ const Footer = () => (
         </div>
         
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full text-xs text-slate-600 mt-2">
-          <p>© 2026 ResumeMithra. All rights reserved.</p>
+          <p>© 2026 ResumeMitra. All rights reserved.</p>
           <p>Powered by Google Gemini AI · 100% Free</p>
         </div>
       </div>

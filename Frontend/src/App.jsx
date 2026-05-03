@@ -30,7 +30,16 @@ const AuthRoute = ({ children }) => {
   return isAuthenticated ? <Navigate to="/dashboard" replace /> : children
 }
 
+import { useEffect } from 'react'
+import { useThemeStore } from './stores/themeStore'
+
 function App() {
+  const { initTheme } = useThemeStore()
+
+  useEffect(() => {
+    initTheme()
+  }, [initTheme])
+
   return (
     <Routes>
       <Route element={<MainLayout />}>

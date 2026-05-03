@@ -35,20 +35,20 @@ export default {
           500: '#FF5C7A',
         },
         dark: {
-          950: '#050510', // Background
-          900: '#080A1A', // Secondary Background
-          800: '#11111f',
-          700: '#16162a',
+          950: 'var(--color-bg)',
+          900: 'var(--color-bg-secondary)',
+          800: 'var(--color-surface-card)',
+          700: 'var(--color-surface-border)',
         },
         surface: {
-          DEFAULT: '#080A1A',
-          card: 'rgba(255,255,255,0.06)',
-          border: 'rgba(255,255,255,0.12)',
-          hover: 'rgba(255,255,255,0.08)',
+          DEFAULT: 'var(--color-bg)',
+          card: 'var(--color-surface-card)',
+          border: 'var(--color-surface-border)',
+          hover: 'var(--color-surface-hover)',
         },
         text: {
-          primary: '#FFFFFF',
-          muted: '#AAB2D5',
+          primary: 'var(--color-text-primary)',
+          muted: 'var(--color-text-muted)',
         }
       },
       fontFamily: {

@@ -30,13 +30,13 @@ const Sidebar = () => {
   }
 
   return (
-    <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col border-r border-surface-border bg-dark-900/90 backdrop-blur-md z-40">
+    <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col border-r border-surface-border bg-dark-950/90 backdrop-blur-md z-40">
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 h-16 border-b border-surface-border">
         <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow-sm">
           <Zap size={16} className="text-white" />
         </div>
-        <span className="font-display font-bold text-lg gradient-text">Resume Mitra</span>
+        <span className="font-display font-bold text-lg gradient-text">ResumeMitra</span>
       </div>
 
       {/* Nav items */}
@@ -49,7 +49,7 @@ const Sidebar = () => {
               `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
                   ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20 shadow-glow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  : 'text-text-muted hover:text-text-primary hover:bg-surface-hover'
               }`
             }
           >
@@ -67,8 +67,8 @@ const Sidebar = () => {
               {user?.name?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-slate-200 truncate">{user?.name}</p>
-              <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+              <p className="text-sm font-medium text-text-primary truncate">{user?.name}</p>
+              <p className="text-xs text-text-muted truncate">{user?.email}</p>
             </div>
           </div>
         </div>

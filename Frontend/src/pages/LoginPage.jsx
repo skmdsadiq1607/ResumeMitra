@@ -33,7 +33,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-24">
+    <div className="min-h-screen bg-dark-950 flex items-center justify-center px-4 py-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -43,13 +43,13 @@ const LoginPage = () => {
           {/* Logo */}
           <div className="flex items-center justify-center gap-2 mb-8">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow">
-              <Zap size={18} className="text-white" />
+              <Zap size={18} className="text-text-primary" />
             </div>
-            <span className="font-display font-bold text-xl gradient-text">ResumeMithra</span>
+            <span className="font-display font-bold text-xl gradient-text">ResumeMitra</span>
           </div>
 
-          <h1 className="text-2xl font-display font-bold text-white text-center mb-1">Welcome back</h1>
-          <p className="text-sm text-slate-400 text-center mb-8">Sign in to your account</p>
+          <h1 className="text-2xl font-display font-bold text-text-primary text-center mb-1">Welcome back</h1>
+          <p className="text-sm text-text-muted text-center mb-8">Sign in to your account to continue</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">

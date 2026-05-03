@@ -165,17 +165,17 @@ const IsometricMockup = ({ mousePosition }) => {
         className="relative w-[320px] h-[420px] sm:w-[450px] sm:h-[600px] lg:w-[600px] lg:h-[800px]"
       >
         {/* Layer 1: Base Dashboard */}
-        <div className="absolute inset-0 bg-dark-950/80 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_50px_100px_-20px_rgba(99,102,241,0.3)] overflow-hidden" style={{ transform: 'translateZ(0px)' }}>
-          <div className="h-12 border-b border-white/5 flex items-center px-6 gap-2 bg-dark-900/50">
+        <div className="absolute inset-0 bg-dark-950/80 backdrop-blur-2xl border border-surface-border rounded-3xl shadow-[0_50px_100px_-20px_rgba(99,102,241,0.3)] overflow-hidden" style={{ transform: 'translateZ(0px)' }}>
+          <div className="h-12 border-b border-surface-border/5 flex items-center px-6 gap-2 bg-dark-900/50">
             <div className="flex gap-1.5"><div className="w-3 h-3 rounded-full bg-rose-500/80"/><div className="w-3 h-3 rounded-full bg-amber-500/80"/><div className="w-3 h-3 rounded-full bg-emerald-500/80"/></div>
           </div>
           <div className="p-8 grid grid-cols-2 gap-6 h-full bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]">
              <div className="space-y-4">
-               <div className="w-full h-32 bg-white/5 rounded-2xl border border-white/5" />
-               <div className="w-full h-48 bg-white/5 rounded-2xl border border-white/5" />
+               <div className="w-full h-32 bg-surface-card rounded-2xl border border-surface-border" />
+               <div className="w-full h-48 bg-surface-card rounded-2xl border border-surface-border" />
              </div>
              <div className="space-y-4">
-               <div className="w-full h-64 bg-white/5 rounded-2xl border border-white/5" />
+               <div className="w-full h-64 bg-surface-card rounded-2xl border border-surface-border" />
              </div>
           </div>
         </div>
@@ -276,13 +276,13 @@ export default function LandingPage() {
   const mousePosition = useMousePosition();
 
   return (
-    <div className="relative min-h-screen bg-[#030014] text-slate-200 overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-dark-950 text-text-primary overflow-hidden font-sans">
       
       {/* ─── INSANE 3D BACKGROUND + MOUSE SPOTLIGHT ─── */}
       <motion.div style={{ y: yBg }} className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[#030014]" />
+        <div className="absolute inset-0 bg-dark-950" />
         {/* Dynamic Spotlight that follows mouse */}
-        <div className="absolute inset-0 opacity-40 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.15), transparent 80%)` }} />
+        <div className="absolute inset-0 opacity-40 dark:opacity-40 opacity-10 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.15), transparent 80%)` }} />
         
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(17,24,39,0)_0%,rgba(3,0,20,1)_100%)]" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZUZpbHRlcikiIG9wYWNpdHk9IjAuMTIiLz48L3N2Zz4=')] opacity-30 mix-blend-overlay" />
