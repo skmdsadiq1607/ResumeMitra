@@ -17,6 +17,9 @@ const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
 
+// Trust Render proxy
+app.set('trust proxy', 1);
+
 // ─── Security Middleware ────────────────────────────────────────────────────
 app.use(helmet());
 

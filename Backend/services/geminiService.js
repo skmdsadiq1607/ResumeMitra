@@ -181,37 +181,15 @@ Reply with ONLY the JSON object. Nothing else.
 /* ─────────────────────── Analysis Function ──────────────────────────────── */
 
 /**
- * Dynamically find the best available model for the current API key
+ * Helper to run a model name through a quick test to see if it exists
  */
-const getBestModel = async (genAI) => {
+const tryModel = async (modelName, prompt) => {
   try {
-    // If user explicitly set a model that they know works, use it
-    if (process.env.GEMINI_MODEL && process.env.GEMINI_MODEL !== 'gemini-pro' && process.env.GEMINI_MODEL !== 'gemini-1.5-flash') {
-      return genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL.trim() });
-    }
-
-    // Otherwise, try to find the best one from the list of available models
-    // This prevents 404 errors if gemini-1.5-flash isn't available under that exact name
-    const models = await genAI.listModels();
-    const modelList = models.models || [];
-    
-    // Priority order for models
-    const priorities = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro'];
-    
-    for (const priority of priorities) {
-      const found = modelList.find(m => m.name.includes(priority) && m.supportedGenerationMethods.includes('generateContent'));
-      if (found) {
-        const modelName = found.name.startsWith('models/') ? found.name : `models/${found.name}`;
-        console.log(`🤖 SUCCESS: Auto-selected model: ${modelName}`);
-        return genAI.getGenerativeModel({ model: modelName });
-      }
-    }
-
-    console.warn('⚠️ No 1.5/2.0 models found. Falling back to gemini-pro.');
-    return genAI.getGenerativeModel({ model: 'gemini-pro' });
-  } catch (error) {
-    console.error('❌ Could not list models:', error.message);
-    return genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: modelName });
+    await model.generateContent({ contents: [{ role: 'user', parts: [{ text: 'say ok' }] }] });
+    return true;
+  } catch (e) {
+    return false;
   }
 };
 
@@ -220,9 +198,42 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
     throw new Error('Gemini API key is not configured. Please set GEMINI_API_KEY in your .env file.');
   }
 
-  const model = await getBestModel(genAI);
+  // List of models to try in order of preference
+  const modelsToTry = [
+    (process.env.GEMINI_MODEL || '').trim(),
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+    'gemini-pro'
+  ].filter(Boolean);
+
+  let model;
+  let selectedName = '';
+
+  // Try each model until one works
+  for (const name of [...new Set(modelsToTry)]) {
+    try {
+      console.log(`📡 Attempting to use model: ${name}...`);
+      const testModel = genAI.getGenerativeModel({ model: name });
+      // Very short test request to see if 404
+      await testModel.generateContent({ contents: [{ role: 'user', parts: [{ text: 'hi' }] }] });
+      model = testModel;
+      selectedName = name;
+      console.log(`✅ Success! Using model: ${selectedName}`);
+      break;
+    } catch (err) {
+      if (err.message.includes('404')) {
+        console.warn(`⚠️ Model ${name} not found (404). Trying next...`);
+        continue;
+      }
+      throw err; // If it's a 401/403 or other error, stop and report it
+    }
+  }
+
+  if (!model) {
+    throw new Error('No supported Gemini models found for your API key. Please check your Google AI Studio project.');
+  }
   
-  // Set configuration on the model instance
+  // Set configuration on the working model instance
   model.generationConfig = {
     temperature: 0.25,
     topP: 0.85,
@@ -319,7 +330,28 @@ const generateLatexResume = async (resumeText, jobDescription, reportData) => {
     throw new Error('Gemini API key is not configured.');
   }
 
-  const model = await getBestModel(genAI);
+  // List of models to try in order of preference
+  const modelsToTry = [
+    (process.env.GEMINI_MODEL || '').trim(),
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+    'gemini-pro'
+  ].filter(Boolean);
+
+  let model;
+  for (const name of [...new Set(modelsToTry)]) {
+    try {
+      const testModel = genAI.getGenerativeModel({ model: name });
+      await testModel.generateContent({ contents: [{ role: 'user', parts: [{ text: 'hi' }] }] });
+      model = testModel;
+      break;
+    } catch (err) {
+      if (err.message.includes('404')) continue;
+      throw err;
+    }
+  }
+
+  if (!model) throw new Error('No supported Gemini models found.');
   
   model.generationConfig = {
     temperature: 0.2,
