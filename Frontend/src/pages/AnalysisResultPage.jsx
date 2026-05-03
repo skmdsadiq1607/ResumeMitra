@@ -112,8 +112,8 @@ const AnalysisResultPage = () => {
           <Link to={`/overleaf-builder/${id}`} className="btn-primary text-xs py-2 px-4 shadow-glow flex items-center gap-1.5 bg-violet-600 hover:bg-violet-500 border-violet-500/50">
             <Code size={13} /> Generate Overleaf Resume
           </Link>
-          <button onClick={() => window.print()} className="btn-secondary text-xs py-2 px-4 hidden sm:flex items-center gap-1.5">
-            <Printer size={13} /> PDF
+          <button onClick={() => window.print()} className="btn-secondary text-xs py-2 px-4 hidden sm:flex items-center gap-1.5 border-primary-500/30 hover:border-primary-500/60 hover:bg-primary-500/5">
+            <Download size={13} className="text-primary-400" /> Download Report (PDF)
           </button>
           <Link to="/upload" className="btn-secondary text-xs py-2 px-4 hidden sm:flex items-center gap-1.5">
             <Zap size={13} /> Re-analyze

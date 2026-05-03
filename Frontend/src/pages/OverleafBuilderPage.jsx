@@ -182,7 +182,8 @@ const OverleafBuilderPage = () => {
                   'Click "Open in Overleaf" below.',
                   'A new project will automatically be created.',
                   'Review and tweak any TODO items in the code.',
-                  'Click "Recompile" in Overleaf to generate your PDF.'
+                  'Click "Recompile" in Overleaf to generate your PDF.',
+                  'Download your professional PDF resume directly from the Overleaf interface.'
                 ].map((step, i) => (
                   <div key={i} className="flex gap-3 text-sm text-slate-300">
                     <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">{i+1}</span>
