@@ -144,6 +144,71 @@ const ParticleFieldResponsive = () => {
   return <ParticleField />;
 };
 
+const TypewriterText = () => {
+  const [index, setIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(50);
+
+  const lines = [
+    { label: "Quantified Impact", before: "Led a team of developers", after: "Directed 12+ engineers to deliver 3 core products, increasing revenue by 22%." },
+    { label: "Action Verbs", before: "Responsible for coding", after: "Architected scalable microservices using Node.js and AWS, reducing latency by 40%." },
+    { label: "Skill Integration", before: "Used React for UI", after: "Engineered responsive frontend architectures with React and Tailwind, improving SEO scores by 35%." }
+  ];
+
+  useEffect(() => {
+    let timeout;
+    const currentLine = lines[index];
+    const fullText = currentLine.after;
+
+    if (!isDeleting) {
+      if (displayText.length < fullText.length) {
+        timeout = setTimeout(() => {
+          setDisplayText(fullText.slice(0, displayText.length + 1));
+          setTypingSpeed(30 + Math.random() * 40);
+        }, typingSpeed);
+      } else {
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+          setTypingSpeed(20);
+        }, 3000); // Wait 3 seconds after writing
+      }
+    } else {
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => {
+          setDisplayText(fullText.slice(0, displayText.length - 1));
+        }, 10);
+      } else {
+        setIsDeleting(false);
+        setIndex((prev) => (prev + 1) % lines.length);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, index]);
+
+  return (
+    <div className="space-y-1 md:space-y-2">
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-bold text-primary-300 uppercase tracking-wider">{lines[index].label}</p>
+        <div className="flex gap-1">
+          <div className="w-1 h-1 rounded-full bg-primary-500 animate-pulse" />
+          <div className="w-1 h-1 rounded-full bg-primary-500 animate-pulse delay-75" />
+          <div className="w-1 h-1 rounded-full bg-primary-500 animate-pulse delay-150" />
+        </div>
+      </div>
+      <p className="text-[12px] md:text-sm text-text-secondary leading-relaxed min-h-[40px]">
+        Changed <span className="opacity-50 line-through">"{lines[index].before}"</span> to 
+        <br className="sm:hidden" />
+        <span className="text-emerald-400 font-medium ml-1">
+          "{displayText}"
+          <span className="inline-block w-1 h-4 bg-emerald-400 ml-0.5 animate-pulse" />
+        </span>
+      </p>
+    </div>
+  );
+};
+
 const AnalysisPreview = () => {
   return (
     <div className="relative w-full max-w-6xl mx-auto mt-20 px-4">
@@ -186,13 +251,7 @@ const AnalysisPreview = () => {
               />
               <div className="flex items-start gap-3">
                 <Brain size={16} className="text-primary-400 shrink-0 mt-1" />
-                <div className="space-y-1 md:space-y-2">
-                  <p className="text-[10px] font-bold text-primary-300 uppercase tracking-wider">AI Enhancement</p>
-                  <p className="text-[12px] md:text-sm text-text-secondary leading-relaxed">
-                    Quantified impact: Changed "Led a team of developers" to 
-                    <span className="text-emerald-400 font-medium ml-1">"Directed 12+ engineers to deliver 3 core products, increasing revenue by 22%."</span>
-                  </p>
-                </div>
+                <TypewriterText />
               </div>
             </div>
 
