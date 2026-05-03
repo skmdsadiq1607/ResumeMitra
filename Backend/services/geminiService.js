@@ -193,7 +193,7 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
   }
 
   const model = genAI.getGenerativeModel({
-    model: (process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim(),
+    model: (process.env.GEMINI_MODEL || 'gemini-pro').trim(),
     generationConfig: {
       temperature: 0.25,   // Low for consistency + structured output
       topP: 0.85,
@@ -292,7 +292,7 @@ const generateLatexResume = async (resumeText, jobDescription, reportData) => {
   }
 
   const model = genAI.getGenerativeModel({
-    model: (process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim(),
+    model: (process.env.GEMINI_MODEL || 'gemini-pro').trim(),
     generationConfig: {
       temperature: 0.2,
       topP: 0.85,
