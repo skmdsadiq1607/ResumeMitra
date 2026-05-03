@@ -4,7 +4,7 @@ import Sidebar from '../components/layout/Sidebar'
 
 const DashboardLayout = () => {
   return (
-    <div className="flex min-h-screen bg-dark-950">
+    <div className="flex min-h-screen bg-transparent">
       <div className="mesh-gradient" />
       {/* Sidebar */}
       <Sidebar />

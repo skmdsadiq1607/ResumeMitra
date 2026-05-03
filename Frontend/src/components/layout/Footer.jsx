@@ -16,7 +16,7 @@ const Footer = () => (
             </div>
             <div className="flex flex-col">
               <span className="font-display font-extrabold text-lg gradient-text leading-tight">ResumeMitra</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted opacity-80">by Sxdiq</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted opacity-80">By Sxdiq</span>
             </div>
           </div>
           <p className="text-sm text-text-muted max-w-sm leading-relaxed mb-5">
@@ -59,8 +59,8 @@ const Footer = () => (
       </div>
 
       <div className="border-t border-surface-border/30 mt-10 pt-6 flex flex-col items-center justify-between gap-6">
-        <p className="text-sm font-semibold text-slate-400 flex items-center gap-1.5">
-          Built with <Heart size={14} className="text-rose-500 fill-rose-500" /> by Sxdiq
+        <p className="text-sm font-semibold text-text-muted flex items-center gap-1.5">
+          Built with <Heart size={14} className="text-rose-500 fill-rose-500" /> By Sxdiq
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs text-slate-500">

@@ -76,7 +76,7 @@ const Navbar = () => {
             </div>
             <div className="flex flex-col">
               <span className="font-display font-black text-lg text-text-primary tracking-tight leading-tight">ResumeMitra</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] gradient-text opacity-90">by Sxdiq</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] gradient-text opacity-90">By Sxdiq</span>
             </div>
           </Link>
 
