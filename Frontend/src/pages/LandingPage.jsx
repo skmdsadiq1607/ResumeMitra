@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 import { 
   Zap, ArrowRight, Brain, Target, BarChart3, 
   Sparkles, Eye, Code, FileText, CheckCircle2, ChevronRight, Terminal, Network,
