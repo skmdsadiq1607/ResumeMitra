@@ -38,7 +38,7 @@ const Sidebar = () => {
         </div>
         <div className="flex flex-col">
           <span className="font-display font-bold text-lg text-text-primary tracking-tight leading-tight">ResumeMitra</span>
-          <span className="text-[9px] font-bold uppercase tracking-[0.2em] gradient-text opacity-90">By Sxdiq</span>
+          <span className="text-[9px] font-bold tracking-[0.2em] gradient-text opacity-90">By Sxdiq</span>
         </div>
       </div>
 

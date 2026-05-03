@@ -16,7 +16,7 @@ const Footer = () => (
             </div>
             <div className="flex flex-col">
               <span className="font-display font-extrabold text-lg gradient-text leading-tight">ResumeMitra</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted opacity-80">By Sxdiq</span>
+              <span className="text-[10px] font-bold tracking-[0.2em] text-text-muted opacity-80">By Sxdiq</span>
             </div>
           </div>
           <p className="text-sm text-text-muted max-w-sm leading-relaxed mb-5">

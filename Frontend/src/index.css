@@ -50,13 +50,18 @@ html {
   scroll-behavior: smooth;
 }
 
+html {
+  background-color: var(--color-bg);
+  scroll-behavior: smooth;
+}
+
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
   background-color: var(--color-bg);
-  background-attachment: fixed; /* Extra scroll protection */
+  background-attachment: fixed;
 }
 
 /* ─── Mesh Gradient Utility ────────────────────────────────────────────── */
