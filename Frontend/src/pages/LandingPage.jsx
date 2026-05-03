@@ -25,11 +25,19 @@ const useMousePosition = () => {
   return mousePosition;
 };
 
-// --- Advanced 3D Tilt Card ---
+// --- Advanced 3D Tilt Card (Disabled on mobile for better UX) ---
 const TiltCard = ({ children, className, id }) => {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
   
   const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
   const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
@@ -38,7 +46,7 @@ const TiltCard = ({ children, className, id }) => {
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return;
+    if (!ref.current || isMobile) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -60,11 +68,11 @@ const TiltCard = ({ children, className, id }) => {
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      style={!isMobile ? { rotateX, rotateY, transformStyle: "preserve-3d" } : {}}
       className={`relative perspective-1000 ${className || ''}`}
       id={id}
     >
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-500/10 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100 rounded-3xl" style={{ transform: 'translateZ(-10px)' }} />
+      {!isMobile && <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-500/10 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100 rounded-3xl" style={{ transform: 'translateZ(-10px)' }} />}
       {children}
     </motion.div>
   );
@@ -146,41 +154,41 @@ const AnalysisPreview = () => {
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="md:col-span-7 lg:col-span-8 glass-card p-6 md:p-8 min-h-[400px] relative overflow-hidden"
+          className="md:col-span-7 lg:col-span-8 glass-card p-5 sm:p-8 min-h-[300px] md:min-h-[400px] relative overflow-hidden"
         >
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6 md:mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary-500/10 flex items-center justify-center border border-primary-500/20">
-                <FileText size={20} className="text-primary-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary-500/10 flex items-center justify-center border border-primary-500/20">
+                <FileText size={18} className="text-primary-400" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-text-primary">Resume_Senior_Dev.pdf</h3>
-                <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">Uploaded 2m ago</p>
+                <h3 className="text-[13px] md:text-sm font-bold text-text-primary truncate max-w-[150px] sm:max-w-none">Resume_Senior_Dev.pdf</h3>
+                <p className="text-[9px] text-text-muted uppercase tracking-widest font-bold">Uploaded 2m ago</p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="hidden sm:flex gap-2">
               <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">ATS PASSED</span>
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5 md:space-y-6">
             <div className="space-y-2">
-              <div className="h-4 w-1/3 bg-surface-hover rounded-md shimmer" />
-              <div className="h-3 w-full bg-surface-hover/50 rounded-md" />
-              <div className="h-3 w-5/6 bg-surface-hover/50 rounded-md" />
+              <div className="h-3 md:h-4 w-1/3 bg-surface-hover rounded-md shimmer" />
+              <div className="h-2 md:h-3 w-full bg-surface-hover/50 rounded-md" />
+              <div className="h-2 md:h-3 w-5/6 bg-surface-hover/50 rounded-md" />
             </div>
             
-            <div className="p-4 rounded-xl bg-primary-500/5 border border-primary-500/10 relative group">
+            <div className="p-3 md:p-4 rounded-xl bg-primary-500/5 border border-primary-500/10 relative group">
               <motion.div 
                 animate={{ top: ['0%', '100%', '0%'] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                 className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500 to-transparent z-10 opacity-50"
               />
               <div className="flex items-start gap-3">
-                <Brain size={18} className="text-primary-400 shrink-0 mt-1" />
-                <div className="space-y-2">
-                  <p className="text-xs font-bold text-primary-300 uppercase tracking-wider">AI Enhancement</p>
-                  <p className="text-sm text-text-secondary leading-relaxed">
+                <Brain size={16} className="text-primary-400 shrink-0 mt-1" />
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-[10px] font-bold text-primary-300 uppercase tracking-wider">AI Enhancement</p>
+                  <p className="text-[12px] md:text-sm text-text-secondary leading-relaxed">
                     Quantified impact: Changed "Led a team of developers" to 
                     <span className="text-emerald-400 font-medium ml-1">"Directed 12+ engineers to deliver 3 core products, increasing revenue by 22%."</span>
                   </p>
@@ -189,9 +197,9 @@ const AnalysisPreview = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="h-4 w-1/4 bg-surface-hover rounded-md" />
-              <div className="h-3 w-full bg-surface-hover/50 rounded-md" />
-              <div className="h-3 w-4/6 bg-surface-hover/50 rounded-md" />
+              <div className="h-3 md:h-4 w-1/4 bg-surface-hover rounded-md" />
+              <div className="h-2 md:h-3 w-full bg-surface-hover/50 rounded-md" />
+              <div className="h-2 md:h-3 w-4/6 bg-surface-hover/50 rounded-md" />
             </div>
           </div>
 
@@ -208,11 +216,22 @@ const AnalysisPreview = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="glass-card p-8 flex flex-col items-center justify-center text-center relative group"
+            className="glass-card p-6 md:p-8 flex flex-col items-center justify-center text-center relative group"
           >
-            <div className="relative w-32 h-32 mb-4">
+            <div className="relative w-24 h-24 md:w-32 md:h-32 mb-4">
               <svg className="w-full h-full transform -rotate-90">
-                <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-surface-border" />
+                <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-surface-border md:hidden" />
+                <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-surface-border hidden md:block" />
+                
+                <motion.circle 
+                  cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="6" fill="transparent" 
+                  strokeDasharray="263.8"
+                  initial={{ strokeDashoffset: 263.8 }}
+                  whileInView={{ strokeDashoffset: 263.8 - (263.8 * 0.88) }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className="text-primary-500 md:hidden" 
+                />
                 <motion.circle 
                   cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" 
                   strokeDasharray="364.4"
@@ -220,16 +239,16 @@ const AnalysisPreview = () => {
                   whileInView={{ strokeDashoffset: 364.4 - (364.4 * 0.88) }}
                   viewport={{ once: true }}
                   transition={{ duration: 1.5, ease: "easeOut" }}
-                  className="text-primary-500" 
+                  className="text-primary-500 hidden md:block" 
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-black text-text-primary">88</span>
-                <span className="text-[10px] font-bold text-text-muted">SCORE</span>
+                <span className="text-2xl md:text-4xl font-black text-text-primary">88</span>
+                <span className="text-[8px] md:text-[10px] font-bold text-text-muted">SCORE</span>
               </div>
             </div>
-            <h4 className="text-lg font-bold text-text-primary mb-1">Excellent Alignment</h4>
-            <p className="text-xs text-text-muted">Top 5% of candidates for this role</p>
+            <h4 className="text-base md:text-lg font-bold text-text-primary mb-1">Excellent Alignment</h4>
+            <p className="text-[11px] md:text-xs text-text-muted">Top 5% of candidates for this role</p>
           </motion.div>
 
           {/* Keywords Card */}
