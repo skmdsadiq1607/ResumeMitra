@@ -282,7 +282,10 @@ export default function LandingPage() {
       <motion.div style={{ y: yBg }} className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-transparent" />
         {/* Dynamic Spotlight that follows mouse */}
-        <div className="absolute inset-0 opacity-40 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1), transparent 80%)` }} />
+        <div className="absolute inset-0 opacity-40 dark:opacity-30 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1), transparent 80%)` }} />
+        
+        {/* Dark Mode ONLY Depth Gradient */}
+        <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_50%_50%,rgba(17,24,39,0)_0%,rgba(3,0,20,1)_100%)] pointer-events-none" />
         
         <div className="absolute inset-0 bg-transparent" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZUZpbHRlcikiIG9wYWNpdHk9IjAuMTIiLz48L3N2Zz4=')] opacity-30 mix-blend-overlay" />

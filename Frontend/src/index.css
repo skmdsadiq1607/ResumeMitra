@@ -12,9 +12,9 @@
   --color-surface-card: rgba(255, 255, 255, 0.05);
   --color-surface-border: rgba(255, 255, 255, 0.1);
   --color-surface-hover: rgba(255, 255, 255, 0.08);
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #64748b;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
   --radius-card: 1rem;
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
