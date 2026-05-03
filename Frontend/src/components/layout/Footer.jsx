@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Zap, Shield, Lock, Trash2, Heart } from 'lucide-react'
 
 const Footer = () => (
-  <footer className="border-t border-surface-border/30 bg-dark-950/80 mt-auto relative overflow-hidden">
+  <footer className="border-t border-surface-border/30 bg-transparent mt-auto relative overflow-hidden">
     {/* Ambient glow */}
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary-500/3 blur-[100px] rounded-full pointer-events-none" />
 
@@ -10,13 +10,16 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div className="md:col-span-2">
-          <div className="flex items-center gap-2.5 mb-4">
+          <div className="flex items-center gap-2.5 mb-2">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 via-violet-500 to-accent-500 flex items-center justify-center">
               <Zap size={14} className="text-white" />
             </div>
-            <span className="font-display font-extrabold text-lg gradient-text">ResumeMitra</span>
+            <div className="flex flex-col">
+              <span className="font-display font-extrabold text-lg gradient-text leading-tight">ResumeMitra</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted opacity-80">by Sxdiq</span>
+            </div>
           </div>
-          <p className="text-sm text-slate-500 max-w-sm leading-relaxed mb-5">
+          <p className="text-sm text-text-muted max-w-sm leading-relaxed mb-5">
             AI-powered ATS resume analyzer that helps you optimize your resume for applicant tracking systems. 100% free, forever.
           </p>
           <div className="flex flex-wrap items-center gap-2">
@@ -34,12 +37,12 @@ const Footer = () => (
 
         {/* Navigation */}
         <div>
-          <h3 className="text-sm font-semibold text-slate-200 mb-5">Platform</h3>
-          <ul className="space-y-3 text-sm text-slate-500">
-            <li><Link to="/register" className="hover:text-slate-200 transition-colors duration-300">Get Started</Link></li>
-            <li><Link to="/how-ats-works" className="hover:text-slate-200 transition-colors duration-300">How ATS Works</Link></li>
-            <li><Link to="/login" className="hover:text-slate-200 transition-colors duration-300">Sign In</Link></li>
-            <li><Link to="/dashboard" className="hover:text-slate-200 transition-colors duration-300">Dashboard</Link></li>
+          <h3 className="text-sm font-semibold text-text-primary mb-5">Platform</h3>
+          <ul className="space-y-3 text-sm text-text-muted">
+            <li><Link to="/register" className="hover:text-text-primary transition-colors duration-300">Get Started</Link></li>
+            <li><Link to="/how-ats-works" className="hover:text-text-primary transition-colors duration-300">How ATS Works</Link></li>
+            <li><Link to="/login" className="hover:text-text-primary transition-colors duration-300">Sign In</Link></li>
+            <li><Link to="/dashboard" className="hover:text-text-primary transition-colors duration-300">Dashboard</Link></li>
           </ul>
         </div>
 

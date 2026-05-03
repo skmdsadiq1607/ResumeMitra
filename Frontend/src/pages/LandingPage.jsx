@@ -276,11 +276,11 @@ export default function LandingPage() {
   const mousePosition = useMousePosition();
 
   return (
-    <div className="relative min-h-screen bg-dark-950 text-text-primary overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-transparent text-text-primary overflow-hidden font-sans">
       
       {/* ─── INSANE 3D BACKGROUND + MOUSE SPOTLIGHT ─── */}
       <motion.div style={{ y: yBg }} className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-dark-950" />
+        <div className="absolute inset-0 bg-transparent" />
         {/* Dynamic Spotlight that follows mouse */}
         <div className="absolute inset-0 opacity-40 dark:opacity-40 opacity-10 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.15), transparent 80%)` }} />
         
@@ -301,10 +301,10 @@ export default function LandingPage() {
         
         {/* Badge */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}
-          className="group relative inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.12)] backdrop-blur-xl mb-8 sm:mb-12 cursor-pointer overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#6C63FF]/20 via-[#9B5CFF]/20 to-[#00D4FF]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          className="group relative inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-surface-card border border-surface-border backdrop-blur-xl mb-8 sm:mb-12 cursor-pointer overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-purple-500/10 to-accent-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="w-2 h-2 rounded-full bg-[#00C896] animate-pulse shadow-[0_0_10px_rgba(0,200,150,0.8)]" />
-          <span className="text-xs font-bold uppercase tracking-widest text-white">
+          <span className="text-xs font-bold uppercase tracking-widest text-text-primary">
             TRANSPARENT ATS ANALYSIS
           </span>
         </motion.div>
@@ -313,8 +313,8 @@ export default function LandingPage() {
         <div className="text-center max-w-6xl mx-auto z-20">
           <motion.h1 initial={{ opacity: 0, filter: 'blur(10px)', y: 30 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-3xl sm:text-5xl lg:text-6xl xl:text-[5.5rem] font-display font-black leading-[1.1] tracking-tighter">
-            <span className="text-white drop-shadow-2xl">Precision Resume Intelligence —</span><br/>
-            <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#6C63FF] via-[#9B5CFF] to-[#00D4FF] animate-gradient-x filter drop-shadow-[0_0_20px_rgba(108,99,255,0.3)]">
+            <span className="text-text-primary drop-shadow-2xl">Precision Resume Intelligence —</span><br/>
+            <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-purple-500 to-accent-500 animate-gradient-x filter drop-shadow-[0_0_20px_rgba(108,99,255,0.3)]">
               Built for Real Job Matching
             </span>
           </motion.h1>
@@ -356,7 +356,7 @@ export default function LandingPage() {
       {/* ─── TRUST SECTION ─── */}
       <section className="py-12 sm:py-24 relative z-10 border-y border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.01)]">
          <div className="text-center max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-text-primary mb-4">
                Built for Accuracy, Privacy, and Ethical Resume Improvement
             </h2>
             <p className="text-lg text-[#AAB2D5] mb-12">No fake scores. Only explainable resume analysis.</p>
@@ -377,10 +377,10 @@ export default function LandingPage() {
             <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-8 sm:p-16 border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.03)] text-center flex flex-col items-center">
               <div className="absolute inset-0 bg-gradient-to-br from-[#6C63FF]/10 to-[#00D4FF]/5" />
               <div className="relative z-10 flex flex-col items-center">
-                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#6C63FF] to-[#9B5CFF] flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(108,99,255,0.4)]">
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(108,99,255,0.4)]">
                   <Zap size={40} className="text-white fill-white" />
                 </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white mb-6 leading-tight max-w-2xl">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text-primary mb-6 leading-tight max-w-2xl">
                   Ready to Build a Resume That Actually Matches the Job?
                 </h2>
                 <p className="text-[#AAB2D5] text-xl mb-10 leading-relaxed max-w-xl">100% Free. No credit card. No fake scores. Just transparent AI analysis.</p>
