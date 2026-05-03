@@ -282,9 +282,9 @@ export default function LandingPage() {
       <motion.div style={{ y: yBg }} className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-transparent" />
         {/* Dynamic Spotlight that follows mouse */}
-        <div className="absolute inset-0 opacity-40 dark:opacity-40 opacity-10 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.15), transparent 80%)` }} />
+        <div className="absolute inset-0 opacity-40 transition-opacity duration-300 pointer-events-none" style={{ background: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1), transparent 80%)` }} />
         
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(17,24,39,0)_0%,rgba(3,0,20,1)_100%)]" />
+        <div className="absolute inset-0 bg-transparent" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZUZpbHRlcikiIG9wYWNpdHk9IjAuMTIiLz48L3N2Zz4=')] opacity-30 mix-blend-overlay" />
         
         {/* Massive Animated Glows */}
@@ -359,12 +359,12 @@ export default function LandingPage() {
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-text-primary mb-4">
                Built for Accuracy, Privacy, and Ethical Resume Improvement
             </h2>
-            <p className="text-lg text-[#AAB2D5] mb-12">No fake scores. Only explainable resume analysis.</p>
+            <p className="text-lg text-text-muted mb-12">No fake scores. Only explainable resume analysis.</p>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-               <div className="flex items-center gap-3 text-[#AAB2D5] font-semibold text-sm"><Shield size={18} className="text-[#00C896]"/> Your Data is Private</div>
-               <div className="flex items-center gap-3 text-[#AAB2D5] font-semibold text-sm"><CheckCircle2 size={18} className="text-[#00C896]"/> Zero Hallucinated Scores</div>
-               <div className="flex items-center gap-3 text-[#AAB2D5] font-semibold text-sm"><Lock size={18} className="text-[#00C896]"/> Deterministic Grading</div>
-               <div className="flex items-center gap-3 text-[#AAB2D5] font-semibold text-sm"><Eye size={18} className="text-[#00C896]"/> Delete Anytime</div>
+               <div className="flex items-center gap-3 text-text-muted font-semibold text-sm"><Shield size={18} className="text-[#00C896]"/> Your Data is Private</div>
+               <div className="flex items-center gap-3 text-text-muted font-semibold text-sm"><CheckCircle2 size={18} className="text-[#00C896]"/> Zero Hallucinated Scores</div>
+               <div className="flex items-center gap-3 text-text-muted font-semibold text-sm"><Lock size={18} className="text-[#00C896]"/> Deterministic Grading</div>
+               <div className="flex items-center gap-3 text-text-muted font-semibold text-sm"><Eye size={18} className="text-[#00C896]"/> Delete Anytime</div>
             </div>
          </div>
       </section>
@@ -383,7 +383,7 @@ export default function LandingPage() {
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text-primary mb-6 leading-tight max-w-2xl">
                   Ready to Build a Resume That Actually Matches the Job?
                 </h2>
-                <p className="text-[#AAB2D5] text-xl mb-10 leading-relaxed max-w-xl">100% Free. No credit card. No fake scores. Just transparent AI analysis.</p>
+                <p className="text-text-muted text-xl mb-10 leading-relaxed max-w-xl">100% Free. No credit card. No fake scores. Just transparent AI analysis.</p>
                 <Link to="/register" className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-xl font-bold text-white text-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(108,99,255,0.4)]">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#6C63FF] to-[#9B5CFF]" />
                   <span className="relative z-10 flex items-center gap-2">

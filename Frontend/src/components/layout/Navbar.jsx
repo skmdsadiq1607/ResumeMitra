@@ -112,7 +112,7 @@ const Navbar = () => {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-semibold text-[#AAB2D5] hover:text-white transition-colors px-3 py-2">Sign In</Link>
+                <Link to="/login" className="text-sm font-semibold text-text-muted hover:text-text-primary transition-colors px-3 py-2">Sign In</Link>
                 <Link to="/register" className="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-white text-sm overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(108,99,255,0.5)] hover:scale-[1.02]">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#6C63FF] to-[#9B5CFF]" />
                   <span className="relative z-10 flex items-center gap-1.5">Get Started Free</span>
