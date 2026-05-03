@@ -15,7 +15,7 @@ const HistoryPage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['resume-history', page],
     queryFn: () => resumeService.getHistory({ page, limit: 10 }).then((r) => r.data.data),
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   })
 
   const reports = data?.reports || []
