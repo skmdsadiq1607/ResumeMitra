@@ -86,6 +86,7 @@ JSON SCHEMA:
       lastError = error.response?.data?.error?.message || error.message;
       console.warn(`⚠️ Model ${model} failed: ${lastError}`);
       if (lastError.includes('API_KEY_INVALID')) break;
+    }
   }
 
   // DEBUG: If everything failed, list what IS available
