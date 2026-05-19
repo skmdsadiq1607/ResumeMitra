@@ -71,10 +71,10 @@ const Navbar = () => {
           
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group shrink-0">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#6C63FF] to-[#00D4FF] shadow-[0_0_15px_rgba(108,99,255,0.4)] group-hover:scale-110 transition-transform duration-500">
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br from-[#6366F1] to-[#38BDF8] border border-white/10 shadow-[0_8px_20px_-4px_rgba(99,102,241,0.35)] group-hover:scale-105 group-hover:shadow-[0_12px_24px_-4px_rgba(99,102,241,0.5)] transition-all duration-300">
               <Zap size={18} className="text-white fill-white" />
             </div>
-            <span className="font-display font-black text-lg text-text-primary tracking-tight leading-none">ResumeMitra</span>
+            <span className="font-display font-extrabold text-xl text-text-primary tracking-tight leading-none group-hover:text-primary-400 transition-colors duration-300">ResumeMitra</span>
           </Link>
 
           {/* Desktop Nav Items */}

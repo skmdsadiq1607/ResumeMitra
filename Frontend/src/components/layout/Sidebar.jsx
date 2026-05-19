@@ -32,9 +32,9 @@ const Sidebar = () => {
   return (
     <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col border-r border-surface-border bg-surface-card/90 backdrop-blur-md z-40">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-6 h-16 border-b border-surface-border">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow-sm">
-          <Zap size={16} className="text-white" />
+      <div className="flex items-center gap-3 px-6 h-16 border-b border-surface-border">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#38BDF8] border border-white/10 flex items-center justify-center shadow-[0_4px_12px_-2px_rgba(99,102,241,0.3)]">
+          <Zap size={14} className="text-white" />
         </div>
         <span className="font-display font-bold text-lg text-text-primary tracking-tight leading-none">ResumeMitra</span>
       </div>
