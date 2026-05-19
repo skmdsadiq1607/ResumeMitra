@@ -4,6 +4,7 @@
  */
 
 const { validationResult } = require('express-validator');
+const axios = require('axios');
 const User = require('../models/User');
 const { generateToken } = require('../utils/jwtUtils');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
@@ -116,4 +117,72 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, updateProfile };
+// ─── Google Login ──────────────────────────────────────────────────────────
+const googleLogin = async (req, res, next) => {
+  try {
+    const { credential, accessToken } = req.body;
+    let email, name, avatar;
+
+    if (credential) {
+      // Validate Google ID Token (credential) using Google tokeninfo endpoint
+      const response = await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+      const payload = response.data;
+      email = payload.email;
+      name = payload.name;
+      avatar = payload.picture;
+    } else if (accessToken) {
+      // Validate Google Access Token using standard userinfo endpoint
+      const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const payload = response.data;
+      email = payload.email;
+      name = payload.name;
+      avatar = payload.picture;
+    } else {
+      return errorResponse(res, 'Google credential or access token is required.', 400);
+    }
+
+    if (!email) {
+      return errorResponse(res, 'Failed to retrieve user information from Google.', 400);
+    }
+
+    // Check if user already exists
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create a new user with Google details
+      const crypto = require('crypto');
+      const dummyPassword = crypto.randomBytes(16).toString('hex');
+      user = await User.create({
+        name,
+        email,
+        password: dummyPassword,
+        avatar,
+      });
+    } else {
+      // If user exists, optionally update their avatar or lastLogin details
+      let needsSave = false;
+      if (avatar && user.avatar !== avatar) {
+        user.avatar = avatar;
+        needsSave = true;
+      }
+      user.lastLogin = new Date();
+      await user.save({ validateBeforeSave: false });
+    }
+
+    if (!user.isActive) {
+      return errorResponse(res, 'Your account has been deactivated. Contact support.', 403);
+    }
+
+    const token = generateToken(user);
+    return successResponse(res, 'Logged in with Google successfully!', {
+      token,
+      user: user.toSafeObject(),
+    });
+  } catch (error) {
+    console.error('Google Auth Error:', error.response?.data || error.message);
+    return errorResponse(res, 'Google Authentication failed. Please try again.', 401);
+  }
+};
+
+module.exports = { register, login, getMe, updateProfile, googleLogin };
