@@ -74,10 +74,7 @@ const Navbar = () => {
             <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#6C63FF] to-[#00D4FF] shadow-[0_0_15px_rgba(108,99,255,0.4)] group-hover:scale-110 transition-transform duration-500">
               <Zap size={18} className="text-white fill-white" />
             </div>
-            <div className="flex flex-col">
-              <span className="font-display font-black text-lg text-text-primary tracking-tight leading-tight">ResumeMitra</span>
-              <span className="text-[10px] font-bold tracking-[0.2em] gradient-text opacity-90">By Sxdiq</span>
-            </div>
+            <span className="font-display font-black text-lg text-text-primary tracking-tight leading-none">ResumeMitra</span>
           </Link>
 
           {/* Desktop Nav Items */}

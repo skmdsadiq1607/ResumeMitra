@@ -14,10 +14,7 @@ const Footer = () => (
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 via-violet-500 to-accent-500 flex items-center justify-center">
               <Zap size={14} className="text-white" />
             </div>
-            <div className="flex flex-col">
-              <span className="font-display font-extrabold text-lg gradient-text leading-tight">ResumeMitra</span>
-              <span className="text-[10px] font-bold tracking-[0.2em] text-text-muted opacity-80">By Sxdiq</span>
-            </div>
+            <span className="font-display font-extrabold text-lg gradient-text leading-none">ResumeMitra</span>
           </div>
           <p className="text-sm text-text-muted max-w-sm leading-relaxed mb-5">
             AI-powered ATS resume analyzer that helps you optimize your resume for applicant tracking systems. 100% free, forever.
@@ -60,7 +57,7 @@ const Footer = () => (
 
       <div className="border-t border-surface-border/30 mt-10 pt-6 flex flex-col items-center justify-between gap-6">
         <p className="text-sm font-semibold text-text-muted flex items-center gap-1.5">
-          Built with <Heart size={14} className="text-rose-500 fill-rose-500" /> By Sxdiq
+          Built with <Heart size={14} className="text-rose-500 fill-rose-500" /> for developers
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs text-text-muted">

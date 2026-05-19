@@ -36,10 +36,7 @@ const Sidebar = () => {
         <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-glow-sm">
           <Zap size={16} className="text-white" />
         </div>
-        <div className="flex flex-col">
-          <span className="font-display font-bold text-lg text-text-primary tracking-tight leading-tight">ResumeMitra</span>
-          <span className="text-[9px] font-bold tracking-[0.2em] gradient-text opacity-90">By Sxdiq</span>
-        </div>
+        <span className="font-display font-bold text-lg text-text-primary tracking-tight leading-none">ResumeMitra</span>
       </div>
 
       {/* Nav items */}

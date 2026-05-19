@@ -89,7 +89,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-text-primary font-bold text-sm uppercase tracking-wider mb-1">Location & Social</h4>
                   <div className="flex flex-col gap-1">
-                    <span className="text-text-muted">Built by Sxdiq</span>
+                    <span className="text-text-muted">Shaik Sadiq</span>
                     <a href="https://sxdiq.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-emerald-500 hover:text-text-primary transition-colors text-sm">Portfolio</a>
                   </div>
                 </div>
