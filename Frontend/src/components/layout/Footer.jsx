@@ -11,9 +11,7 @@ const Footer = () => (
         {/* Brand */}
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#38BDF8] border border-white/10 flex items-center justify-center shadow-[0_4px_12px_-2px_rgba(99,102,241,0.3)]">
-              <Zap size={14} className="text-white" />
-            </div>
+            <img src="/favicon.svg" alt="ResumeMitra Logo" className="w-8 h-8 object-contain" />
             <span className="font-display font-extrabold text-lg text-text-primary leading-none">ResumeMitra</span>
           </div>
           <p className="text-sm text-text-muted max-w-sm leading-relaxed mb-5">
