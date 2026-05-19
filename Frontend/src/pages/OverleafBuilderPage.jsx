@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { FileCode2, Copy, Download, Loader2, ArrowLeft, Check, Terminal, ExternalLink, Lightbulb } from 'lucide-react'
 
 const TiltCard = ({ children, className }) => {

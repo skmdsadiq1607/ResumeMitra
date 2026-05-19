@@ -118,7 +118,8 @@ const UploadPage = () => {
     try {
       const { data } = await resumeService.analyze(fd)
       toast.success('AI Deep Analysis complete!')
-      navigate(`/analysis/${data.data._id}`)
+      const reportId = data?.data?.report?._id || data?.data?._id
+      navigate(`/analysis/${reportId}`)
     } catch (err) {
       toast.error(extractError(err))
     } finally {
