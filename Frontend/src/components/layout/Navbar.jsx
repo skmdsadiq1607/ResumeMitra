@@ -70,13 +70,8 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 px-6">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group shrink-0">
-            <img 
-              src="/favicon.svg" 
-              alt="ResumeMitra Logo" 
-              className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-300"
-            />
-            <span className="font-display font-extrabold text-xl text-text-primary tracking-tight leading-none group-hover:text-primary-400 transition-colors duration-300">ResumeMitra</span>
+          <Link to="/" className="flex items-center group shrink-0">
+            <span className="font-display font-extrabold text-xl text-text-primary tracking-tight leading-none">ResumeMitra</span>
           </Link>
 
           {/* Desktop Nav Items */}

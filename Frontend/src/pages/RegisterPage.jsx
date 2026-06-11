@@ -66,8 +66,7 @@ const RegisterPage = () => {
         {/* Card */}
         <div className="glass-card p-8">
           {/* Logo */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <img src="/favicon.svg" alt="ResumeMitra Logo" className="w-9 h-9 object-contain" />
+          <div className="flex items-center justify-center mb-8">
             <span className="font-display font-bold text-xl text-text-primary tracking-tight leading-none">ResumeMitra</span>
           </div>
 

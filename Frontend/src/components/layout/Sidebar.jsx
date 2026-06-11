@@ -32,8 +32,7 @@ const Sidebar = () => {
   return (
     <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col border-r border-surface-border bg-surface-card/90 backdrop-blur-md z-40">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 h-16 border-b border-surface-border">
-        <img src="/favicon.svg" alt="ResumeMitra Logo" className="w-8 h-8 object-contain" />
+      <div className="flex items-center px-6 h-16 border-b border-surface-border">
         <span className="font-display font-bold text-lg text-text-primary tracking-tight leading-none">ResumeMitra</span>
       </div>
 

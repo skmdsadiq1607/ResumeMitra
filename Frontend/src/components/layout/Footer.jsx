@@ -10,8 +10,7 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div className="md:col-span-2">
-          <div className="flex items-center gap-3 mb-2">
-            <img src="/favicon.svg" alt="ResumeMitra Logo" className="w-8 h-8 object-contain" />
+          <div className="flex items-center mb-2">
             <span className="font-display font-extrabold text-lg text-text-primary leading-none">ResumeMitra</span>
           </div>
           <p className="text-sm text-text-muted max-w-sm leading-relaxed mb-5">
