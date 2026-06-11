@@ -98,13 +98,6 @@ const Navbar = () => {
 
           {/* Auth & Theme Buttons */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
-            <button
-              onClick={toggleTheme}
-              className="p-2.5 rounded-xl bg-surface-card border border-surface-border text-text-muted hover:text-text-primary transition-all hover:border-primary-500/40 hover:bg-surface-hover"
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
             {isAuthenticated ? (
               <Link to="/dashboard" className="relative group px-5 py-2.5 rounded-xl bg-surface-card border border-surface-border text-text-primary text-sm font-bold overflow-hidden transition-all hover:border-primary-500/40 hover:bg-surface-hover">
                 <span className="relative z-10 flex items-center gap-2"><Sparkles size={14} className="text-primary-500"/> Dashboard</span>
@@ -122,13 +115,6 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-2 xl:hidden">
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-surface-hover"
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
             <button className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-surface-hover" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

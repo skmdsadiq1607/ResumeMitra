@@ -29,22 +29,22 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#1a1a2e',
-                color: '#f1f5f9',
-                border: '1px solid #2a2a4a',
-                borderRadius: '12px',
+                background: '#ffffff',
+                color: '#111827',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
                 fontSize: '14px',
               },
               success: {
                 iconTheme: {
-                  primary: '#6366f1',
-                  secondary: '#f1f5f9',
+                  primary: '#10b981',
+                  secondary: '#ffffff',
                 },
               },
               error: {
                 iconTheme: {
-                  primary: '#f43f5e',
-                  secondary: '#f1f5f9',
+                  primary: '#ef4444',
+                  secondary: '#ffffff',
                 },
               },
             }}
