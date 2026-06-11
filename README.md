@@ -1,4 +1,4 @@
-# ResumeMitra By Sxdiq ⚡
+# ResumeMitra⚡
 
 **ResumeMitra** is a high-performance AI intelligence platform designed to decode the ATS matrix. Using Google Gemini AI, it analyzes, scores, and refactors resumes to ensure absolute dominance in modern applicant tracking systems.
 
