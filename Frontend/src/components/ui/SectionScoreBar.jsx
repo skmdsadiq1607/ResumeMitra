@@ -12,12 +12,12 @@ const SectionScoreBar = ({ label, score = 0, icon: Icon, delay = 0 }) => {
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {Icon && <Icon size={14} className="text-slate-400" />}
-          <span className="text-sm font-medium text-slate-300">{label}</span>
+          {Icon && <Icon size={14} className="text-text-muted" />}
+          <span className="text-sm font-medium text-text-secondary">{label}</span>
         </div>
         <span className={`text-sm font-bold ${colorClass}`}>{score}%</span>
       </div>
-      <div className="h-2 bg-dark-600 rounded-full overflow-hidden">
+      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
         <motion.div
           className={`h-full rounded-full bg-gradient-to-r ${gradientClass}`}
           initial={{ width: 0 }}

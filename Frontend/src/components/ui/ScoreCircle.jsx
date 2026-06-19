@@ -21,7 +21,7 @@ const ScoreCircle = ({ score = 0, size = 160, strokeWidth = 10 }) => {
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="#1d1d35"
+            stroke="#e5e7eb"
             strokeWidth={strokeWidth}
           />
           {/* Animated progress ring */}
@@ -38,26 +38,26 @@ const ScoreCircle = ({ score = 0, size = 160, strokeWidth = 10 }) => {
             animate={{ strokeDashoffset: offset }}
             transition={{ duration: 1.5, ease: 'easeOut' }}
             style={{
-              filter: `drop-shadow(0 0 8px ${color}60)`,
+              filter: `drop-shadow(0 0 8px ${color}30)`,
             }}
           />
         </svg>
         {/* Center content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <motion.span
-            className="text-3xl font-bold font-display text-white"
+            className="text-3xl font-bold font-display text-text-primary"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
             {score}
           </motion.span>
-          <span className="text-xs text-slate-400 font-medium">/100</span>
+          <span className="text-xs text-text-muted font-medium">/100</span>
         </div>
       </div>
       <div className="text-center">
         <p className={`text-sm font-semibold ${getScoreColor(score)}`}>{getScoreLabel(score)}</p>
-        <p className="text-xs text-slate-500 mt-0.5">ATS Score</p>
+        <p className="text-xs text-text-muted mt-0.5">ATS Score</p>
       </div>
     </div>
   )

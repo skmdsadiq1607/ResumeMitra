@@ -4,10 +4,10 @@
  * Score color class
  */
 export const getScoreColor = (score) => {
-  if (score >= 80) return 'text-emerald-400'
-  if (score >= 60) return 'text-amber-400'
-  if (score >= 40) return 'text-orange-400'
-  return 'text-rose-400'
+  if (score >= 80) return 'text-emerald-600 font-semibold'
+  if (score >= 60) return 'text-amber-600 font-semibold'
+  if (score >= 40) return 'text-orange-600 font-semibold'
+  return 'text-rose-600 font-semibold'
 }
 
 export const getScoreBg = (score) => {
@@ -45,9 +45,9 @@ export const getScoreEmoji = (score) => {
  * Confidence badge color
  */
 export const getConfidenceColor = (level) => {
-  if (level === 'high') return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
-  if (level === 'medium') return 'text-amber-400 bg-amber-500/10 border-amber-500/20'
-  return 'text-slate-400 bg-slate-500/10 border-slate-500/20'
+  if (level === 'high') return 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20 font-semibold'
+  if (level === 'medium') return 'text-amber-600 bg-amber-500/10 border-amber-500/20 font-semibold'
+  return 'text-slate-600 bg-slate-500/10 border-slate-500/20 font-semibold'
 }
 
 /**
