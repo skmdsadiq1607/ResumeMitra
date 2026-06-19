@@ -34,13 +34,12 @@ const errorHandler = (err, req, res, next) => {
     statusCode = 413;
   }
 
-  // Always output debug details to response so user can check Render logs on client
-  return res.status(statusCode).json({
-    success: false,
-    message: message,
-    debugMessage: err.message,
-    debugStack: err.stack
-  });
+  // Log server errors in development
+  if (statusCode === 500 && process.env.NODE_ENV === 'development') {
+    console.error('💥 Server Error:', err.stack);
+  }
+
+  return errorResponse(res, message, statusCode);
 };
 
 module.exports = errorHandler;
