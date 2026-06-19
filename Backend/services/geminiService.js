@@ -107,8 +107,7 @@ JSON SCHEMA:
     console.error('❌ Could not even list models:', e.response?.data?.error?.message || e.message);
   }
 
-  const maskedKey = apiKey ? `${apiKey.substring(0, 8)}...${apiKey.substring(apiKey.length - 4)}` : 'not configured';
-  throw new Error(`Gemini API Failed. Last Error: ${lastError} (using key: ${maskedKey})`);
+  throw new Error(`Gemini API Failed. Last Error: ${lastError}`);
 };
 
 const generateLatexResume = async () => {
