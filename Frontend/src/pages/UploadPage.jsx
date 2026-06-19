@@ -195,15 +195,15 @@ const UploadPage = () => {
               
               <div className="glass-card p-5 flex items-center justify-between border-emerald-500/20 bg-emerald-500/5">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shadow-inner">
-                    <FileText size={20} className="text-emerald-400" />
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/25 border border-emerald-500/35 flex items-center justify-center shadow-inner">
+                    <FileText size={20} className="text-emerald-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-emerald-100">{file?.name}</p>
-                    <p className="text-xs text-emerald-500/70 font-medium">{formatFileSize(file?.size || 0)} · {fileExt}</p>
+                    <p className="text-sm font-bold text-emerald-900">{file?.name}</p>
+                    <p className="text-xs text-emerald-700 font-medium">{formatFileSize(file?.size || 0)} · {fileExt}</p>
                   </div>
                 </div>
-                <button type="button" onClick={() => { setFile(null); setStep(1) }} className="p-2 text-emerald-500/50 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors">
+                <button type="button" onClick={() => { setFile(null); setStep(1) }} className="p-2 text-emerald-600/60 hover:text-rose-600 hover:bg-rose-500/10 rounded-xl transition-colors">
                   <X size={18} />
                 </button>
               </div>
@@ -307,8 +307,8 @@ const UploadPage = () => {
 
                 <div className="glass-card p-6">
                   <h3 className="text-sm font-bold text-text-primary mb-4 uppercase tracking-wider flex items-center gap-2"><Eye size={16} className="text-accent-400" /> Recruiter Verdict</h3>
-                  <div className={`p-4 rounded-xl border ${localResult.score >= 75 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-100' : localResult.score >= 50 ? 'bg-amber-500/10 border-amber-500/20 text-amber-100' : 'bg-rose-500/10 border-rose-500/20 text-rose-100'}`}>
-                    <p className="text-sm font-medium leading-relaxed">"{localResult.recruiterVerdict}"</p>
+                  <div className={`p-4 rounded-xl border ${localResult.score >= 75 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-900' : localResult.score >= 50 ? 'bg-amber-500/10 border-amber-500/20 text-amber-900' : 'bg-rose-500/10 border-rose-500/20 text-rose-900'}`}>
+                    <p className="text-sm font-semibold leading-relaxed">"{localResult.recruiterVerdict}"</p>
                   </div>
                 </div>
 
