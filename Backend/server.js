@@ -22,6 +22,16 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`\n🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
       console.log(`📡 API available at: http://localhost:${PORT}/api`);
+
+      // ── Startup diagnostic: reveal which AI provider is active ──
+      const k = process.env.GEMINI_API_KEY || '';
+      const provider = k.startsWith('gsk_') ? 'Groq'
+        : k.startsWith('sk-or-v1-') ? 'OpenRouter'
+        : k.startsWith('AIza') ? 'Google Gemini (direct)'
+        : k ? 'Unknown provider'
+        : 'NOT CONFIGURED';
+      const masked = k ? `${k.substring(0, 8)}...${k.slice(-4)}` : 'none';
+      console.log(`🔑 AI Provider: ${provider} | Key: ${masked}`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error.message);
