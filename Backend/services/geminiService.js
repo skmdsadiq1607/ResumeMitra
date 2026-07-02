@@ -224,6 +224,13 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
     throw new Error('Gemini API key is not configured.');
   }
 
+  // ── Per-request diagnostic ──
+  const masked = `${apiKey.substring(0, 8)}...${apiKey.slice(-4)}`;
+  const provider = apiKey.startsWith('gsk_') ? 'Groq'
+    : apiKey.startsWith('sk-or-v1-') ? 'OpenRouter'
+    : 'Google Gemini';
+  console.log(`🔍 [REQUEST] Key at call time: ${masked} → routing to: ${provider}`);
+
   const prompt = buildPrompt(resumeText, jobDescription);
 
   if (apiKey.startsWith('sk-or-v1-')) {
