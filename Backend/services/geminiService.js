@@ -1,7 +1,8 @@
 /**
  * Gemini AI Service — Hybrid Routing Implementation
- * Supports both direct Google Gemini API and OpenRouter.
+ * Supports direct Google Gemini API, OpenRouter, and Groq.
  * - If GEMINI_API_KEY starts with 'sk-or-v1-', routes through OpenRouter.
+ * - If GEMINI_API_KEY starts with 'gsk_', routes through Groq.
  * - Otherwise, uses direct Google Generative Language API.
  */
 
@@ -110,6 +111,53 @@ const analyzeViaOpenRouter = async (apiKey, prompt) => {
   throw new Error(`OpenRouter API Failed. Last Error: ${lastError}`);
 };
 
+// ─── Groq Path ──────────────────────────────────────────────────────────────
+
+const analyzeViaGroq = async (apiKey, prompt) => {
+  const models = [
+    (process.env.GEMINI_MODEL || '').trim(),
+    'llama-3.3-70b-versatile',
+    'llama3-70b-8192',
+    'mixtral-8x7b-32768'
+  ].filter(m => m && !m.includes('/')); // Groq uses plain model names
+
+  let lastError = null;
+
+  for (const model of [...new Set(models)]) {
+    try {
+      console.log(`📡 Groq Attempt: ${model}...`);
+      const response = await axios.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.1,
+          max_tokens: 8192
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      const rawText = response.data?.choices?.[0]?.message?.content;
+      if (rawText) {
+        const parsed = extractJSON(rawText);
+        console.log(`✅ Groq success with model: ${model}`);
+        return normalizeResult(parsed);
+      }
+    } catch (error) {
+      lastError = error.response?.data?.error?.message || error.message;
+      console.warn(`⚠️ Groq model ${model} failed: ${lastError}`);
+      await new Promise(r => setTimeout(r, 1000));
+    }
+  }
+
+  throw new Error(`Groq API Failed. Last Error: ${lastError}`);
+};
+
 // ─── Direct Gemini Path ─────────────────────────────────────────────────────
 
 const analyzeViaGemini = async (apiKey, prompt) => {
@@ -181,6 +229,9 @@ const analyzeResumeWithGemini = async (resumeText, jobDescription, targetRole = 
   if (apiKey.startsWith('sk-or-v1-')) {
     console.log('🔀 Routing through OpenRouter...');
     return analyzeViaOpenRouter(apiKey, prompt);
+  } else if (apiKey.startsWith('gsk_')) {
+    console.log('🔀 Routing through Groq...');
+    return analyzeViaGroq(apiKey, prompt);
   } else {
     console.log('🔀 Routing through direct Google Gemini API...');
     return analyzeViaGemini(apiKey, prompt);
